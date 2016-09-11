@@ -3,6 +3,12 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
+    <string name="navdrawer_recipes">Recipes</string>
+    <string name="navdrawer_list">Shopping List</string>
+    <string name="navdrawer_cook">Cook</string>
+    <string name="navdrawer_share">Share</string>
+    <string name="navdrawer_send">Send</string>
+    <string name="navdrawer_communicate_divider">Communicate</string>
+    <string name="applogo">AppLogo</string>
     <string name="action_settings">Settings</string>
 </resources>
