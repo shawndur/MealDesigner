@@ -85,7 +85,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
+        // TODO: 9/11/16 handle fragment already selected
+        // select fragment corrisponding to nav drawer click
         Fragment fragment = null;
         switch (item.getItemId()){
             case R.id.nav_recipe:
@@ -97,11 +98,13 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
+        //close drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
+        //skip if no fragment exists
         if(fragment == null) return true;
-
+        //switch fragment
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container,fragment);
         fragmentTransaction.addToBackStack(null);
