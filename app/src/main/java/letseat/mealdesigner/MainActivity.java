@@ -3,6 +3,8 @@ package letseat.mealdesigner;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,6 +15,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,21 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        //finish if being restored
+        if (savedInstanceState != null) {
+            return;
+        }
+
+        // create main fragment
+        RecipeFragment mainFragment = new RecipeFragment();
+
+        // add fragment to screen
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, mainFragment).commit();
+
+
     }
 
     @Override
@@ -67,14 +86,21 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
+        Fragment fragment = null;
         switch (item.getItemId()){
             case R.id.nav_recipe:
+                fragment = new RecipeFragment();
                 break;
             case R.id.nav_list :
                 break;
             case R.id.nav_cook:
                 break;
         }
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container,fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
