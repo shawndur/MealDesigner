@@ -14,7 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements  NavigationView.OnNavigationItemSelectedListener,
+                    MainFragment.OnFragmentInteractionListener{
 
 
 
@@ -93,8 +94,10 @@ public class MainActivity extends AppCompatActivity
                 fragment = new RecipeFragment();
                 break;
             case R.id.nav_list :
+                fragment = new ListFragment();
                 break;
             case R.id.nav_cook:
+                fragment = new CookFragment();
                 break;
         }
 
