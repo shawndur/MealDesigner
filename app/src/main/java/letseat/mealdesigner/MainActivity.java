@@ -94,8 +94,10 @@ public class MainActivity extends AppCompatActivity
                 fragment = new RecipeFragment();
                 break;
             case R.id.nav_list :
+                fragment = new ListFragment();
                 break;
             case R.id.nav_cook:
+                fragment = new CookFragment();
                 break;
         }
 
