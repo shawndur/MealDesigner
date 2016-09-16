@@ -1,0 +1,16 @@
+date: September 12, 2016
+meeting_type: group
+attendance: [<cnzytari>, <vanhoose>, <cpark22>, <shawndur>]
+absent: []
+excused_absences: []
+task_progress:[
+  {ubit: <cnzytari>, progress: learned how to use Android Studio, set up sample GUI pages.},
+  {ubit: <vanhoose>, progress: learned how to use Android Studio, set up sample GUI pages.},
+  {ubit: <cpark22>, progress: learned how to use Android Studio, set up sample GUI pages.},
+  {ubit: <shawndur>, progress: learned how to use Android Studio, set up sample GUI pages.}
+  ]
+issues: [ # Post any issues here. Issues that cannot be addressed by the group should especially be included
+  ]
+Notes:  | # Anything covered in the meeting that doesn't fit elsewhere.
+  # Planning to monetize product. 
+  # Need to talk to TA/Prof about setting up private GitHub and how to share for grading.

@@ -1,0 +1,18 @@
+date: September 14, 2016
+meeting_type: ta
+attendance: [<cnzytari>, <cpark22>, <shawndur>]
+absent: [<vanhoose>]
+excused_absences: [
+  {ubit: <vanhoose>, reason: Son is sick, sent message ahead of time.}
+  ]
+task_progress:[
+  {ubit: <cnzytari>, progress: connected to repo, added xml layout file.},
+  {ubit: <vanhoose>, progress: },
+  {ubit: <cpark22>, progress: connected to repo},
+  {ubit: <shawndur>, progress: set up repo on GitHub, added collaborators.}
+  ]
+issues: [ # Post any issues here. Issues that cannot be addressed by the group should especially be included
+  ]
+Notes:  | # Anything covered in the meeting that doesn't fit elsewhere.
+  # Planning to film video
+  # look into rest api for connecting to database
