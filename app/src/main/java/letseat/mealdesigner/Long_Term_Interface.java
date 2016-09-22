@@ -1,7 +1,14 @@
 package letseat.mealdesigner;
 
+import android.content.Context;
+
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -11,6 +18,7 @@ import java.util.Date;
  */
 public class Long_Term_Interface
 {
+    private MainActivity _top;
     private File _appHomeDir;                           // the internal directory of the app
     private static final String EXTENSION = ".scgc";    // this can be changed, but all files which exist with the outdated extension need to be updated
     private static final String DEFAULT = "default_filename_";  // the default filename to be used if a given filename is invalid
@@ -18,8 +26,84 @@ public class Long_Term_Interface
 
     public Long_Term_Interface(MainActivity top)
     {
-        _appHomeDir = top.getFilesDir();
+        _top = top;
+        _appHomeDir = _top.getFilesDir();
 
+    }
+
+    // TODO:    FileInputStream may not be the class needed.  Research this.
+    public ArrayList<String> getLinesFromFile(String filename)
+    {
+        ArrayList<String> output = new ArrayList() < String >;
+
+        FileInputStream iStream;
+
+        try
+        {
+            // since the caller is not necessarily expecting the filename to have been switched by the writeToFile function, this function must check the given filename first
+            // if the given filename causes a FileNotFoundException, then proceed to give the user options for retrieving from the Default Files
+            iStream = _top.openFileInput(filename);   // TODO:  Research then fix this!
+
+        }
+        catch(FileNotFoundException e)
+        {
+            // code to fetch default files and present them to the user goes here.
+        }
+
+        int i = 0;
+        String currentLine = "";
+        try
+        {
+            while(iStream.)
+        }
+
+    }
+        /**
+     * Writes the contents of an ArrayList<String> object to a given filename, in the app's home directory.
+     * @param filename  The target filename for the data.
+     * @param data  An ArrayList<String> which contains lines of data to be written
+     * @return  false if any problems should arise and the requested write cannot be completed; true otherwise.
+     */
+    public boolean writeToFile(String filename, ArrayList<String> data)
+    {
+        int dataSize = data.size();
+
+        FileOutputStream oStream;
+
+        try
+        {
+            oStream = _top.openFileOutput(finalizeFilename(filename), Context.MODE_PRIVATE);
+        }
+        catch(FileNotFoundException e)
+        {
+            System.out.println("Unable to open "+filename);
+            e.printStackTrace();
+            return false;
+        }
+
+        String current_line = "";   // \_ declaring outside the scope of the for-loop so that these variables can be used when catching an IOException.
+        int i = 0;                  // /
+
+        boolean outStream_writing = true;
+
+        try
+        {
+            for(; i < dataSize; i++)
+            {
+                current_line = data.get(i);
+                oStream.write(current_line.getBytes());
+            }
+
+            outStream_writing = false;
+        }
+        catch(IOException e)
+        {
+            System.out.println(outStream_writing? "<"+current_line+"> could not be printed, write to file abandoned on line "+i : "FileOutputStream experienced an error while closing.");
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -31,29 +115,26 @@ public class Long_Term_Interface
     }
 
     /**
+     *
+     * TODO:  Keep this accessible to the caller
+     * TODO:  Write a public function validates (by boolean return value) whether a prospective filename meets the same criteria checked by this function.
      * Access to this function will be changed to private once its functionality is verified.
+     * If the filename reverts to default, it will still be searchable.  This is intended as the last safety before writing something to long-term memory.
+     *      If the caller can verify a proper filename before using this function, then the default filename should never be neccessary.
+     * Characteristics of a valid filename:
+     *      non-empty;
+     *      only contains one '.', which demarks the end of the actual name and the beginning of the extension;
+     *      has correct extension at the end;
+     *      does not begin with '.';
+     *      does begin with '\\';
+     *      does not contain any spaces (replace ' ' with '_';
+     *      not the default name ("default_filename_[date and time]");
      * @param filename the prospective name of the file to be created or accessed
      * @return if the argument (filename) can be resolved to a valid filename, it will return that valid filename; else, it will return a generic filename.
      */
     public String finalizeFilename(String filename)
     {
         int filename_length;
-
-//        if(!filename.contains(EXTENSION))
-//        {
-//            filename += EXTENSION;
-//        }
-
-        /**
-         * Characteristics of a valid filename:
-         *      non-empty
-         *      only contains one '.', which demarks the end of the actual name and the beginning of the extension
-         *      has correct extension at the end
-         *      does not begin with '.'
-         *      does begin with '\\'
-         *      does not contain any spaces (replace ' ' with '_'
-         *      not the default name ("default_filename_[date and time]")
-         */
 
         // if filename is an empty string, then the default filename will be used:
         if((filename_length = filename.length()) == 0)
@@ -72,6 +153,13 @@ public class Long_Term_Interface
         // the logic of the conditional will ONLY allow filenames wherein the extension is in the proper location.
         if(filename.indexOf(EXTENSION) != filename_length - EXTENSION.length())
         {
+            // if the correct extension cannot be located AND the given filename contains a '.'
+            // then the default filename must be returned
+            if(filename.contains("."))
+            {
+                return DEFAULT + getDAT() + EXTENSION;
+            }
+
             filename += EXTENSION;
             filename_length = filename.length();
         }
@@ -84,6 +172,7 @@ public class Long_Term_Interface
         }
 
         // if filename starts with the default filename, then the whole thing must be converted to the proper default filename
+        // this is to ensure correct and consistent flow when retrieving unknown files (which have been assigned the default filename)
         if(filename.indexOf(DEFAULT) == 0)
         {
             return DEFAULT + getDAT() + EXTENSION;
