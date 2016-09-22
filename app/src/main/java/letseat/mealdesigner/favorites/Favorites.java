@@ -1,13 +1,16 @@
 package letseat.mealdesigner.favorites;
 
+import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import letseat.mealdesigner.R;
+import letseat.mealdesigner.recipeinfo.RecipeInfo;
 
 public class Favorites extends AppCompatActivity {
 
@@ -46,5 +49,10 @@ public class Favorites extends AppCompatActivity {
     public void onBackPressed() {
         //handle navbar back button press
         NavUtils.navigateUpFromSameTask(this);
+    }
+
+    public void openRecipeInfo(View view){
+        Intent intent = new Intent(this,RecipeInfo.class);
+        startActivity(intent);
     }
 }

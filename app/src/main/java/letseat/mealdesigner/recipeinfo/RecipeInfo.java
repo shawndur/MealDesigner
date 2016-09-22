@@ -1,13 +1,17 @@
 package letseat.mealdesigner.recipeinfo;
 
+import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import letseat.mealdesigner.R;
+import letseat.mealdesigner.cook.Cook;
+import letseat.mealdesigner.favorites.Favorites;
 
 public class RecipeInfo extends AppCompatActivity {
 
@@ -41,6 +45,11 @@ public class RecipeInfo extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void startCooking(View view){
+        Intent intent = new Intent(this,Cook.class);
+        startActivity(intent);
     }
 
     /*@Override

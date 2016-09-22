@@ -11,9 +11,11 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import letseat.mealdesigner.R;
 import letseat.mealdesigner.favorites.Favorites;
+import letseat.mealdesigner.recipeinfo.RecipeInfo;
 import letseat.mealdesigner.shoppinglist.ShoppingList;
 
 public class MainRecipe extends AppCompatActivity
@@ -83,5 +85,10 @@ public class MainRecipe extends AppCompatActivity
                 break;
         }
         return true;
+    }
+
+    public void openRecipeInfo(View view){
+        Intent intent = new Intent(this,RecipeInfo.class);
+        startActivity(intent);
     }
 }
