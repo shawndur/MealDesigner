@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/toolbar_cook"
+        android:title="cook"
+        android:orderInCategory="10"
+        app:showAsAction="ifRoom" />
+    <item android:id="@+id/toolbar_fav"
+        android:title="fav"
+        android:orderInCategory="5"
+        app:showAsAction="ifRoom" />
 </menu>
