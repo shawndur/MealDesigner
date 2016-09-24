@@ -8,9 +8,11 @@
     <string name="navdrawer_cook">Cook</string>
     <string name="navdrawer_share">Share</string>
     <string name="navdrawer_send">Send</string>
+    <string name="navdrawer_fav">Favorites</string>
     <string name="navdrawer_communicate_divider">Communicate</string>
     <string name="applogo">AppLogo</string>
     <string name="action_settings">Settings</string>
+    <string name="recipe_info">Recipe Info</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
