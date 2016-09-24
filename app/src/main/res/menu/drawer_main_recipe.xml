@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="none">
+        <item
+            android:checked="true"
+            android:id="@+id/nav_recipe"
+            android:title="@string/navdrawer_recipes" />
+        <item
+            android:id="@+id/nav_list"
+            android:title="@string/navdrawer_list" />
+        <item
+            android:id="@+id/nav_favorite"
+            android:title="@string/navdrawer_fav" />
+    </group>
+
+    <item android:title="@string/navdrawer_communicate_divider">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="@string/navdrawer_share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/navdrawer_send" />
+        </menu>
+    </item>
+
+</menu>
