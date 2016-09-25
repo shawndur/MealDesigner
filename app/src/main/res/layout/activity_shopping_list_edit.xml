@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="letseat.mealdesigner.shoppinglist.ShoppingList">
+
+
+
+    <include layout="@layout/app_bar_main"
+        android:id="@+id/include" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/include"
+        android:layout_centerHorizontal="true">
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:onClick="saveEditedShoppingList"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/button"
+            android:layout_gravity="center_horizontal|bottom" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal|top">
+            <TableRow>
+                <TextView
+                    android:text="Ingredients"
+                    android:gravity="center"
+                    android:layout_width="fill_parent"
+                    android:layout_weight="20"
+                    android:padding="3dip" />
+                <TextView
+                    android:text="Quantity"
+                    android:gravity="center"
+                    android:layout_width="fill_parent"
+                    android:layout_weight="15"
+                    android:padding="3dip" />
+                <TextView
+                    android:text="Price"
+                    android:gravity="center"
+                    android:layout_width="fill_parent"
+                    android:layout_weight="15"
+                    android:padding="3dip" />
+                <TextView
+                    android:text="Market"
+                    android:gravity="center"
+                    android:layout_width="fill_parent"
+                    android:layout_weight="20"
+                    android:padding="3dip" />
+                <TextView
+                    android:text="Recipe"
+                    android:gravity="center"
+                    android:layout_width="fill_parent"
+                    android:layout_weight="30"
+                    android:padding="3dip" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:text="Carrots"
+                    android:gravity="center"
+                    android:layout_width="fill_parent"
+                    android:layout_weight="20"
+                    android:padding="3dip" />
+                <TextView
+                    android:text="5lb"
+                    android:gravity="center"
+                    android:layout_width="fill_parent"
+                    android:layout_weight="15"
+                    android:padding="3dip" />
+                <TextView
+                    android:text="$40"
+                    android:gravity="center"
+                    android:layout_width="fill_parent"
+                    android:layout_weight="15"
+                    android:padding="3dip" />
+                <TextView
+                    android:text="Wegmens"
+                    android:gravity="center"
+                    android:layout_width="fill_parent"
+                    android:layout_weight="20"
+                    android:padding="3dip" />
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Recipe"
+                    android:onClick="openRecipeInfo"
+                    android:layout_weight="30"
+                    android:id="@+id/button1"
+                    android:textSize="10dp" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:text="Tomato"
+                    android:gravity="center"
+                    android:layout_width="fill_parent"
+                    android:layout_weight="20"
+                    android:padding="3dip" />
+                <TextView
+                    android:text="3lb"
+                    android:gravity="center"
+                    android:layout_width="fill_parent"
+                    android:layout_weight="15"
+                    android:padding="3dip" />
+                <TextView
+                    android:text="$21"
+                    android:gravity="center"
+                    android:layout_width="fill_parent"
+                    android:layout_weight="15"
+                    android:padding="3dip" />
+                <TextView
+                    android:text="Walmart"
+                    android:gravity="center"
+                    android:layout_width="fill_parent"
+                    android:layout_weight="20"
+                    android:padding="3dip" />
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Recipe"
+                    android:onClick="openRecipeInfo"
+                    android:layout_weight="30"
+                    android:id="@+id/button2"
+                    android:textSize="10dp" />
+            </TableRow>
+
+
+
+        </TableLayout>
+    </FrameLayout>
+
+
+</RelativeLayout>
