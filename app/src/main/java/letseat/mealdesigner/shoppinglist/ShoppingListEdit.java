@@ -4,28 +4,28 @@ import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import letseat.mealdesigner.R;
+
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
-import letseat.mealdesigner.R;
-import letseat.mealdesigner.favorites.Favorites;
 import letseat.mealdesigner.recipeinfo.RecipeInfo;
 
-public class ShoppingList extends AppCompatActivity {
+public class ShoppingListEdit extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shopping_list);
+        setContentView(R.layout.activity_shopping_list_edit);
 
         //set toolbar widget as action bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.navdrawer_list));
-
+        getSupportActionBar().setTitle(getString(R.string.navdrawer_list_edit));
     }
 
     @Override
@@ -54,14 +54,10 @@ public class ShoppingList extends AppCompatActivity {
         NavUtils.navigateUpFromSameTask(this);
     }
 
-    public void openRecipeInfo(View view){
-        Intent intent = new Intent(this,RecipeInfo.class);
-        startActivity(intent);
-    }
-
-    public void openShoppingListEdit(View view){
-        Intent intent = new Intent(this,ShoppingListEdit.class);
-        startActivity(intent);
+    public void saveEditedShoppingList(View view){
+        Toast.makeText(ShoppingListEdit.this, "Saved !!", Toast.LENGTH_SHORT).show();
+        //Intent intent = new Intent(this,ShoppingListEdit.class);
+        //startActivity(intent);
     }
 
 }
