@@ -5,14 +5,47 @@
     android:layout_height="match_parent"
     tools:context="letseat.mealdesigner.recipeinfo.RecipeInfo">
 
-    <include layout="@layout/app_bar_main"/>
+    <include layout="@layout/app_bar_main"
+        android:id="@+id/include2" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Button to start cooking"
         android:onClick="startCooking"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/include2"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/button11" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Recipe Name"
+        android:id="@+id/textView13"
+        android:layout_below="@+id/button11"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="List of Ingrigents:"
+        android:id="@+id/textView14"
+        android:layout_below="@+id/textView13"
+        android:layout_toLeftOf="@+id/button11"
+        android:layout_toStartOf="@+id/button11"
+        android:layout_marginTop="57dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Cooking Steps"
+        android:id="@+id/textView15"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
