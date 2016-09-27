@@ -2,11 +2,13 @@ package letseat.mealdesigner;
 
 import android.content.Context;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,29 +36,77 @@ public class Long_Term_Interface
     // TODO:    FileInputStream may not be the class needed.  Research this.
     public ArrayList<String> getLinesFromFile(String filename)
     {
-        ArrayList<String> output = new ArrayList() < String >;
+        ArrayList<String> output = new ArrayList();
 
-        FileInputStream iStream;
+        FileInputStream inStream;
 
         try
         {
             // since the caller is not necessarily expecting the filename to have been switched by the writeToFile function, this function must check the given filename first
             // if the given filename causes a FileNotFoundException, then proceed to give the user options for retrieving from the Default Files
-            iStream = _top.openFileInput(filename);   // TODO:  Research then fix this!
+            inStream = _top.openFileInput(filename);   // TODO:  Research then fix this!
+
+            InputStreamReader reader = new InputStreamReader(inStream);
+
+            BufferedReader buffer = new BufferedReader(reader);
+
+            StringBuffer strBuff = new StringBuffer();
+
+            try
+            {
+                String currentLineFromFile = "";
+                while((currentLineFromFile = buffer.readLine()) != null)    // no real increase in runtime or space cost, since the return value will exist in registers anyway.
+                {
+                    output.add(currentLineFromFile);    // this line only adds valid, non-null strings
+                }
+            }
+            catch(IOException IOE)
+            {
+                // something clever should go here
+            }
+
+
 
         }
-        catch(FileNotFoundException e)
+        catch(FileNotFoundException FNFE)
         {
             // code to fetch default files and present them to the user goes here.
         }
 
-        int i = 0;
-        String currentLine = "";
-        try
-        {
-            while(iStream.)
-        }
+        return output;
+    }
 
+    /**
+     * Takes in a single, raw line that has been read from long-term memory, then parses it into a useable format for this
+     * @param input
+     * @return
+     */
+    public ArrayList<String> parseLine(String input)
+    {
+        ArrayList<String> output = new ArrayList();
+
+        String recipeName = input.substring(0,input.indexOf(0x81));
+
+        input = input.substring(input.indexOf(0x81));
+
+        String equipment = input.substring(0, input.indexOf(0x82));
+
+        input = input.substring(input.indexOf(0x82));
+
+        String ingredients = input.substring(0, input.indexOf(0x83));
+
+        input = input.substring(input.indexOf(0x83));
+
+        String steps = input.substring(0, input.indexOf(0x84));
+
+        input = input.substring(input.indexOf(0x84));
+
+        String comments = input;
+
+        
+
+
+        return output;
     }
         /**
      * Writes the contents of an ArrayList<String> object to a given filename, in the app's home directory.
