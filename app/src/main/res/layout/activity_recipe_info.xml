@@ -26,7 +26,7 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Recipe Name"
                 android:id="@+id/recipe_name_text"
-                android:textSize="50sp"/>
+                android:textSize="30sp"/>
 
 
             <TextView
