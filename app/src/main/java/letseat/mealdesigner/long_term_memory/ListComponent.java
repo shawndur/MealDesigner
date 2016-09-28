@@ -2,10 +2,15 @@ package letseat.mealdesigner.long_term_memory;
 
 import java.util.ArrayList;
 
+import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.CUP;
+import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.FLUID_OUNCE;
 import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.GALLON;
 import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.NO_UOM;
 import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.OUNCE;
+import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.PINT;
 import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.POUND;
+import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.QUART;
+import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.TABLESPOON;
 
 /**
  * Created by George_Sr on 9/27/2016.
@@ -176,7 +181,12 @@ public class ListComponent
         return _unitOfMeasure;
     }
 
-    public ConversionBundle getUnitOfMeasure(double multiplier) // this will probably be renamed to scaleRecipe
+
+/*
+ * This is eating up too much time in development.
+ * will revisit this later!
+ *
+    public ConversionBundle getUnitConversion(double multiplier) // this will probably be renamed to scaleRecipe
     {
         double rawConvertedQuantity = _quantity * multiplier;
 
@@ -187,6 +197,32 @@ public class ListComponent
             output._conversionWarning = true;
         }
 
+        EnglishWetNode wetHead = new EnglishWetNode(_quantity, _unitOfMeasure);
+
+        EnglishWetNode current = wetHead;
+
+        // this searches the EnglishWetNode list for the highest
+        // then exits the loop when either the next node is null (indicating end-of-valid nodes)
+        //      or when the quantity being passed becomes zero
+        while (current._next != null && current._next._qty > 0)
+        {
+            current = current._next;
+        }
+
+        output._primaryQuantity = current._qty;
+        output._primaryUnitOfMeasure = current._uom;
+
+        wetHead = new EnglishWetNode(qty % )
+
+
+
+
+
+
+
+
+
+/*
         switch(_unitOfMeasure)
         {
             case NO_UOM:
@@ -229,15 +265,26 @@ public class ListComponent
                 {
 
 
+
                     output._primaryQuantity = rawConvertedQuantity / (3*2*8*2*2*4);
                     output._primaryUnitOfMeasure = GALLON;
 
-                    rawConvertedQuantity = rawConvertedQuantity % (3*2*8*2*2*4);    // should be a number no greater than 768
+                    EnglishWetNode secondaryCandidates = new EnglishWetNode(qty % 768, TEASPOON)
 
-                    if(rawConvertedQuantity / 4 == )    // TODO:  Set this up so it selects the correct unit of measure, such that it doesn't give 600 teaspoons nor .003 gallons!
+
+//                    rawConvertedQuantity = rawConvertedQuantity % (3*2*8*2*2*4);    // should be a number no greater than 768
+
+
+
+//                    if(rawConvertedQuantity / 4 == )    // TODO:  Set this up so it selects the correct unit of measure, such that it doesn't give 600 teaspoons nor .003 gallons!
                 }
             }
+
         }
+*
+/
+
+        return output;
     }
 
 
@@ -262,12 +309,80 @@ public class ListComponent
         /**
          * If the conversion warning is set for this ingredient, this function will return an advisory to the user that the listed ingredient may need to be fine-tuned.
          * @return
-         */
+         * /
         public String getWarning()
         {
             return (_conversionWarning)? _warningMessage : "";
         }
     }
+
+    /**
+     * A singly-linked list which provides all the equivalent measurements of a given quantity in terms of successively larger units of measure.
+     * /
+    class EnglishWetNode
+    {
+        public EnglishWetNode _next;
+        public UnitOfMeasure _uom;
+        public double _qty;
+
+        enum UOM
+        {
+            TSP, TBSP, FLOZ, C, PT, QT, G;
+        }
+
+        public EnglishWetNode(double qty, UnitOfMeasure uom)
+        {
+
+            _qty = qty;
+            _uom = uom;
+
+            switch(uom)
+            {
+                case TEASPOON:
+                {
+                    _next = new EnglishWetNode(qty / 3, TABLESPOON);
+                    break;
+                }
+
+                case TABLESPOON:
+                {
+                    _next = new EnglishWetNode(qty/2, FLUID_OUNCE);
+                    break;
+                }
+
+                case FLUID_OUNCE:
+                {
+                    _next = new EnglishWetNode(qty/8, CUP);
+                    break;
+                }
+
+                case CUP:
+                {
+                    _next = new EnglishWetNode(qty/2, PINT);
+                    break;
+                }
+
+                case PINT:
+                {
+                    _next = new EnglishWetNode(qty/2, QUART);
+                    break;
+                }
+
+                case QUART:
+                {
+                    _next = new EnglishWetNode(qty/4, GALLON);
+                }
+
+                default:
+                {
+                    _next = null;
+                }
+
+
+            }
+        }
+    }
+*/
 
 
 }
