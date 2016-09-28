@@ -134,9 +134,7 @@ public class ListComponent
      */
     public ListComponent setNext(ListComponent next)
     {
-        _next = next;
-
-        return next;
+        return _next = next;
     }
 
 
