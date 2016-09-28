@@ -10,11 +10,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
+import letseat.mealdesigner.MainActivity;
 import letseat.mealdesigner.R;
 import letseat.mealdesigner.cook.Cook;
 import letseat.mealdesigner.favorites.Favorites;
 
 public class RecipeInfo extends AppCompatActivity {
+
+    ArrayList<String> _steps;
+    ArrayList<String> _ingredients;
+    String _name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +97,7 @@ public class RecipeInfo extends AppCompatActivity {
 
     public void goToCook(){
         Intent intent = new Intent(this,Cook.class);
+        intent.putExtra("Steps",_steps);
         startActivity(intent);
     }
 
