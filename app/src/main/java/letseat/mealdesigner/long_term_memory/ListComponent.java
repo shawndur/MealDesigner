@@ -2,15 +2,15 @@ package letseat.mealdesigner.long_term_memory;
 
 import java.util.ArrayList;
 
-import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.CUP;
-import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.FLUID_OUNCE;
-import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.GALLON;
-import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.NO_UOM;
-import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.OUNCE;
-import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.PINT;
-import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.POUND;
-import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.QUART;
-import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.TABLESPOON;
+//import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.CUP;
+//import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.FLUID_OUNCE;
+//import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.GALLON;
+//import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.NO_UOM;
+//import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.OUNCE;
+//import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.PINT;
+//import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.POUND;
+//import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.QUART;
+//import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.TABLESPOON;
 
 /**
  * Created by George_Sr on 9/27/2016.
@@ -51,15 +51,17 @@ public class ListComponent
     private ArrayList<String> _comments;
     private UnitOfMeasure _unitOfMeasure;
 
+    private ListComponent _next;
+
 
     /**
      * Equipment constructor
      */
-    public ListComponent(ComponentType compType, String name, double quantity, ArrayList<String> comments)
+    public ListComponent(String name, double quantity, ArrayList<String> comments)
     {
         _compType = ComponentType.EQUIPMENT;
 
-        commonComponentConstructorCode(name, quantity, "", comments, NO_UOM);
+        commonComponentConstructorCode(name, quantity, "", comments, UnitOfMeasure.NO_UOM);
     }
     /**
      * Ingredient constructor
@@ -80,7 +82,7 @@ public class ListComponent
     {
         _compType = ComponentType.PROCEDURE_WITH_TIMER;
 
-        commonComponentConstructorCode(name, timer_in_seconds, hazards_and_critical_control_points, comments, NO_UOM);
+        commonComponentConstructorCode(name, timer_in_seconds, hazards_and_critical_control_points, comments, UnitOfMeasure.NO_UOM);
     }
 
     /**
@@ -90,22 +92,51 @@ public class ListComponent
     {
         _compType = ComponentType.PROCEDURE;
 
-        commonComponentConstructorCode(name, -1.0, hazards_and_critical_control_points, comments, NO_UOM);
+        commonComponentConstructorCode(name, -1.0, hazards_and_critical_control_points, comments, UnitOfMeasure.NO_UOM);
     }
 
     /**
-     * Comment Constructor
+     * Comment Constructor:
+     * The ListComponent with _compType == COMMENT is different from the ArrayList of comments that are added within each other instantiation of this class.
+     * This is because those comments pertain to an individual step, ingredient, or piece of machinery.
+     * This constructor creates a ListComponent object which contains information which pertains to the overall recipe,
+     * right down to the user who may wish to include a story about the recipe which is unrelated to any actual information about cooking.
      */
     public ListComponent(String name)
     {
         _compType = ComponentType.COMMENT;
 
-        commonComponentConstructorCode(name, -1.0, "", null, NO_UOM);
+        commonComponentConstructorCode(name, -1.0, "", null, UnitOfMeasure.NO_UOM);
     }
 
-    public void commonComponentConstructorCode(String name, double qty, String additionalText, ArrayList<String> comments, UnitOfMeasure uom)
+    private void commonComponentConstructorCode(String name, double qty, String additionalText, ArrayList<String> comments, UnitOfMeasure uom)
     {
         _name = name;
+
+        _quantity = qty;
+
+        _comments = comments;
+
+        _unitOfMeasure = uom;
+
+        _additionalText = additionalText;
+    }
+
+    public ListComponent next()
+    {
+        return _next;
+    }
+
+    /**
+     *
+     * @param next a new node in to be appended to the end of whatever list for which this component is used.
+     * @return the argument as it was passed so that the caller's "_last" variable can keep up-to-date without any extra runtime, (since AAPCS dictates that r1 be used for both arguments and return variables, the value of the variable doesn't require any additional machine language!)
+     */
+    public ListComponent setNext(ListComponent next)
+    {
+        _next = next;
+
+        return next;
     }
 
 
