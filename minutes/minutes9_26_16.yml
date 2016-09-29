@@ -1,0 +1,18 @@
+date: September 26, 2016
+meeting_type: instructor
+attendance: [<cnzytari>, <cpark22>, <shawndur>, <vanhoose>]
+absent: []
+excused_absences: []
+task_progress:[
+  {ubit: <cnzytari>, progress: redesigned walktrough with new layout, added in allergen page.},
+  {ubit: <vanhoose>, progress: worked on database.},
+  {ubit: <cpark22>, progress: working on shopping list.},
+  {ubit: <shawndur>, progress: created guidline for other members on new activity layout and set up button that opens from recipe to cooking.}
+  ]
+issues: [ # Post any issues here. Issues that cannot be addressed by the group should especially be included
+  ]
+Notes:  | # Anything covered in the meeting that doesn't fit elsewhere.
+  # Consider using SQL lite for database
+  # Share functinslity, probably use server (Set up Sprint 3-4)
+  # Recipt reader- either read text off of bill or the scan code at the bottom (Sprint 4 pssibly)
+  
