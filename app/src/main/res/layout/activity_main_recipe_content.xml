@@ -7,81 +7,24 @@
     android:layout_height="match_parent"
     tools:context="letseat.mealdesigner.recipies.MainRecipe">
 
-    <include layout="@layout/app_bar_main"
-        android:id="@+id/include" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Recipe Random"
-        android:onClick="openRecipeInfo"
-        android:id="@+id/button8"
-        android:layout_below="@+id/button7"
-        android:layout_alignLeft="@+id/button7"
-        android:layout_alignStart="@+id/button7" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Test Recipe"
-        android:id="@+id/button4"
-        android:layout_below="@+id/include"
-        android:onClick="openRecipeInfo"
-        android:layout_centerHorizontal="true" />
+    <include layout="@layout/app_bar_main"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Some Recipe"
-        android:id="@+id/button5"
-        android:layout_below="@+id/button4"
         android:onClick="openRecipeInfo"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Some Recipe 2"
-        android:id="@+id/button6"
-        android:onClick="openRecipeInfo"
-        android:layout_below="@+id/button5"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Another Recipe"
-        android:id="@+id/button7"
-        android:onClick="openRecipeInfo"
-        android:layout_below="@+id/button6"
-        android:layout_alignRight="@+id/button10"
-        android:layout_alignEnd="@+id/button10" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Recipe Another"
-        android:id="@+id/button9"
-        android:onClick="openRecipeInfo"
-        android:layout_below="@+id/button8"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Random Recipe 2"
-        android:id="@+id/button10"
-        android:onClick="openRecipeInfo"
-        android:layout_below="@+id/button9"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/button16" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Create New Recipe"
-        android:id="@+id/button12"
+        android:id="@+id/button15"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_toRightOf="@+id/button16"
+        android:layout_toEndOf="@+id/button16" />
 
 </RelativeLayout>
