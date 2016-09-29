@@ -29,7 +29,7 @@ public class ListComponent
         NO_UOM,
 
         // non-empirical units
-        EACH, BAG, POUCH, STRIP, // more to come!
+        EACH, BAG, POUCH, STRIP, SLICE, // more to come!
 
         // English dry
         OUNCE, POUND,
@@ -50,6 +50,7 @@ public class ListComponent
     private String _name, _additionalText;
     private ArrayList<String> _comments;
     private UnitOfMeasure _unitOfMeasure;
+    private int _order;
 
     private ListComponent _next;
 
@@ -211,37 +212,44 @@ public class ListComponent
     }
 
 
-/*
- * This is eating up too much time in development.
- * will revisit this later!
- *
-    public ConversionBundle getUnitConversion(double multiplier) // this will probably be renamed to scaleRecipe
+
+    public int setOrder(int order)
     {
-        double rawConvertedQuantity = _quantity * multiplier;
+        return (_order = order)+1;
+    }
 
-        ConversionBundle output = new ConversionBundle(rawConvertedQuantity, _unitOfMeasure, -1.0, NO_UOM, (multiplier > 10));
 
-        if(multiplier > 10)
-        {
-            output._conversionWarning = true;
-        }
+/*
+* This is eating up too much time in development.
+* will revisit this later!
+*
+  public ConversionBundle getUnitConversion(double multiplier) // this will probably be renamed to scaleRecipe
+  {
+      double rawConvertedQuantity = _quantity * multiplier;
 
-        EnglishWetNode wetHead = new EnglishWetNode(_quantity, _unitOfMeasure);
+      ConversionBundle output = new ConversionBundle(rawConvertedQuantity, _unitOfMeasure, -1.0, NO_UOM, (multiplier > 10));
 
-        EnglishWetNode current = wetHead;
+      if(multiplier > 10)
+      {
+          output._conversionWarning = true;
+      }
 
-        // this searches the EnglishWetNode list for the highest
-        // then exits the loop when either the next node is null (indicating end-of-valid nodes)
-        //      or when the quantity being passed becomes zero
-        while (current._next != null && current._next._qty > 0)
-        {
-            current = current._next;
-        }
+      EnglishWetNode wetHead = new EnglishWetNode(_quantity, _unitOfMeasure);
 
-        output._primaryQuantity = current._qty;
-        output._primaryUnitOfMeasure = current._uom;
+      EnglishWetNode current = wetHead;
 
-        wetHead = new EnglishWetNode(qty % )
+      // this searches the EnglishWetNode list for the highest
+      // then exits the loop when either the next node is null (indicating end-of-valid nodes)
+      //      or when the quantity being passed becomes zero
+      while (current._next != null && current._next._qty > 0)
+      {
+          current = current._next;
+      }
+
+      output._primaryQuantity = current._qty;
+      output._primaryUnitOfMeasure = current._uom;
+
+      wetHead = new EnglishWetNode(qty % )
 
 
 
@@ -252,166 +260,181 @@ public class ListComponent
 
 
 /*
-        switch(_unitOfMeasure)
-        {
-            case NO_UOM:
-            case EACH:
-            case BAG:
-            case POUCH:
-            case STRIP:
-            {
-                return output;
-            }
+      switch(_unitOfMeasure)
+      {
+          case NO_UOM:
+          case EACH:
+          case BAG:
+          case POUCH:
+          case STRIP:
+          {
+              return output;
+          }
 
-            case OUNCE:
-            {
-                if((rawConvertedQuantity)> 16)
-                {
-                    output._primaryQuantity = rawConvertedQuantity / 16;
-                    output._primaryUnitOfMeasure = POUND;
+          case OUNCE:
+          {
+              if((rawConvertedQuantity)> 16)
+              {
+                  output._primaryQuantity = rawConvertedQuantity / 16;
+                  output._primaryUnitOfMeasure = POUND;
 
-                    output._secondaryQuantity = (rawConvertedQuantity % 16 != 0)? rawConvertedQuantity%16 : -1.0;
-                    output._secondaryUnitOfMeasure = (rawConvertedQuantity % 16 != 0)? OUNCE : NO_UOM;
-                }
-                return output;
-            }
+                  output._secondaryQuantity = (rawConvertedQuantity % 16 != 0)? rawConvertedQuantity%16 : -1.0;
+                  output._secondaryUnitOfMeasure = (rawConvertedQuantity % 16 != 0)? OUNCE : NO_UOM;
+              }
+              return output;
+          }
 
-            case POUND:
-            {
-                if((rawConvertedQuantity) < 1)
-                {
-                    output._primaryQuantity = rawConvertedQuantity * 16;
-                    output._primaryUnitOfMeasure = OUNCE;
+          case POUND:
+          {
+              if((rawConvertedQuantity) < 1)
+              {
+                  output._primaryQuantity = rawConvertedQuantity * 16;
+                  output._primaryUnitOfMeasure = OUNCE;
 
-                    // no need to touch the secondaries, since pounds are already being converted to lower units (ounces) and there are none lower!
-                }
-                return output;
-            }
+                  // no need to touch the secondaries, since pounds are already being converted to lower units (ounces) and there are none lower!
+              }
+              return output;
+          }
 
-            case TEASPOON:
-            {
-                if((rawConvertedQuantity) > (3*2*8*2*2*4))  // teaspoons to gallons
-                {
-
-
-
-                    output._primaryQuantity = rawConvertedQuantity / (3*2*8*2*2*4);
-                    output._primaryUnitOfMeasure = GALLON;
-
-                    EnglishWetNode secondaryCandidates = new EnglishWetNode(qty % 768, TEASPOON)
-
-
-//                    rawConvertedQuantity = rawConvertedQuantity % (3*2*8*2*2*4);    // should be a number no greater than 768
+          case TEASPOON:
+          {
+              if((rawConvertedQuantity) > (3*2*8*2*2*4))  // teaspoons to gallons
+              {
 
 
 
-//                    if(rawConvertedQuantity / 4 == )    // TODO:  Set this up so it selects the correct unit of measure, such that it doesn't give 600 teaspoons nor .003 gallons!
-                }
-            }
+                  output._primaryQuantity = rawConvertedQuantity / (3*2*8*2*2*4);
+                  output._primaryUnitOfMeasure = GALLON;
 
-        }
+                  EnglishWetNode secondaryCandidates = new EnglishWetNode(qty % 768, TEASPOON)
+
+
+//                  rawConvertedQuantity = rawConvertedQuantity % (3*2*8*2*2*4);    // should be a number no greater than 768
+
+
+
+//                  if(rawConvertedQuantity / 4 == )    // TODO:  Set this up so it selects the correct unit of measure, such that it doesn't give 600 teaspoons nor .003 gallons!
+              }
+          }
+
+      }
 *
 /
 
-        return output;
-    }
+      return output;
+  }
 
 
-    class ConversionBundle
-    {
-        public double _primaryQuantity, _secondaryQuantity;
-        public UnitOfMeasure _primaryUnitOfMeasure, _secondaryUnitOfMeasure;
-        public boolean _conversionWarning;
-        private String _warningMessage = "Warning:  If the quantities of a recipe are increased significantly, the ingredients' quantities may need to be fine-tuned to taste.";
+  class ConversionBundle
+  {
+      public double _primaryQuantity, _secondaryQuantity;
+      public UnitOfMeasure _primaryUnitOfMeasure, _secondaryUnitOfMeasure;
+      public boolean _conversionWarning;
+      private String _warningMessage = "Warning:  If the quantities of a recipe are increased significantly, the ingredients' quantities may need to be fine-tuned to taste.";
 
 
-        public ConversionBundle(double quantity, UnitOfMeasure unitOfMeasure, double secondQuantity, UnitOfMeasure secondUOM, boolean conversionWarning)
-        {
-            _primaryQuantity = quantity;
-            _primaryUnitOfMeasure = unitOfMeasure;
-            _secondaryQuantity = secondQuantity;
-            _secondaryUnitOfMeasure = secondUOM;
-            _conversionWarning = conversionWarning;
+      public ConversionBundle(double quantity, UnitOfMeasure unitOfMeasure, double secondQuantity, UnitOfMeasure secondUOM, boolean conversionWarning)
+      {
+          _primaryQuantity = quantity;
+          _primaryUnitOfMeasure = unitOfMeasure;
+          _secondaryQuantity = secondQuantity;
+          _secondaryUnitOfMeasure = secondUOM;
+          _conversionWarning = conversionWarning;
 
-        }
+      }
 
-        /**
-         * If the conversion warning is set for this ingredient, this function will return an advisory to the user that the listed ingredient may need to be fine-tuned.
-         * @return
-         * /
-        public String getWarning()
-        {
-            return (_conversionWarning)? _warningMessage : "";
-        }
-    }
+      /**
+       * If the conversion warning is set for this ingredient, this function will return an advisory to the user that the listed ingredient may need to be fine-tuned.
+       * @return
+       * /
+      public String getWarning()
+      {
+          return (_conversionWarning)? _warningMessage : "";
+      }
+  }
+
+  /**
+   * A singly-linked list which provides all the equivalent measurements of a given quantity in terms of successively larger units of measure.
+   * /
+  class EnglishWetNode
+  {
+      public EnglishWetNode _next;
+      public UnitOfMeasure _uom;
+      public double _qty;
+
+      enum UOM
+      {
+          TSP, TBSP, FLOZ, C, PT, QT, G;
+      }
+
+      public EnglishWetNode(double qty, UnitOfMeasure uom)
+      {
+
+          _qty = qty;
+          _uom = uom;
+
+          switch(uom)
+          {
+              case TEASPOON:
+              {
+                  _next = new EnglishWetNode(qty / 3, TABLESPOON);
+                  break;
+              }
+
+              case TABLESPOON:
+              {
+                  _next = new EnglishWetNode(qty/2, FLUID_OUNCE);
+                  break;
+              }
+
+              case FLUID_OUNCE:
+              {
+                  _next = new EnglishWetNode(qty/8, CUP);
+                  break;
+              }
+
+              case CUP:
+              {
+                  _next = new EnglishWetNode(qty/2, PINT);
+                  break;
+              }
+
+              case PINT:
+              {
+                  _next = new EnglishWetNode(qty/2, QUART);
+                  break;
+              }
+
+              case QUART:
+              {
+                  _next = new EnglishWetNode(qty/4, GALLON);
+              }
+
+              default:
+              {
+                  _next = null;
+              }
+
+
+          }
+      }
+  }
+*/
 
     /**
-     * A singly-linked list which provides all the equivalent measurements of a given quantity in terms of successively larger units of measure.
-     * /
-    class EnglishWetNode
+     * a debugging method
+     */
+    public void printAllInfo()
     {
-        public EnglishWetNode _next;
-        public UnitOfMeasure _uom;
-        public double _qty;
+        System.out.println(_compType.toString() + " >> " + _name + ", " + _quantity + " " + _unitOfMeasure + ", " + _additionalText);
 
-        enum UOM
+        if(_next != null)
         {
-            TSP, TBSP, FLOZ, C, PT, QT, G;
+            _next.printAllInfo();
         }
 
-        public EnglishWetNode(double qty, UnitOfMeasure uom)
-        {
-
-            _qty = qty;
-            _uom = uom;
-
-            switch(uom)
-            {
-                case TEASPOON:
-                {
-                    _next = new EnglishWetNode(qty / 3, TABLESPOON);
-                    break;
-                }
-
-                case TABLESPOON:
-                {
-                    _next = new EnglishWetNode(qty/2, FLUID_OUNCE);
-                    break;
-                }
-
-                case FLUID_OUNCE:
-                {
-                    _next = new EnglishWetNode(qty/8, CUP);
-                    break;
-                }
-
-                case CUP:
-                {
-                    _next = new EnglishWetNode(qty/2, PINT);
-                    break;
-                }
-
-                case PINT:
-                {
-                    _next = new EnglishWetNode(qty/2, QUART);
-                    break;
-                }
-
-                case QUART:
-                {
-                    _next = new EnglishWetNode(qty/4, GALLON);
-                }
-
-                default:
-                {
-                    _next = null;
-                }
-
-
-            }
-        }
+        return;
     }
-*/
 
 
 }
