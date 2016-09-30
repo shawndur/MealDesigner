@@ -1,6 +1,7 @@
 package letseat.mealdesigner.long_term_memory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 //import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.CUP;
 //import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.FLUID_OUNCE;
@@ -52,7 +53,7 @@ public class ListComponent
     private UnitOfMeasure _unitOfMeasure;
     private int _order;
 
-    private ListComponent _next;
+    private ListComponent _next, _previous;
 
 
     /**
@@ -121,6 +122,60 @@ public class ListComponent
         _unitOfMeasure = uom;
 
         _additionalText = additionalText;
+
+        _next = _previous = null;
+    }
+
+    public void addComponent(ListComponent nodeNew)
+    {
+        if(_next != null)
+        {
+            _next.addComponent(nodeNew);
+        }
+        else
+        {
+            _next = nodeNew;
+            nodeNew.setPrevious(this);
+        }
+    }
+
+    public void addComponent(ListComponent nodeNew, int order)
+    {
+        if(_next == null)
+        {
+            _next = nodeNew;
+            nodeNew.setPrevious(this);
+            return;
+        }
+        if(_next.order() >= order)
+        {
+            _next.setOrderCascade(_next.order());   // increases the order ranking of each subsequent node starting at _next
+
+            _next.setPrevious(nodeNew);
+            nodeNew.setNext(_next);
+            nodeNew.setPrevious(this);
+            _next = nodeNew;
+
+            return;
+        }
+
+        // in the case of _next.order() < order
+
+        _next.addComponent(nodeNew,order);
+
+//        if(_order < order)
+//        {
+//            if(_next != null)
+//            {
+//                _next.addComponent(nodeNew,order);
+//            }
+//            else
+//            {
+//                _next = nodeNew;
+//                nodeNew.setPrevious(this);
+//            }
+//        }
+//        else    // in the case of _order >= order
     }
 
     public ListComponent next()
@@ -129,13 +184,26 @@ public class ListComponent
     }
 
     /**
-     *
      * @param next a new node in to be appended to the end of whatever list for which this component is used.
      * @return the argument as it was passed so that the caller's "_last" variable can keep up-to-date without any extra runtime, (since AAPCS dictates that r1 be used for both arguments and return variables, the value of the variable doesn't require any additional machine language!)
      */
     public ListComponent setNext(ListComponent next)
     {
         return _next = next;
+    }
+
+    public ListComponent previous()
+    {
+        return _previous;
+    }
+
+    /**
+     * @param previous
+     * @return
+     */
+    public ListComponent setPrevious(ListComponent previous)
+    {
+        return _previous = previous;
     }
 
 
@@ -211,11 +279,33 @@ public class ListComponent
         return _unitOfMeasure;
     }
 
-
-
-    public int setOrder(int order)
+    public int order()
     {
-        return (_order = order)+1;
+        return _order;
+    }
+
+    /**
+     *
+     * @param order the desired order for this
+     * @return
+     */
+    public void setOrder(int order)
+    {
+        _order = order;
+    }
+
+    /**
+     * Recursively calls all subsequent members of the particular list, such that inserting a new node before the initial operator had this function called.
+     * @param order The new order of this node; all nodes connected through _next will also be updated.  When dealing with an ordered list (where the zeroth element is the head) this is also the index within the list at which the new element is to be inserted.
+     */
+    public void setOrderCascade(int order)
+    {
+        if(_next != null)
+        {
+            _next.setOrderCascade( order + 1);
+        }
+
+        _order = order;
     }
 
 
@@ -426,7 +516,7 @@ public class ListComponent
      */
     public void printAllInfo()
     {
-        System.out.println(_compType.toString() + " >> " + _name + ", " + _quantity + " " + _unitOfMeasure + ", " + _additionalText);
+        System.out.println(_compType.toString() + " >> " + _name + ", " + _quantity + " " + _unitOfMeasure + ", " + _additionalText + ", " + _order);
 
         if(_next != null)
         {

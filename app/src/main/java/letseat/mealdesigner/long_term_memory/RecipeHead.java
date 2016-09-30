@@ -2,6 +2,7 @@ package letseat.mealdesigner.long_term_memory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import letseat.mealdesigner.long_term_memory.ListComponent.ComponentType;
 
@@ -17,7 +18,7 @@ public class RecipeHead
     //    private ListComponent _equipmentList, _equiLast, _ingredientList, _ingrLast, _procedureList, _procLast, _commentList, _commLast;
 //    private int _equiCount, _ingrCount, _procCount, _commCount;
     private Map<ComponentType, Integer> _counts;
-    private Map<ComponentType, ListComponent> _heads, _tails;
+    private Map<ComponentType, ListComponent> _heads /* , _tails */;
     private String _recipeName;
 
 
@@ -34,7 +35,7 @@ public class RecipeHead
 
         _heads = new HashMap<ComponentType, ListComponent>();
 
-        _tails = new HashMap<ComponentType, ListComponent>();
+//        _tails = new HashMap<ComponentType, ListComponent>();
 
     }
 
@@ -63,138 +64,161 @@ public class RecipeHead
         return modifyComponentCount(component,1);
     }
 
-    private void updateFirstAndLast(ListComponent node)
+    private void addComponent(ListComponent node)
     {
         ComponentType nodeType = node.getComponentType();
 
-        if(incrementComponentCount(node) == 1)
+        if(_heads.containsKey(nodeType))
         {
-
-            _heads.put(nodeType, node);
-
-            _tails.put(nodeType, node);
-
-            return;	// I think this was causing the stack overflow...  Bingo!!!
+            _heads.get(nodeType).addComponent(node);
+            return;
         }
+        _heads.put(nodeType,node);
 
-        _tails.put(nodeType, node).setNext(node);	// this is the problem right here!
+// rewrite this to work with a linear insertion.
+//
+//        if(incrementComponentCount(node) == 1)
+//        {
+//
+//            _heads.put(nodeType, node);
+//
+////            _tails.put(nodeType, node);
+//
+//            return;	// I think this was causing the stack overflow...  Bingo!!!
+//        }
+//
+////        _tails.put(nodeType, node).setNext(node);	// this is the problem right here!
     }
 
     public void addEquipment(String equipment_name, double quantity_needed, ArrayList<String> comments)
     {
 
-        updateFirstAndLast(new ListComponent(equipment_name, quantity_needed, comments));
+        addComponent(new ListComponent(equipment_name, quantity_needed, comments));
 
-//        ListComponent equipmentComponent = new ListComponent(equipment_name, quantity_needed, comments);
-
-//        incrementComponentCount(equipmentComponent);
-//
-//        if(_equipmentList == null)
-//        {
-//            _equiLast = _equipmentList = equipmentComponent;
-//
-//
-//        }
-//        else
-//        {
-//            _equiLast = _equiLast.setNext(equipmentComponent);
-//        }
     }
 
     public void addIngredient(String name, double quantity, String preparation_procedure, ArrayList<String> comments, ListComponent.UnitOfMeasure unit_of_measure)
     {
 
-        updateFirstAndLast(new ListComponent(name, quantity, preparation_procedure, comments, unit_of_measure));
+        addComponent(new ListComponent(name, quantity, preparation_procedure, comments, unit_of_measure));
 
-//        ListComponent ingredientComponent = new ListComponent(name, quantity, preparation_procedure, comments, unit_of_measure);
-//
-//        incrementComponentCount(ingredientComponent);
-//
-//        if(_ingredientList == null)
-//        {
-//            _ingrLast = _ingredientList = ingredientComponent;
-//        }
-//        else
-//        {
-//            _ingrLast = _ingrLast.setNext(ingredientComponent);
-//        }
     }
 
     public void addProcedureWithTimer(String name, double timer_in_seconds, String hazards_and_critical_control_points, ArrayList<String> comments)
     {
 
-        updateFirstAndLast(new ListComponent(name, timer_in_seconds, hazards_and_critical_control_points, comments));
+        addComponent(new ListComponent(name, timer_in_seconds, hazards_and_critical_control_points, comments));
 
-//        ListComponent procedureComponentWithTimer = new ListComponent(name, timer_in_seconds, hazards_and_critical_control_points, comments);
-//
-////        _procCount++;
-//
-//        incrementComponentCount(procedureComponentWithTimer);
-//
-//
-//
-//        if(_procedureList == null)
-//        {
-//            _procLast = _procedureList = procedureComponentWithTimer;
-//        }
-//        else
-//        {
-//            _procLast = _procLast.setNext(procedureComponentWithTimer);
-//        }
     }
 
     public void addProcedureWithoutTimer(String name, String hazards_and_critical_control_points, ArrayList<String> comments)
     {
 
-        updateFirstAndLast(new ListComponent(name, hazards_and_critical_control_points, comments));
+        addComponent(new ListComponent(name, hazards_and_critical_control_points, comments));
 
-//        ListComponent procedureComponentWithoutTimer = new ListComponent(name, hazards_and_critical_control_points, comments);
-//
-////        _procCount++;
-//
-//        incrementComponentCount(procedureComponentWithoutTimer);
-//
-//        if(_procedureList == null)
-//        {
-//            _procLast = _procedureList = procedureComponentWithoutTimer;
-//        }
-//        else
-//        {
-//            _procLast = _procLast.setNext(procedureComponentWithoutTimer);
-//        }
     }
 
     public void addComment(String text)
     {
-        updateFirstAndLast(new ListComponent(text));
+        addComponent(new ListComponent(text));
 
-//        ListComponent commentComponent = new ListComponent(text);
-//
-////        _commCount++;
-//
-//        incrementComponentCount(commentComponent);
-//
-//        if(_commentList == null)
-//        {
-//            _commLast = _commentList = commentComponent;
-//        }
-//        else
-//        {
-//            _commLast = _commLast.setNext(commentComponent);
-//        }
     }
 
     public int listSize(ComponentType componentType)
     {
-        return _counts.get(componentType);
+        return (_counts.containsKey(componentType))? _counts.get(componentType) : 0;
     }
 
-//    public void sortComponents(ComponentType componentType)
-//    {
-//        _tails.remove(componentType);
-//
-//        _heads
-//    }
+    /**
+     *
+     * @warning It is highly recommended that RecipeHead.listSize(ComponentType) should be used to retrieve the size of the list being returned by this function.
+     * @warning It is the responsibility of the caller to ensure the case of a null return value is accounted for.
+     * @param componentType From ListComponent.ComponentType
+     * @return The head node of the relevant list, IFF it exists as a non-null member in this; else, null.  A linked-list is returned.
+     */
+    public ListComponent getList(ComponentType componentType)
+    {
+        return (_heads.containsKey(componentType))? _heads.get(componentType) : null;
+    }
+
+    public boolean removeComponent(ComponentType componentType, int order)
+    {
+        if(!_heads.containsKey(componentType))
+        {
+            return false;
+        }
+
+        ListComponent current = _heads.get(componentType);
+
+        while(current.order() != order && current != null)
+        {
+            current = current.next();
+        }
+
+        return (current == null)? false : removeComponent(current);
+    }
+
+    public boolean removeComponent(ComponentType componentType, String text)
+    {
+        if(!_heads.containsKey(componentType))
+        {
+            return false;
+        }
+
+        ListComponent current = _heads.get(componentType);
+
+        while(current != null && current.getText().compareToIgnoreCase(text) != 0)
+        {
+            current = current.next();
+        }
+
+        return (current == null)? false : removeComponent(current);
+    }
+
+    public boolean removeComponent(ListComponent node)
+    {
+        // in the case of there is nothing before or after the node, the corresponding entry in _heads, _tails (???), and _counts must be removed.
+        if(node.previous() == null && node.next() == null)
+        {
+            _heads.remove(node.getComponentType());
+            _counts.remove(node.getComponentType());
+
+            return !(_heads.containsKey(node.getComponentType()) && _counts.containsKey(node.getComponentType()));
+//            _tails.remove(node.getComponentType());
+        }
+
+        // in the case that a node is at the head of its list
+        if(node.previous() == null && node.next() != null)
+        {
+            _heads.put(node.getComponentType(), node.next());
+
+            node.next().setPrevious(null);
+
+            decrementComponentCount(node);
+
+            return _heads.containsKey(node.getComponentType())? _heads.get(node.getComponentType()) == node.next() : false;
+        }
+
+        // in the case that a node is at the tail of its list
+        if(node.previous() != null && node.next() == null)
+        {
+            node.previous().setNext(null);
+
+            decrementComponentCount(node);
+
+            return node.previous().next() == null;
+        }
+
+        // all remaining cases are where the node is in the list and not at the head or tail thereof
+        node.previous().setNext(node.next());
+
+        node.next().setPrevious(node.previous());
+
+        decrementComponentCount(node);
+
+        return node.previous().next() == node.next() && node.next().previous() == node.previous();
+    }
+
 
 
     /**
@@ -244,5 +268,7 @@ public class RecipeHead
     {
         System.out.print(printable);
     }
+
+
 
 }
