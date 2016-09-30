@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -19,11 +20,20 @@ import letseat.mealdesigner.favorites.Favorites;
 
 public class RecipeInfo extends AppCompatActivity {
 
-    ArrayList<String> _steps;
-    ArrayList<String> _ingredients;
-    String _name;
+    ArrayList<String> _steps = new ArrayList<>();
+    ArrayList<String> _ingredients = new ArrayList<>();
+    String _name = new String();
 
     public void initVars(){
+        _name = "Toast";
+
+        _ingredients.add("1 Slices of Bread");
+        _ingredients.add("1 Tbsp of Jam");
+
+        _steps.add("1) Put bread in toaster");
+        _steps.add("2) Toast bread at desired setting");
+        _steps.add("3) When done retrieve bread from toaster");
+        _steps.add("4) Using a butter knife spread jam on toast");
 
     }
 
@@ -99,11 +109,11 @@ public class RecipeInfo extends AppCompatActivity {
     }
 
     public void addToList(){
-
+        Toast.makeText(getApplicationContext(),"Recipe Added To Shopping List",Toast.LENGTH_LONG).show();
     }
 
     public void addToFavs(){
-
+        Toast.makeText(getApplicationContext(),"Recipe Added To Favorites",Toast.LENGTH_LONG).show();
     }
 
     public void goToCook(){
