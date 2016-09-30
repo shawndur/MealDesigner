@@ -23,6 +23,10 @@ public class RecipeInfo extends AppCompatActivity {
     ArrayList<String> _ingredients;
     String _name;
 
+    public void initVars(){
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,9 +38,12 @@ public class RecipeInfo extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.recipe_info));
 
+        //initialize instance variables
+        initVars();
+
         //set text views with recipe info
         TextView text  = (TextView) findViewById(R.id.recipe_name_text);
-        text.setText(getRecipeName());
+        text.setText(_name);
         text  = (TextView) findViewById(R.id.recipe_steps_text);
         text.setText(getSteps());
         text  = (TextView) findViewById(R.id.recipe_ingredients_text);
@@ -72,18 +79,22 @@ public class RecipeInfo extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public String getRecipeName(){
-        String result = "";
-        return result;
-    }
 
     public String getSteps(){
         String result = "";
+
+        for(String step:_steps){
+            result = result+"\n"+step;
+        }
+
         return result;
     }
 
     public String getIngredients(){
         String result = "";
+        for(String Ingredient : _ingredients ){
+            result = result+"\n"+Ingredient;
+        }
         return result;
     }
 
