@@ -42,6 +42,29 @@ public class RecipeHead
 
     }
 
+    public RecipeHead(String recipeName, ArrayList<String> equipment_list, ArrayList<String> ingredients_list, ArrayList<String> procedures_list, ArrayList<String> comments_list)
+    {
+        _recipeName = recipeName;
+
+        _counts = new HashMap<ComponentType,Integer>();
+
+        _heads = new HashMap<ComponentType, ListComponent>();
+
+        // this loop adds all members of equipment_list to this recipe
+        for(int i = 0; i < equipment_list.size(); i++)
+        {
+            String current = equipment_list.get(i);
+
+            if(current.length() == 0)   // ignores all empty strings
+            {
+                continue;
+            }
+
+            // needs to parse on commas
+
+        }
+    }
+
     private int modifyComponentCount(final ListComponent component, int change)
     {
         // calling this function once makes more sense than calling it a bunch of times in the return line.
@@ -73,7 +96,7 @@ public class RecipeHead
 
         if(_heads.containsKey(nodeType))
         {
-            _heads.get(nodeType).addComponent(node);
+            _heads.get(nodeType).addComponentToEnd(node);
             return;
         }
         _heads.put(nodeType,node);
