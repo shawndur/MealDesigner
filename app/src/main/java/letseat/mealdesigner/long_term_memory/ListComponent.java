@@ -135,6 +135,8 @@ public class ListComponent
      */
     public void addComponentToEnd(ListComponent nodeNew)
     {
+//        _next(_next != null)?.addComponentToEnd(nodeNew) : = nodeNew; // it would be awesome if this worked
+
         if(_next != null)
         {
             _next.addComponentToEnd(nodeNew);
