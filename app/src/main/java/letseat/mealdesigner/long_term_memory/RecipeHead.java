@@ -1,9 +1,12 @@
 package letseat.mealdesigner.long_term_memory;
 
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+
 import letseat.mealdesigner.long_term_memory.ListComponent.ComponentType;
 
 //import static letseat.mealdesigner.long_term_memory.RecipeHead.List_Type.EQUIPMENT;
@@ -141,22 +144,22 @@ public class RecipeHead
         return (_heads.containsKey(componentType))? _heads.get(componentType) : null;
     }
 
-    public boolean removeComponent(ComponentType componentType, int order)
-    {
-        if(!_heads.containsKey(componentType))
-        {
-            return false;
-        }
-
-        ListComponent current = _heads.get(componentType);
-
-        while(current.order() != order && current != null)
-        {
-            current = current.next();
-        }
-
-        return (current == null)? false : removeComponent(current);
-    }
+//    public boolean removeComponent(ComponentType componentType, int order)
+//    {
+//        if(!_heads.containsKey(componentType))
+//        {
+//            return false;
+//        }
+//
+//        ListComponent current = _heads.get(componentType);
+//
+//        while(current.order() != order && current != null)
+//        {
+//            current = current.next();
+//        }
+//
+//        return (current == null)? false : removeComponent(current);
+//    }
 
     public boolean removeComponent(ComponentType componentType, String text)
     {
@@ -217,6 +220,31 @@ public class RecipeHead
         decrementComponentCount(node);
 
         return node.previous().next() == node.next() && node.next().previous() == node.previous();
+    }
+
+    /**
+     * Particularly intended for functionality wherein the entire recipe data needs to be displayed on-screen at once.
+     * @param componentType The particular, requested component of the recipe.
+     * @return if the requested component of the recipe exists in _heads, an array list with all nodes is returned; if the requested component does not exist in _heads, a blank ArrayList<ListComponent> object is returned.
+     */
+    public ArrayList<ListComponent> getAllNodes(ComponentType componentType)
+    {
+        ArrayList<ListComponent> output = new ArrayList();
+
+        // in the case of there not being any nodes assigned to a particular recipe component
+        if(!_heads.containsKey(componentType))
+        {
+            return output;
+        }
+
+        for(ListComponent current = _heads.get(componentType) ; current != null ; current = current.next())
+        {
+            output.add(current);
+        }
+
+        return output;
+
+
     }
 
 
