@@ -1,5 +1,6 @@
 package letseat.mealdesigner.recipeinfo;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -20,11 +21,20 @@ import letseat.mealdesigner.favorites.Favorites;
 
 public class RecipeInfo extends AppCompatActivity {
 
+    /**
+     * Instance variables to hold recipe info
+     */
     ArrayList<String> _steps = new ArrayList<>();
     ArrayList<String> _ingredients = new ArrayList<>();
+    ArrayList<String> _tools = new ArrayList<>();
     String _name = new String();
 
-    public void initVars(){
+
+    /**
+     * Initializes instance variables. Currently uses hardcoded strings
+     */
+    // TODO: 10/1/16 retrieve recipe info from storage 
+    private void initVars(){
         _name = "Toast";
 
         _ingredients.add("1 Slices of Bread");
@@ -34,9 +44,13 @@ public class RecipeInfo extends AppCompatActivity {
         _steps.add("2) Toast bread at desired setting");
         _steps.add("3) When done retrieve bread from toaster");
         _steps.add("4) Using a butter knife spread jam on toast");
+        
+        _tools.add("1 toaster");
+        _tools.add("1 butter knife");
+        _tools.add("1 plate");
 
     }
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +72,8 @@ public class RecipeInfo extends AppCompatActivity {
         text.setText(getSteps());
         text  = (TextView) findViewById(R.id.recipe_ingredients_text);
         text.setText(getIngredients());
+        text  = (TextView) findViewById(R.id.recipe_tools_text);
+        text.setText(getTools());
     }
 
     @Override
@@ -89,8 +105,8 @@ public class RecipeInfo extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    public String getSteps(){
+    // These functions convert the arraylists of strings to a single string
+    private String getSteps(){
         String result = "";
 
         for(String step:_steps){
@@ -100,23 +116,34 @@ public class RecipeInfo extends AppCompatActivity {
         return result;
     }
 
-    public String getIngredients(){
+    private String getIngredients(){
         String result = "";
         for(String Ingredient : _ingredients ){
             result = result+"\n"+Ingredient;
         }
         return result;
     }
+    
+    private String getTools(){
+        String result = "";
+        for(String tool : _tools ){
+            result = result+"\n"+tool;
+        }
+        return result;
+    }
 
-    public void addToList(){
+    //These functions handle toolbar button presses.
+    // TODO: 10/1/16 add to storage
+    private void addToList(){
         Toast.makeText(getApplicationContext(),"Recipe Added To Shopping List",Toast.LENGTH_LONG).show();
     }
 
-    public void addToFavs(){
+    private void addToFavs(){
         Toast.makeText(getApplicationContext(),"Recipe Added To Favorites",Toast.LENGTH_LONG).show();
     }
 
-    public void goToCook(){
+    private void goToCook(){
+        //create intent and pass steps
         Intent intent = new Intent(this,Cook.class);
         intent.putExtra("Steps",_steps);
         startActivity(intent);
