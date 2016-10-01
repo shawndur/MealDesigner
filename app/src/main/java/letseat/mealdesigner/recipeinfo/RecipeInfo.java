@@ -1,23 +1,16 @@
 package letseat.mealdesigner.recipeinfo;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
-
-import letseat.mealdesigner.MainActivity;
 import letseat.mealdesigner.R;
 import letseat.mealdesigner.cook.Cook;
-import letseat.mealdesigner.favorites.Favorites;
 
 public class RecipeInfo extends AppCompatActivity {
 
@@ -27,7 +20,7 @@ public class RecipeInfo extends AppCompatActivity {
     ArrayList<String> _steps = new ArrayList<>();
     ArrayList<String> _ingredients = new ArrayList<>();
     ArrayList<String> _tools = new ArrayList<>();
-    String _name = new String();
+    String _name ;
 
 
     /**
@@ -58,9 +51,12 @@ public class RecipeInfo extends AppCompatActivity {
 
         //set toolbar widget as action bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.recipe_info));
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(getString(R.string.recipe_info));
+        }
 
         //initialize instance variables
         initVars();
