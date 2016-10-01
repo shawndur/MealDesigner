@@ -2,6 +2,8 @@ package letseat.mealdesigner.long_term_memory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 //import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.CUP;
 //import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.FLUID_OUNCE;
@@ -109,6 +111,9 @@ public class ListComponent
         commonComponentConstructorCode(name, -1.0, "", null, UnitOfMeasure.NO_UOM);
     }
 
+    /**
+     * This encapsulates all the assignments which are common, regardless of the ComponentType value
+     */
     private void commonComponentConstructorCode(String name, double qty, String additionalText, ArrayList<String> comments, UnitOfMeasure uom)
     {
         _name = name;
@@ -124,11 +129,15 @@ public class ListComponent
         _next = _previous = null;
     }
 
-    public void addComponent(ListComponent nodeNew)
+    /**
+     * Appends the ListComponent object to the end of the list
+     * @param nodeNew   The ListComponent which is to be appended to the end of the list
+     */
+    public void addComponentToEnd(ListComponent nodeNew)
     {
         if(_next != null)
         {
-            _next.addComponent(nodeNew);
+            _next.addComponentToEnd(nodeNew);
         }
         else
         {
