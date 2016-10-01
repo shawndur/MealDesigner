@@ -51,13 +51,12 @@ public class ListComponent
     private String _name, _additionalText;
     private ArrayList<String> _comments;
     private UnitOfMeasure _unitOfMeasure;
-    private int _order;
 
     private ListComponent _next, _previous;
 
 
     /**
-     * Equipment constructor
+     * Equipment constructor.  Calling this constructor automatically selects ComponentType.EQUIPMENT for the object thus created.
      */
     public ListComponent(String name, double quantity, ArrayList<String> comments)
     {
@@ -66,8 +65,7 @@ public class ListComponent
         commonComponentConstructorCode(name, quantity, "", comments, UnitOfMeasure.NO_UOM);
     }
     /**
-     * Ingredient constructor
-     * use _additionalText as preparation procedure!
+     * Ingredient constructor.  Use _additionalText as preparation procedure! (e.g.:  If the onions need to be diced, _additionalText could be assigned to the string "Diced")   Calling this constructor automatically selects ComponentType.INGREDIENT for the object thus created.
      */
     public ListComponent(String name, double quantity, String preparation_procedure, ArrayList<String> comments, UnitOfMeasure unit_of_measure)
     {
@@ -78,7 +76,7 @@ public class ListComponent
     }
 
     /**
-     * Procedure constructor, with timer
+     * Procedure constructor, with timer.  Calling this constructor automatically selects ComponentType.PROCEDURE_WITH_TIMER for the object thus created.
      */
     public ListComponent(String name, double timer_in_seconds, String hazards_and_critical_control_points, ArrayList<String> comments)
     {
@@ -88,7 +86,7 @@ public class ListComponent
     }
 
     /**
-     * Procedure constructor, without timer
+     * Procedure constructor, without timer.  Calling this constructor automatically selects ComponentType.PROCEDURE_WITHOUT_TIMER for the object thus created.
      */
     public ListComponent(String name, String hazards_and_critical_control_points, ArrayList<String> comments)
     {
@@ -98,7 +96,7 @@ public class ListComponent
     }
 
     /**
-     * Comment Constructor:
+     * Comment Constructor: ( Calling this constructor automatically selects ComponentType.EQUIPMENT for the object thus created)
      * The ListComponent with _compType == COMMENT is different from the ArrayList of comments that are added within each other instantiation of this class.
      * This is because those comments pertain to an individual step, ingredient, or piece of machinery.
      * This constructor creates a ListComponent object which contains information which pertains to the overall recipe,
@@ -139,44 +137,73 @@ public class ListComponent
         }
     }
 
-    public void addComponent(ListComponent nodeNew, int order)
-    {
+    /**
+     * Inserts a new node directly into the list; specifically, immediately after the node which is having this function called.
+     *
+     * @param nodeNew
+     * @return true if the insertion was executed fully; false if, for any reason, the insertion could not be completed (typically due to null argument or mismatch on "Component.Types >..."
+     */
+    public boolean addNewNextComponent(ListComponent nodeNew) {
+        if (nodeNew == null || nodeNew.getComponentType() != getComponentType())
+        {
+            return false;
+        }
+
         if(_next == null)
         {
             _next = nodeNew;
             nodeNew.setPrevious(this);
-            return;
-        }
-        if(_next.order() >= order)
-        {
-            _next.setOrderCascade(_next.order());   // increases the order ranking of each subsequent node starting at _next
 
-            _next.setPrevious(nodeNew);
-            nodeNew.setNext(_next);
-            nodeNew.setPrevious(this);
-            _next = nodeNew;
-
-            return;
+            return true;
         }
 
-        // in the case of _next.order() < order
+        _next.setPrevious(nodeNew);
+        nodeNew.setPrevious(this);
+        nodeNew.setNext(_next);
+        _next = nodeNew;
 
-        _next.addComponent(nodeNew,order);
-
-//        if(_order < order)
-//        {
-//            if(_next != null)
-//            {
-//                _next.addComponent(nodeNew,order);
-//            }
-//            else
-//            {
-//                _next = nodeNew;
-//                nodeNew.setPrevious(this);
-//            }
-//        }
-//        else    // in the case of _order >= order
+        return true;
     }
+
+// Deprecated
+//    public void addComponent(ListComponent nodeNew, int order)
+//    {
+//        if(_next == null)
+//        {
+//            _next = nodeNew;
+//            nodeNew.setPrevious(this);
+//            return;
+//        }
+//        if(_next.order() >= order)
+//        {
+//            _next.setOrderCascade(_next.order());   // increases the order ranking of each subsequent node starting at _next
+//
+//            _next.setPrevious(nodeNew);
+//            nodeNew.setNext(_next);
+//            nodeNew.setPrevious(this);
+//            _next = nodeNew;
+//
+//            return;
+//        }
+//
+//        // in the case of _next.order() < order
+//
+//        _next.addComponent(nodeNew,order);
+//
+////        if(_order < order)
+////        {
+////            if(_next != null)
+////            {
+////                _next.addComponent(nodeNew,order);
+////            }
+////            else
+////            {
+////                _next = nodeNew;
+////                nodeNew.setPrevious(this);
+////            }
+////        }
+////        else    // in the case of _order >= order
+//    }
 
     public ListComponent next()
     {
@@ -211,6 +238,31 @@ public class ListComponent
     public ComponentType getComponentType()
     {
         return _compType;
+    }
+
+
+    /**
+     * This should be used sparingly
+     * @param name the new name for this component.
+     */
+    public void setName(String name)
+    {
+        _name = name;
+    }
+
+    public String name()
+    {
+        return _name;
+    }
+
+    public void setAdditionalText(String additionalText)
+    {
+        _additionalText = additionalText;
+    }
+
+    public String additionalText()
+    {
+        return _additionalText;
     }
 
     public double getQuantity()
@@ -279,34 +331,35 @@ public class ListComponent
         return _unitOfMeasure;
     }
 
-    public int order()
-    {
-        return _order;
-    }
-
-    /**
-     *
-     * @param order the desired order for this
-     * @return
-     */
-    public void setOrder(int order)
-    {
-        _order = order;
-    }
-
-    /**
-     * Recursively calls all subsequent members of the particular list, such that inserting a new node before the initial operator had this function called.
-     * @param order The new order of this node; all nodes connected through _next will also be updated.  When dealing with an ordered list (where the zeroth element is the head) this is also the index within the list at which the new element is to be inserted.
-     */
-    public void setOrderCascade(int order)
-    {
-        if(_next != null)
-        {
-            _next.setOrderCascade( order + 1);
-        }
-
-        _order = order;
-    }
+// some more deprecated functions
+//    public int order()
+//    {
+//        return _order;
+//    }
+//
+//    /**
+//     *
+//     * @param order the desired order for this
+//     * @return
+//     */
+//    public void setOrder(int order)
+//    {
+//        _order = order;
+//    }
+//
+//    /**
+//     * Recursively calls all subsequent members of the particular list, such that inserting a new node before the initial operator had this function called.
+//     * @param order The new order of this node; all nodes connected through _next will also be updated.  When dealing with an ordered list (where the zeroth element is the head) this is also the index within the list at which the new element is to be inserted.
+//     */
+//    public void setOrderCascade(int order)
+//    {
+//        if(_next != null)
+//        {
+//            _next.setOrderCascade( order + 1);
+//        }
+//
+//        _order = order;
+//    }
 
 
 /*
@@ -516,7 +569,7 @@ public class ListComponent
      */
     public void printAllInfo()
     {
-        System.out.println(_compType.toString() + " >> " + _name + ", " + _quantity + " " + _unitOfMeasure + ", " + _additionalText + ", " + _order);
+        System.out.println(_compType.toString() + " >> " + _name + ", " + _quantity + " " + _unitOfMeasure + ", " + _additionalText);
 
         if(_next != null)
         {
