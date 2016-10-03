@@ -29,6 +29,20 @@
     <string name="nameIngri">Ingredient Name</string>
     <string name="measure">Ingredient Amount. Please use the drop down to select the unit of measurement</string>
     <string name="newIngri">Add New Ingredient</string>
+    <string name="newStep">Add New Step</string>
+    <string name="walk4">Please enter the steps for the recipe one at a time. To add the next step click add new step, when all the steps have been added click next</string>
+    <string name="stepInstruc">Enter step instructions</string>
+    <string name="allergenInfo">Would you like to enter allergen information about the recipe?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="createRecipe">Create My Recipe</string>
+    <string name="newRecipe">Create New Recipe</string>
+    <string name="allergenFish">Does this recipe contain Fish?</string>
+    <string name="allergenDairy">Does this recipe contain Diary (Milk, Cheese)?</string>
+    <string name="allergenSoy">Does this recipe contain Soy?</string>
+    <string name="allergenEgg">Does this recipe contain Eggs?</string>
+    <string name="allergenNut">Does this recipe contain Nuts?</string>
+    <string name="walk6">Please enter the following information about food allergies. Enter Yes or No, then click Create My Recipe</string>
     <string-array name="equipment_array">
         <item>Spoon</item>
         <item>Knife</item>

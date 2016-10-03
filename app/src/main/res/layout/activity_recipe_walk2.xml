@@ -21,7 +21,7 @@
 
     <Spinner
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:id="@+id/spinner3"
         android:layout_weight="0.15" />
 
@@ -33,6 +33,7 @@
         android:id="@+id/textView20" />
 
     <EditText
+        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editText13" />
@@ -50,7 +51,7 @@
         android:text="@string/next"
         android:onClick="step3"
         android:id="@+id/button12"
-        android:layout_gravity="right" />
+        android:layout_gravity="end" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
