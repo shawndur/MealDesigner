@@ -62,6 +62,9 @@
         <item>Fl Oz</item>
         <item>Pinch</item>
     </string-array>
+    <string name="steps">Steps</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="tools">Tools</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
