@@ -18,6 +18,7 @@
         android:id="@+id/textView2" />
 
     <EditText
+        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editText" />
@@ -30,6 +31,7 @@
         android:text="@string/prepTime"/>
 
     <EditText
+        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editText2" />
@@ -42,6 +44,7 @@
         android:id="@+id/textView4" />
 
     <EditText
+        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editText3" />
@@ -54,6 +57,7 @@
         android:id="@+id/textView5" />
 
     <EditText
+        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editText4" />
@@ -64,7 +68,7 @@
         android:text="@string/next"
         android:onClick="step2"
         android:id="@+id/button"
-        android:layout_gravity="right" />
+        android:layout_gravity="end" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
