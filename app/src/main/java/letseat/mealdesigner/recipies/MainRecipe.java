@@ -16,6 +16,7 @@ import android.view.View;
 import letseat.mealdesigner.R;
 import letseat.mealdesigner.favorites.Favorites;
 import letseat.mealdesigner.recipeinfo.RecipeInfo;
+import letseat.mealdesigner.recipewalk.RecipeWalk1;
 import letseat.mealdesigner.shoppinglist.ShoppingList;
 
 public class MainRecipe extends AppCompatActivity
@@ -89,6 +90,10 @@ public class MainRecipe extends AppCompatActivity
 
     public void openRecipeInfo(View view){
         Intent intent = new Intent(this,RecipeInfo.class);
+        startActivity(intent);
+    }
+    public void createRecipe(View view){
+        Intent intent = new Intent(this, RecipeWalk1.class);
         startActivity(intent);
     }
 }
