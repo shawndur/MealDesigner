@@ -26,7 +26,6 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="step5"
         android:text="@string/newStep"
         android:id="@+id/button6"
         android:layout_gravity="center_horizontal" />
@@ -34,6 +33,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="step5"
         android:text="@string/next"
         android:id="@+id/button7"
         android:layout_gravity="end" />

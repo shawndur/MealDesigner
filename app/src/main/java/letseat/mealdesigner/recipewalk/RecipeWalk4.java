@@ -31,6 +31,7 @@ public class RecipeWalk4 extends AppCompatActivity {
         Intent intent = new Intent(this,RecipeWalk5.class);
         startActivity(intent);
     }
+
     //exit button back to main recipe page
     public void exit(View view){
         Intent intent = new Intent(this,MainRecipe.class);
