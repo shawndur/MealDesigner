@@ -8,14 +8,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Please enter the ingridient names and amounts. Keep clicking add new ingrident until all ingridents have been added, then click next."
+        android:text="@string/walk3"
         android:id="@+id/textView6" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Ingrident Name"
+        android:text="@string/nameIngri"
         android:id="@+id/textView7" />
 
     <EditText
@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Ingrident Amount. Please use the drop down to select the unit of measurement."
+        android:text="@string/measure"
         android:id="@+id/textView8" />
 
     <EditText
@@ -45,14 +45,14 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add New Ingrident"
+        android:text="@string/newIngri"
         android:id="@+id/button5"
         android:layout_gravity="center_horizontal" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Next"
+        android:text="@string/next"
         android:onClick="step4"
         android:id="@+id/button3"
         android:layout_gravity="right" />
@@ -61,7 +61,7 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Exit"
+        android:text="@string/exit"
         android:onClick="exit"
         android:id="@+id/button4"
         android:layout_gravity="center_horizontal" />
