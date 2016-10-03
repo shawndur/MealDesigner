@@ -78,6 +78,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="finalCreate"
         android:text="@string/createRecipe"
         android:id="@+id/button9"
         android:layout_gravity="end" />
@@ -86,6 +87,7 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="exit"
         android:text="@string/exit"
         android:id="@+id/button10"
         android:layout_gravity="center_horizontal" />
