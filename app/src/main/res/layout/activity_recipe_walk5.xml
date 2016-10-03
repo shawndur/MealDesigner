@@ -8,6 +8,7 @@
         android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="step6"
         android:text="@string/yes"
         android:layout_alignTop="@+id/cancel"
         android:layout_alignParentLeft="true"
@@ -16,6 +17,7 @@
         android:id="@+id/cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="create"
         android:text="@string/no"
         android:layout_below="@+id/textView16"
         android:layout_alignParentRight="true"
@@ -34,6 +36,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="exit"
         android:text="@string/exit"
         android:id="@+id/button14"
         android:layout_centerVertical="true"
