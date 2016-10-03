@@ -7,14 +7,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Please fill out the following information then click next. To exit at any time just click exit."
+        android:text="@string/walk1"
         android:id="@+id/textView" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Recipe Name"
+        android:text="@string/recipeName"
         android:id="@+id/textView2" />
 
     <EditText
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/textView3"
-        android:text="Prep Time (rounded to the nearest whole minute)" />
+        android:text="@string/prepTime"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -38,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Cook Time (rounded to the nearest whole minute)"
+        android:text="@string/cookTime"
         android:id="@+id/textView4" />
 
     <EditText
@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Recipie Yield/ Number of portions"
+        android:text="@string/portions"
         android:id="@+id/textView5" />
 
     <EditText
@@ -61,7 +61,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Next"
+        android:text="@string/next"
         android:onClick="step2"
         android:id="@+id/button"
         android:layout_gravity="right" />
@@ -70,7 +70,7 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Exit"
+        android:text="@string/exit"
         android:onClick="exit"
         android:id="@+id/button2"
         android:layout_gravity="center_horizontal" />

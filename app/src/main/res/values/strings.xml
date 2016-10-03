@@ -13,6 +13,22 @@
     <string name="applogo">AppLogo</string>
     <string name="action_settings">Settings</string>
     <string name="recipe_info">Recipe Info</string>
+    <string name="walk1">Please fill out the following information then click next. To exit at any time just click exit.</string>
+    <string name="recipeName">Recipe Name;</string>
+    <string name="prepTime">Prep Time (rounded to the nearest whole minute)</string>
+    <string name="cookTime">Cook Time (rounded to the nearest whole minute)</string>
+    <string name="portions">Recipe Yield/ Number of portions</string>
+    <string name="next">Next</string>
+    <string name="exit">Exit</string>
+    <string name="newEquip">Add New Equipment</string>
+    <string name="equipName">Enter the equipment name</string>
+    <string name="equipDrop">Optional: Select items from drop down list</string>
+    <string name="equipment">Please enter the necessary equipment to create the recipe. Keep clicking add new equipment until all items have been added, then click next</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="walk3">Please enter the ingredient names and amounts. Keep clicking add new ingredient until all ingridents have been added, then click next</string>
+    <string name="nameIngri">Ingredient Name</string>
+    <string name="measure">Ingredient Amount. Please use the drop down to select the unit of measurement</string>
+    <string name="newIngri">Add New Ingredient</string>
     <string-array name="equipment_array">
         <item>Spoon</item>
         <item>Knife</item>
@@ -22,6 +38,15 @@
         <item>Medium Pot</item>
         <item>Skillet</item>
         <item>Strainer</item>
+    </string-array>
+    <string-array name="measurement">
+        <item>Cups</item>
+        <item>Tablespoon</item>
+        <item>Teaspoon</item>
+        <item>Oz</item>
+        <item>Grams</item>
+        <item>Fl Oz</item>
+        <item>Pinch</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->

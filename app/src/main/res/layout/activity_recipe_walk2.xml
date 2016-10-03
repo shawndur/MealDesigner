@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Please enter the necessary eqipment to create the recipie. Keep clicking add new equipment until all items have been added, then click next."
+        android:text="@string/equipment"
         android:id="@+id/textView18"
         android:layout_gravity="center_horizontal" />
 
@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Optional: Select items from drop down list"
+        android:text="@string/equipDrop"
         android:id="@+id/textView19" />
 
     <Spinner
@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Enter the equipemt name:"
+        android:text="@string/equipName"
         android:id="@+id/textView20" />
 
     <EditText
@@ -40,14 +40,14 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add New Equipment"
+        android:text="@string/newEquip"
         android:id="@+id/button11"
         android:layout_gravity="center_horizontal" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Next"
+        android:text="@string/next"
         android:onClick="step3"
         android:id="@+id/button12"
         android:layout_gravity="right" />
@@ -57,7 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="exit"
-        android:text="Exit"
+        android:text="@string/exit"
         android:id="@+id/button13"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>
