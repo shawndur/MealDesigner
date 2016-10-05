@@ -1,45 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="letseat.mealdesigner.cook.Cook"
-    android:orientation="vertical">
+    android:background="@color/colorPrimary">
 
-    <include layout="@layout/app_bar_main"/>
+    <include layout="@layout/app_bar_main"
+        android:id="@+id/toolbar_layout"/>
 
-    <RelativeLayout
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary">
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/toolbar_layout"
+        android:layout_above="@id/step_navigation">
 
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/step_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:gravity="center">
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:id="@+id/back_button"
             android:background="@android:drawable/ic_media_previous"/>
 
+        <Space
+            android:layout_width="100dp"
+            android:layout_height="20dp" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button2"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:background="@android:drawable/ic_media_next"/>
+            android:id="@+id/next_button"
+            android:background="@android:drawable/ic_media_next" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
-            android:id="@+id/textView"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
-    </RelativeLayout>
+    </LinearLayout>
 
-
-</LinearLayout>
+</RelativeLayout>
