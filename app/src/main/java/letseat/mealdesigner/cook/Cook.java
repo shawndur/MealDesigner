@@ -1,5 +1,6 @@
 package letseat.mealdesigner.cook;
 
+import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,9 +8,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 import letseat.mealdesigner.R;
 
 public class Cook extends AppCompatActivity {
+
+    ArrayList<String> _steps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +27,8 @@ public class Cook extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.navdrawer_cook));
 
+        Intent intent = getIntent();
+        _steps = intent.getStringArrayListExtra("Steps");
 
         //skip if being restored
         if (savedInstanceState != null) {
