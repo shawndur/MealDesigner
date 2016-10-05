@@ -21,6 +21,18 @@ public class Cook extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.navdrawer_cook));
+
+
+        //skip if being restored
+        if (savedInstanceState != null) {
+            return;
+        }
+
+        //create fragment
+        CookRegularStep firstFragment = new CookRegularStep();
+
+        // Add fragment to FrameLayout
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, firstFragment).commit();
     }
 
     @Override
