@@ -1,0 +1,15 @@
+date: October 3, 2016
+meeting_type: group
+attendance: [<cnzytari>, <cpark22>, <shawndur>, <vanhoose>]
+absent: []
+excused_absences: []
+task_progress:[
+  {ubit: <cnzytari>, progress: finished code for each page a seperate activity, updeated xml layout, finished button functionality.},
+  {ubit: <vanhoose>, progress: database nearly done, can read and parse into correct data types.},
+  {ubit: <cpark22>, progress: drop down button for recipe in shopping list, edited layout.},
+  {ubit: <shawndur>, progress: Done with recipe info, submitted review request to dev branch to be checked over by other group members.}
+  ]
+issues: [ # Post any issues here. Issues that cannot be addressed by the group should especially be included
+  ]
+Notes:  | # Anything covered in the meeting that doesn't fit elsewhere.
+  # 
