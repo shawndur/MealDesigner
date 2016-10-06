@@ -60,7 +60,7 @@ public class Cook extends AppCompatActivity
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
                 //back button pressed, navigate to main task
-               onBackPressed();
+                NavUtils.navigateUpFromSameTask(this);
                 return true;
         }
         return super.onOptionsItemSelected(item);
