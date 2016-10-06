@@ -633,6 +633,123 @@ public class ListComponent
         return output;
     }
 
+    public String getInfoForWrite()
+    {
+        // This is a duplicate of the fields at the top of Long_Term_Interface
+        final char _RECIPE_NAME = (char) 0x80, _end_RECIPE_NAME = (char) 0x90,
+                _EQUIPMENT = (char) 0x81, _end_EQUIPMENT = (char) 0x91,
+                _INGREDIENT = (char) 0x82, _end_INGREDIENT = (char) 0x92,
+                _PROCEDURE = (char) 0x83, _end_PROCEDURE = (char) 0x93,
+                _COMMENTS = (char) 0x84, _end_COMMENTS = (char) 0x94,
+                _END_OF_RECIPE = (char) 0x85,
+                _COMPONENT = (char) 0x86, _end_COMPONENT = (char) 0x96,
+                _COMMA = (char) 0x87;
+
+
+        switch(_compType)
+        {
+            case EQUIPMENT:
+            {
+                return _COMPONENT + _name + _COMMA + _quantity + _COMMA + _additionalText + _end_COMPONENT;
+
+            }
+            case INGREDIENT:
+            {
+                return _COMPONENT + _name + _COMMA + _quantity + _COMMA + _unitOfMeasure + _COMMA + _additionalText + _end_COMPONENT;
+            }
+            case PROCEDURE:
+            {
+                return _COMPONENT + _name + _COMMA + "" + _COMMA + _additionalText + _end_COMPONENT;
+            }
+            case PROCEDURE_WITH_TIMER:
+            {
+                return _COMPONENT + _name + _COMMA + _quantity + _COMMA + _additionalText + _end_COMPONENT;
+            }
+            case COMMENT:
+            {
+                return _COMPONENT + _name + _end_COMPONENT;
+            }
+            default:
+            {
+                return "";
+            }
+
+        }
+
+//        switch(_compType)
+//        {
+//            case EQUIPMENT:
+//            {
+//                output += _EQUIPMENT;
+//
+//                output += _name;
+//                if(_quantity >= 0)
+//                {
+//                    output.add(_quantity+"");
+//                    output.add(_unitOfMeasure.toString());
+//                }
+//                else
+//                {
+//                    output.add("");
+//                    output.add("");
+//                }
+//                output.add(_additionalText);
+//
+////    			System.out.println(_name+", " + ((_quantity > 0.0)? _quantity+" "+_unitOfMeasure : "") + ", " + _additionalText);
+//                return output;
+//            }
+//            case INGREDIENT:
+//            {
+//                output.add(_name);
+//                output.add(_quantity + "");
+//                output.add(_unitOfMeasure.toString());
+//                output.add(_additionalText);
+//
+//                return output;
+//
+////    			System.out.println(_name + ", " + _quantity + " " + _unitOfMeasure.toString() + ", " + _additionalText);
+////    			break;
+//            }
+//            case PROCEDURE_WITH_TIMER:
+//            {
+//                output.add(_name);
+//                output.add(_quantity+"");
+//                output.add(_unitOfMeasure.toString());
+//                output.add(_additionalText);
+//
+//                return output;
+//
+////    			System.out.println(_name + " for " + _quantity + " seconds.  "+_additionalText);
+////    			break;
+//            }
+//            case PROCEDURE:
+//            {
+//                output.add(_name);
+//                output.add(_additionalText);
+//
+//                return output;
+//
+////    			System.out.println(_name + ", " + _additionalText);
+////    			break;
+//            }
+//            case COMMENT:
+//            {
+//                output.add(_name);
+//
+//                return output;
+//
+////    			System.out.println(_name);
+////    			break;
+//            }
+//            default:
+//            {
+//                return output;
+//            }
+//        }
+
+    }
+
+
     public ArrayList<String> getRelevantInfo()
     {
         ArrayList<String> output = new ArrayList<String>();
