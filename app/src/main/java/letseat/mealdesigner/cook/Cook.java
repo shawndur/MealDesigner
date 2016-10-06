@@ -89,7 +89,7 @@ public class Cook extends AppCompatActivity
         //commit changes
         transaction.commit();
     }
-    // TODO: 10/5/16 fix back button presses
+
     /*@Override
     public void onBackPressed() {
         //handle navbar back button press
