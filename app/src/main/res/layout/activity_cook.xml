@@ -20,8 +20,8 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/back_button"
-            android:background="@android:drawable/ic_media_previous"/>
+            android:background="@android:drawable/ic_media_previous"
+            android:onClick="prevStep"/>
 
         <Space
             android:layout_width="100dp"
@@ -30,8 +30,8 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/next_button"
-            android:background="@android:drawable/ic_media_next" />
+            android:background="@android:drawable/ic_media_next"
+            android:onClick="nextStep"/>
 
     </LinearLayout>
 
