@@ -5,14 +5,9 @@ package letseat.mealdesigner.recipewalk;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import letseat.mealdesigner.R;
-import letseat.mealdesigner.recipeinfo.RecipeInfo;
-import letseat.mealdesigner.recipewalk.RecipeWalk6;
 import letseat.mealdesigner.recipies.MainRecipe;
 
 public class RecipeWalk6 extends AppCompatActivity {

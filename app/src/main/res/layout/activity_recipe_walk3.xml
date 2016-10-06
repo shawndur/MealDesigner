@@ -40,7 +40,7 @@
     <Spinner
         android:layout_width="143dp"
         android:layout_height="0dp"
-        android:id="@+id/spinner"
+        android:id="@+id/measure_spinner"
         android:spinnerMode="dropdown"
         android:layout_weight="0.14" />
 
