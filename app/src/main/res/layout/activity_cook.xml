@@ -3,8 +3,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="letseat.mealdesigner.cook.Cook">
+    tools:context="letseat.mealdesigner.cook.Cook"
+    android:background="@color/colorPrimary">
 
-    <include layout="@layout/app_bar_main"/>
+    <include layout="@layout/app_bar_main"
+        android:id="@+id/toolbar_layout"/>
+
+
+    <LinearLayout
+        android:id="@+id/step_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:gravity="center">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/ic_media_previous"
+            android:onClick="prevStep"/>
+
+        <Space
+            android:layout_width="100dp"
+            android:layout_height="20dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/ic_media_next"
+            android:onClick="nextStep"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/toolbar_layout"
+        android:layout_above="@id/step_navigation">
+
+    </FrameLayout>
+
+
 
 </RelativeLayout>
