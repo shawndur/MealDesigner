@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.util.ArrayList;
 
@@ -15,7 +16,8 @@ import letseat.mealdesigner.R;
 public class Cook extends AppCompatActivity
         implements CookRegularStep.OnFragmentInteractionListener {
 
-    ArrayList<String> _steps;
+    private ArrayList<String> _steps;
+    private int currentStep = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +39,7 @@ public class Cook extends AppCompatActivity
         }
 
         //create fragment
-        CookRegularStep firstFragment = new CookRegularStep();
+        CookRegularStep firstFragment = CookRegularStep.newInstance(_steps.get(currentStep));
 
         // Add fragment to FrameLayout
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, firstFragment).commit();
@@ -63,6 +65,10 @@ public class Cook extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    public void back(View view){
+
+    }
+    // TODO: 10/5/16 fix back button presses
     /*@Override
     public void onBackPressed() {
         //handle navbar back button press
