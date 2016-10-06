@@ -1,9 +1,9 @@
 package letseat.mealdesigner.long_term_memory;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
+//import java.util.ArrayList;
+//import java.util.List;
 
 //import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.CUP;
 //import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.FLUID_OUNCE;
@@ -29,7 +29,7 @@ public class ListComponent
     enum UnitOfMeasure
     {
         // in the case of no UoM
-        NO_UOM,
+        NO_UOM, UOM_ERR,
 
         // non-empirical units
         EACH, BAG, POUCH, STRIP, SLICE, // more to come!
@@ -51,7 +51,7 @@ public class ListComponent
 
     private double _quantity;
     private String _name, _additionalText;
-    private ArrayList<String> _comments;
+    //    private ArrayList<String> _comments;	// TODO:  Try replacing this with a single string.  Giving the user too much leeway to input information might cause confusion and high runtime down the line.  Even may be possible to eliminate this field altogether!
     private UnitOfMeasure _unitOfMeasure;
 
     private ListComponent _next, _previous;
@@ -60,41 +60,45 @@ public class ListComponent
     /**
      * Equipment constructor.  Calling this constructor automatically selects ComponentType.EQUIPMENT for the object thus created.
      */
-    public ListComponent(String name, double quantity, ArrayList<String> comments)
+    public ListComponent(String name, int quantity/*, ArrayList<String> comments*/,String text2)
     {
         _compType = ComponentType.EQUIPMENT;
 
-        commonComponentConstructorCode(name, quantity, "", comments, UnitOfMeasure.NO_UOM);
+        commonComponentConstructorCode(name,(double) quantity, text2, UnitOfMeasure.EACH);
+//        commonComponentConstructorCode(name, quantity, "", comments, UnitOfMeasure.NO_UOM);
     }
     /**
      * Ingredient constructor.  Use _additionalText as preparation procedure! (e.g.:  If the onions need to be diced, _additionalText could be assigned to the string "Diced")   Calling this constructor automatically selects ComponentType.INGREDIENT for the object thus created.
      */
-    public ListComponent(String name, double quantity, String preparation_procedure, ArrayList<String> comments, UnitOfMeasure unit_of_measure)
+    public ListComponent(String name, double quantity, String preparation_procedure, /*ArrayList<String> comments,*/ UnitOfMeasure unit_of_measure)
     {
         _compType = ComponentType.INGREDIENT;
 
-        commonComponentConstructorCode(name, quantity, preparation_procedure, comments, unit_of_measure);
+        commonComponentConstructorCode(name, quantity, preparation_procedure, unit_of_measure);
+//        commonComponentConstructorCode(name, quantity, preparation_procedure, comments, unit_of_measure);
 
     }
 
     /**
      * Procedure constructor, with timer.  Calling this constructor automatically selects ComponentType.PROCEDURE_WITH_TIMER for the object thus created.
      */
-    public ListComponent(String name, double timer_in_seconds, String hazards_and_critical_control_points, ArrayList<String> comments)
+    public ListComponent(String name, double timer_in_seconds, String hazards_and_critical_control_points/*, ArrayList<String> comments*/)
     {
         _compType = ComponentType.PROCEDURE_WITH_TIMER;
 
-        commonComponentConstructorCode(name, timer_in_seconds, hazards_and_critical_control_points, comments, UnitOfMeasure.NO_UOM);
+        commonComponentConstructorCode(name, timer_in_seconds, hazards_and_critical_control_points, UnitOfMeasure.NO_UOM);
+//        commonComponentConstructorCode(name, timer_in_seconds, hazards_and_critical_control_points, comments, UnitOfMeasure.NO_UOM);
     }
 
     /**
      * Procedure constructor, without timer.  Calling this constructor automatically selects ComponentType.PROCEDURE_WITHOUT_TIMER for the object thus created.
      */
-    public ListComponent(String name, String hazards_and_critical_control_points, ArrayList<String> comments)
+    public ListComponent(String name, String hazards_and_critical_control_points/*, ArrayList<String> comments*/)
     {
         _compType = ComponentType.PROCEDURE;
 
-        commonComponentConstructorCode(name, -1.0, hazards_and_critical_control_points, comments, UnitOfMeasure.NO_UOM);
+        commonComponentConstructorCode(name, -1.0, hazards_and_critical_control_points, UnitOfMeasure.NO_UOM);
+//        commonComponentConstructorCode(name, -1.0, hazards_and_critical_control_points, comments, UnitOfMeasure.NO_UOM);
     }
 
     /**
@@ -108,19 +112,17 @@ public class ListComponent
     {
         _compType = ComponentType.COMMENT;
 
-        commonComponentConstructorCode(name, -1.0, "", null, UnitOfMeasure.NO_UOM);
+        commonComponentConstructorCode(name, -1.0, "", UnitOfMeasure.NO_UOM);
+//        commonComponentConstructorCode(name, -1.0, "", null, UnitOfMeasure.NO_UOM);
     }
 
-    /**
-     * This encapsulates all the assignments which are common, regardless of the ComponentType value
-     */
-    private void commonComponentConstructorCode(String name, double qty, String additionalText, ArrayList<String> comments, UnitOfMeasure uom)
+    private void commonComponentConstructorCode(String name, double qty, String additionalText,/* ArrayList<String> comments,*/ UnitOfMeasure uom)
     {
         _name = name;
 
         _quantity = qty;
 
-        _comments = comments;
+//        _comments = comments;
 
         _unitOfMeasure = uom;
 
@@ -135,8 +137,6 @@ public class ListComponent
      */
     public void addComponentToEnd(ListComponent nodeNew)
     {
-//        _next(_next != null)?.addComponentToEnd(nodeNew) : = nodeNew; // it would be awesome if this worked
-
         if(_next != null)
         {
             _next.addComponentToEnd(nodeNew);
@@ -155,7 +155,7 @@ public class ListComponent
      * @return true if the insertion was executed fully; false if, for any reason, the insertion could not be completed (typically due to null argument or mismatch on "Component.Types >..."
      */
     public boolean addNewNextComponent(ListComponent nodeNew) {
-        if (nodeNew == null || nodeNew.getComponentType() != getComponentType())
+        if (nodeNew == null || nodeNew.componentType() != componentType())
         {
             return false;
         }
@@ -216,6 +216,11 @@ public class ListComponent
 ////        else    // in the case of _order >= order
 //    }
 
+    public boolean hasNext()
+    {
+        return _next != null;
+    }
+
     public ListComponent next()
     {
         return _next;
@@ -225,7 +230,7 @@ public class ListComponent
      * @param next a new node in to be appended to the end of whatever list for which this component is used.
      * @return the argument as it was passed so that the caller's "_last" variable can keep up-to-date without any extra runtime, (since AAPCS dictates that r1 be used for both arguments and return variables, the value of the variable doesn't require any additional machine language!)
      */
-    public ListComponent setNext(ListComponent next)
+    public ListComponent setNext(final ListComponent next)
     {
         return _next = next;
     }
@@ -236,24 +241,24 @@ public class ListComponent
     }
 
     /**
-     * @param previous
-     * @return
+     * @param previous The previous node before this.
+     * @return The argument which was passed into this function
      */
-    public ListComponent setPrevious(ListComponent previous)
+    public ListComponent setPrevious(final ListComponent previous)
     {
         return _previous = previous;
     }
 
 
 
-    public ComponentType getComponentType()
+    public ComponentType componentType()
     {
         return _compType;
     }
 
 
     /**
-     * This should be used sparingly
+     * This should be used sparingly, as changing the name of a component of a dish may cause confusion.
      * @param name the new name for this component.
      */
     public void setName(String name)
@@ -266,78 +271,118 @@ public class ListComponent
         return _name;
     }
 
+    /**
+     * If a component requires some additional information, it may be entered here.  For instance, if the component is and ingredient, onions, which need to be diced, this field may be set to "Diced."
+     * @param additionalText More information about this component.
+     */
     public void setAdditionalText(String additionalText)
     {
         _additionalText = additionalText;
     }
 
+    /**
+     * If this component has any particular instructions, this function will be used to access that information.
+     * @return A String containing additional information concerning this component.
+     */
     public String additionalText()
     {
         return _additionalText;
     }
 
+    /**
+     * The amount per unit of measurement (which must be accessed in conjunction with this recipe for ease of use)
+     * @return A double which is the amount per unit of measurement that is required by this component for a recipe.
+     */
     public double getQuantity()
     {
         return _quantity;
     }
 
+    /**
+     * Some component types do not require use of the _quantity field.  This function will help to clarify when that is the case.
+     * @return True if _quantity field is greater than, or equal to, zero
+     */
     public boolean hasQuantity()
     {
         return _quantity >= 0.0;
     }
 
-    public double getQuantity(double multiplier)
-    {
-        return multiplier*_quantity;
-    }
+//    public double getQuantity(double multiplier)
+//    {
+//        return multiplier*_quantity;
+//    }
 
-    public String getText()
-    {
-        return _name;
-    }
+//    public ArrayList<String> getAllComments()
+//    {
+//        return _comments;
+//    }
+//
+//    public int commentSize()
+//    {
+//    	return _comments.size();
+//    }
+//
+//    /**
+//     * Because spinners in the App will need to be populated by String arrays, this function provides a carbon-copy of the ArrayList _comments in a bare-bones String[] array.  For ease of use, please use ListComponent.commentSize() to obtain the current size of the _comments object.
+//     * @return A String[] array which contains all information within _comments for this component.
+//     */
+//    public String[] getAllCommentsInAnArray()
+//    {
+//    	int size = _comments.size();
+//
+//    	String[] output = new String[size];
+//
+//    	for(int i = 0; i < size; i++)
+//    	{
+//    		output[i] = _comments.get(i);
+//    	}
+//
+//
+//    	return output;
+//    }
+//
+//    /**
+//     * if the specific index of a comment is known, it may be used to access its location in _comments.
+//     * @param i
+//     * @return If the arg is valid, it returns the comment; if the arg is not valid (i.e.:  Not a valid index for _comments) then a generic error message is returned:  "Indexing error while attempting to retrieve comment from given position."
+//     */
+//    public String getSpecificComment(int i)
+//    {
+//
+//        return (_comments.size() > i)? _comments.get(i) : "Indexing error while attempting to retrieve comment from given position.";
+//    }
+//
+//    public void addComment(String commentIn)
+//    {
+//        _comments.add(commentIn);
+//    }
+//
+//    public void deleteComment(int i)
+//    {
+//    	if(i >= _comments.size())
+//    	{
+//    		System.out.println("Cannot delete comment within "+ _name +" component, because index at " + i + " is an invalid index.");
+//    		return;
+//    	}
+//        _comments.remove(i);
+//    }
+//
+//    /**
+//     * removes all occurrences of the given string from the comments, irrespective of capitalization
+//     * @param toDelete the string to be removed
+//     */
+//    public void deleteComment(String toDelete)
+//    {
+//        for(int i = 0; i < _comments.size(); i++)
+//        {
+//            if(_comments.get(i).compareToIgnoreCase(toDelete) == 0)
+//            {
+//                _comments.remove(i);
+//            }
+//        }
+//    }
 
-    public String getAdditionalText()
-    {
-        return _additionalText;
-    }
-
-    public ArrayList<String> getAllComments()
-    {
-        return _comments;
-    }
-
-    public String getSpecificComment(int i)
-    {
-
-        return (_comments.size() > i)? _comments.get(i) : "Indexing error while attempting to retrieve comment from given position.";
-    }
-
-    public void addComment(String commentIn)
-    {
-        _comments.add(commentIn);
-    }
-
-    public void deleteComment(int i)
-    {
-        _comments.remove(i);
-    }
-
-    /**
-     * removes all occurrences of the given string from the comments
-     * @param toDelete the string to be removed
-     */
-    public void deleteComment(String toDelete)
-    {
-        for(int i = 0; i < _comments.size(); i++)
-        {
-            if(_comments.get(i).compareToIgnoreCase(toDelete) == 0)
-            {
-                _comments.remove(i);
-            }
-        }
-    }
-
-    public UnitOfMeasure getUnitOfMeasure()
+    public UnitOfMeasure unitOfMeasure()
     {
         return _unitOfMeasure;
     }
@@ -575,6 +620,131 @@ public class ListComponent
   }
 */
 
+    public ArrayList<String> getAllInfo()
+    {
+        ArrayList<String> output = new ArrayList<String>();
+
+        output.add(_compType.toString());
+        output.add(_name);
+        output.add(""+_quantity);
+        output.add(_unitOfMeasure.toString());
+        output.add(_additionalText);
+
+        return output;
+    }
+
+    public ArrayList<String> getRelevantInfo()
+    {
+        ArrayList<String> output = new ArrayList<String>();
+
+        switch(_compType)
+        {
+            case EQUIPMENT:
+            {
+                output.add(_name);
+                if(_quantity >= 0)
+                {
+                    output.add(_quantity+"");
+                    output.add(_unitOfMeasure.toString());
+                }
+                else
+                {
+                    output.add("");
+                    output.add("");
+                }
+                output.add(_additionalText);
+
+//    			System.out.println(_name+", " + ((_quantity > 0.0)? _quantity+" "+_unitOfMeasure : "") + ", " + _additionalText);
+                return output;
+            }
+            case INGREDIENT:
+            {
+                output.add(_name);
+                output.add(_quantity + "");
+                output.add(_unitOfMeasure.toString());
+                output.add(_additionalText);
+
+                return output;
+
+//    			System.out.println(_name + ", " + _quantity + " " + _unitOfMeasure.toString() + ", " + _additionalText);
+//    			break;
+            }
+            case PROCEDURE_WITH_TIMER:
+            {
+                output.add(_name);
+                output.add(_quantity+"");
+                output.add(_unitOfMeasure.toString());
+                output.add(_additionalText);
+
+                return output;
+
+//    			System.out.println(_name + " for " + _quantity + " seconds.  "+_additionalText);
+//    			break;
+            }
+            case PROCEDURE:
+            {
+                output.add(_name);
+                output.add(_additionalText);
+
+                return output;
+
+//    			System.out.println(_name + ", " + _additionalText);
+//    			break;
+            }
+            case COMMENT:
+            {
+                output.add(_name);
+
+                return output;
+
+//    			System.out.println(_name);
+//    			break;
+            }
+            default:
+            {
+                return output;
+            }
+        }
+
+    }
+
+    public void printRelevantInfo()
+    {
+        switch(_compType)
+        {
+            case EQUIPMENT:
+            {
+                System.out.println(_name+", " + ((_quantity > 0.0)? _quantity+" "+_unitOfMeasure : "") + ", " + _additionalText);
+                break;
+            }
+            case INGREDIENT:
+            {
+                System.out.println(_name + ", " + _quantity + " " + _unitOfMeasure.toString() + ", " + _additionalText);
+                break;
+            }
+            case PROCEDURE_WITH_TIMER:
+            {
+                System.out.println(_name + " for " + _quantity + " seconds.  "+_additionalText);
+                break;
+            }
+            case PROCEDURE:
+            {
+                System.out.println(_name + ", " + _additionalText);
+                break;
+            }
+            case COMMENT:
+            {
+                System.out.println(_name);
+                break;
+            }
+        }
+
+        if(_next != null)
+        {
+            _next.printRelevantInfo();
+        }
+    }
+
     /**
      * a debugging method
      */
@@ -592,4 +762,3 @@ public class ListComponent
 
 
 }
-
