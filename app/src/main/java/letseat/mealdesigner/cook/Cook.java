@@ -12,7 +12,8 @@ import java.util.ArrayList;
 
 import letseat.mealdesigner.R;
 
-public class Cook extends AppCompatActivity {
+public class Cook extends AppCompatActivity
+        implements CookRegularStep.OnFragmentInteractionListener {
 
     ArrayList<String> _steps;
 
