@@ -1,6 +1,7 @@
 package letseat.mealdesigner.cook;
 
 import android.content.Intent;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -65,8 +66,28 @@ public class Cook extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public void back(View view){
 
+    public void prevStep(View view){
+        if(currentStep == 0) return;
+        --currentStep;
+        onBackPressed();
+    }
+
+    public void nextStep(View view){
+        if(currentStep == _steps.size()-1) return;
+        ++currentStep;
+        //create fragment
+        CookRegularStep fragment = CookRegularStep.newInstance(_steps.get(currentStep));
+
+        //get transaction
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        //replace fragment and add to backstack
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+
+        //commit changes
+        transaction.commit();
     }
     // TODO: 10/5/16 fix back button presses
     /*@Override
