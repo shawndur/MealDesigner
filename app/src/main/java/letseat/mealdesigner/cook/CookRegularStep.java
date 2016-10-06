@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import letseat.mealdesigner.R;
 
@@ -21,10 +22,10 @@ import letseat.mealdesigner.R;
 public class CookRegularStep extends Fragment {
 
     // the fragment initialization parameters
-    private static final String ARG_PARAM1 = "step";
+    private static final String ARG_STEP = "step";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private String mStep;
 
     private OnFragmentInteractionListener mListener;
 
@@ -42,7 +43,7 @@ public class CookRegularStep extends Fragment {
     public static CookRegularStep newInstance(String param1) {
         CookRegularStep fragment = new CookRegularStep();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_STEP, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,7 +52,7 @@ public class CookRegularStep extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            mStep = getArguments().getString(ARG_STEP);
         }
     }
 
@@ -59,15 +60,12 @@ public class CookRegularStep extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cook_regular_step, container, false);
+        View view = inflater.inflate(R.layout.fragment_cook_regular_step, container, false);
+        TextView output = (TextView) view.findViewById(R.id.cook_step_output);
+        output.setText(mStep);
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -97,7 +95,6 @@ public class CookRegularStep extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+
     }
 }
