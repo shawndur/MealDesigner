@@ -262,6 +262,66 @@ public class RecipeHead
 
     }
 
+    public String getRecipeInfoInStringFormat()
+    {
+
+        // This is a duplicate of the fields at the top of Long_Term_Interface
+        final char _RECIPE_NAME = (char) 0x80, _end_RECIPE_NAME = (char) 0x90,
+                _EQUIPMENT = (char) 0x81, _end_EQUIPMENT = (char) 0x91,
+                _INGREDIENT = (char) 0x82, _end_INGREDIENT = (char) 0x92,
+                _PROCEDURE = (char) 0x83, _end_PROCEDURE = (char) 0x93,
+                _COMMENTS = (char) 0x84, _end_COMMENTS = (char) 0x94,
+                _END_OF_RECIPE = (char) 0x85,
+                _COMPONENT = (char) 0x86, _end_COMPONENT = (char) 0x96,
+                _COMMA = (char) 0x87;
+
+        String output = _RECIPE_NAME + _recipeName + _end_RECIPE_NAME + _EQUIPMENT;
+
+        ListComponent current = _heads.get(ComponentType.EQUIPMENT);
+
+        while(current != null)
+        {
+            output += current.getInfoForWrite();
+            current = current.next();
+        }
+
+        output += _end_EQUIPMENT + _INGREDIENT;
+
+        current = _heads.get(ComponentType.INGREDIENT);
+
+        while(current != null)
+        {
+            output += current.getInfoForWrite();
+            current = current.next();
+        }
+
+        output += _end_INGREDIENT + _PROCEDURE;
+
+        current = _heads.get(ComponentType.PROCEDURE);
+
+        while(current != null)
+        {
+            output += current.getInfoForWrite();
+            current = current.next();
+        }
+
+        output += _end_PROCEDURE + _COMMENTS;
+
+        current = _heads.get(ComponentType.COMMENT);
+
+        while(current != null)
+        {
+            output += current.getInfoForWrite();
+            current = current.next();
+        }
+
+        return output + _END_OF_RECIPE;
+
+
+
+
+    }
+
     /**
      * Use this function to allow the user to write changes in the order of ListComponent objects for a particular component type.  Use RecipeHead.validateWholeSectionRewrite(...) to ensure all members of the argument for this function have the same value for their Component Type field.
      * @param listNew The new list of ListComponent objects.
