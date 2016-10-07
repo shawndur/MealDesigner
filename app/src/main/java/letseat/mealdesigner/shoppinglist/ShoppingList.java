@@ -41,11 +41,12 @@ public class ShoppingList extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 if(id != 0){
+                    // TODO
                     Toast.makeText(ShoppingList.this, "Spinner: position=" + position + " id=" + id, Toast.LENGTH_SHORT).show();
                     openRecipeInfo2();  // each id represents ordered item in the list.
                 }
 
-                // your code here
+                // TODO
             }
 
             @Override
@@ -65,7 +66,7 @@ public class ShoppingList extends AppCompatActivity {
                 if(id != 0){
                     Toast.makeText(ShoppingList.this, "Spinner: position=" + position + " id=" + id, Toast.LENGTH_SHORT).show();
                     openRecipeInfo2();  // each id represents ordered item in the list.
-                    
+
                 }
 
                 // your code here

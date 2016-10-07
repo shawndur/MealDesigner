@@ -7,6 +7,7 @@
 
 
 
+
     <include layout="@layout/app_bar_main"
         android:id="@+id/include" />
 
@@ -20,7 +21,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select Meal Corrisponding To Items On List"
+            android:text="Edit"
             android:onClick="openShoppingListEdit"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
@@ -89,7 +90,16 @@
                     android:layout_width="fill_parent"
                     android:layout_weight="20"
                     android:padding="3dip" />
-
+                <Spinner
+                    android:id="@+id/spinner1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="10sp"
+                    android:layout_weight="30"
+                    android:padding="0dip"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:spinnerMode="dropdown" />
+                <!--
                 <Button
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -98,6 +108,7 @@
                     android:layout_weight="30"
                     android:id="@+id/button1"
                     android:textSize="10dp" />
+                -->
             </TableRow>
 
             <TableRow>
@@ -126,6 +137,16 @@
                     android:layout_weight="20"
                     android:padding="3dip" />
 
+                <Spinner
+                    android:id="@+id/spinner2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="10sp"
+                    android:layout_weight="30"
+                    android:padding="0dip"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:spinnerMode="dropdown" />
+                <!--
                 <Button
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -134,16 +155,7 @@
                     android:layout_weight="30"
                     android:id="@+id/button2"
                     android:textSize="10dp" />
-            </TableRow>
-
-            <TableRow>
-                <TextView
-                    android:text="2(1)"
-                    android:padding="3dip" />
-                <TextView
-                    android:text="2(2)"
-                    android:gravity="right"
-                    android:padding="3dip" />
+                -->
             </TableRow>
 
         </TableLayout>
