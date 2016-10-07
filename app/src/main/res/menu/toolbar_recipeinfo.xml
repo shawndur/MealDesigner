@@ -9,4 +9,8 @@
         android:title="fav"
         android:orderInCategory="5"
         app:showAsAction="ifRoom" />
+    <item android:id="@+id/toolbar_list"
+        android:title="add to list"
+        android:orderInCategory="2"
+        app:showAsAction="ifRoom" />
 </menu>
