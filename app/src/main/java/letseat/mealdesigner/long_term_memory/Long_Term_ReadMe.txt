@@ -205,3 +205,20 @@ ListComponent.java uses overloaded constructors to create ListComponent objects 
 
     public void printAllInfo()
         A debugging function which prints all information contained in the specific ListComonent object.
+
+Common useages:
+
+Building a recipe:
+
+    Create new instance of RecipeHead, using the user-supplied recipe name for the sole argument in the constructor.
+    Call RecipeHead.addEquipment / RecipeHead.addIngredient / RecipeHead.addProcedure / RecipeHead.addComment for each respective attribute, as needed.
+
+Saving a recipe: (without index filing which is still under construction but not much longer, assuming only good filenames are used as recipe names)
+
+    pass a RecipeHead object as an argument to "Long_Term_Interface.convertRecipeToWriteable(RecipeHead)""
+    pass a valid filename in arg0, and the return value of "Long_Term_Interface.convertRecipeToWriteable(RecipeHead)" in arg1, in "Long_Term_Interface.writeRecipeToFile(String,String)"
+        i.e.:  writeRecipeToFile( testFilename , convertRecipeToWriteable( myRecipe );
+
+Retrieving a recipe: (again, without using the as-of-yet incomplete Index File access methodology)
+
+    RecipeHead myRecipe = parseLineToRecipe( getLinesFromFile(String filename).get(0) );
