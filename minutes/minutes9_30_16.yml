@@ -1,0 +1,15 @@
+date: September 30, 2016
+meeting_type: group
+attendance: [<cnzytari>, <shawndur>, <vanhoose>]
+absent: [<cpark22>]
+excused_absences: [ {ubit: <cpark22>, reason: sick}]
+task_progress:[
+  {ubit: <cnzytari>, progress: set up layout for spinner, starting code for each page a seperate activity.},
+  {ubit: <vanhoose>, progress: worked on single class that holds all information from a recipe such that any other activity can request, access, and modify long-term memory; specifically, testing this class.},
+  {ubit: <cpark22>, progress: .},
+  {ubit: <shawndur>, progress: Finished recipe info.}
+  ]
+issues: [ # Post any issues here. Issues that cannot be addressed by the group should especially be included
+  ]
+Notes:  | # Anything covered in the meeting that doesn't fit elsewhere.
+  # 
