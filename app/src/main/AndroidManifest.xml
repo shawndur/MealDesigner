@@ -40,13 +40,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".recipies.MainRecipe" />
         </activity>
-        <activity android:name=".cook.Cook"></activity>
+        <activity android:name=".shoppinglist.ShoppingListEdit"></activity>
         <activity android:name=".recipewalk.RecipeWalk1"></activity>
         <activity android:name=".recipewalk.RecipeWalk2"></activity>
         <activity android:name=".recipewalk.RecipeWalk3"></activity>
         <activity android:name=".recipewalk.RecipeWalk4"></activity>
         <activity android:name=".recipewalk.RecipeWalk5"></activity>
         <activity android:name=".recipewalk.RecipeWalk6"></activity>
+        <activity android:name=".cook.Cook"
+            android:parentActivityName=".recipeinfo.RecipeInfo">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".recipeinfo.RecipeInfo" />
+        </activity>
 
 
     </application>
