@@ -50,6 +50,9 @@
     <string name="recipe2">Some Recipe 2</string>
     <string name="recipe3">Some Recipe 3</string>
     <string name="recipe4">Some Recipe 4</string>
+    <string name="convert">Convert</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="convert_00">Convert Measurements</string>
 </resources>
