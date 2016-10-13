@@ -6,11 +6,16 @@ import android.util.Log;
 import letseat.mealdesigner.long_term_memory.Long_Term_Interface;
 
 /**
+ * This Is the application class for meal designer.
+ * It extends the default class adding:
+ *      -A instance variable for the Long_Term_Interface object
+ *      -It instantiates the Long_Term_Interface object
+ *      -It provides a getter for the Long_Term_Interface object
  * Created by shawn on 10/12/16.
  */
 
 public class MealDesignerApp extends Application {
-    private Long_Term_Interface _storage;
+    private Long_Term_Interface _storage; //Global Long_Term_Interface object
 
     @Override
     public void onCreate(){
@@ -18,6 +23,10 @@ public class MealDesignerApp extends Application {
         super.onCreate();
     }
 
+    /***
+     * This is a getter method for the global Long_Term_Interface
+     * @return a Long_Term_Interface object
+     */
     public Long_Term_Interface getLTI(){
         return _storage;
     }
