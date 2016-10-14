@@ -11,43 +11,19 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+
 import letseat.mealdesigner.R;
 import letseat.mealdesigner.cook.Cook;
 
 public class RecipeInfo extends AppCompatActivity {
 
-    /**
-     * Instance variables to hold recipe info
-     */
-    ArrayList<String> _steps = new ArrayList<>();
-    ArrayList<String> _ingredients = new ArrayList<>();
-    ArrayList<String> _tools = new ArrayList<>();
+    ArrayList<String> _steps;
     String _name ;
 
-
-    /**
-     * Initializes instance variables. Currently uses hardcoded strings
-     */
-    // TODO: 10/1/16 retrieve recipe info from storage 
-    private void initVars(){
-        _name = "Toast";
-
-        _ingredients.add("1 Slices of Bread");
-        _ingredients.add("1 Tbsp of Jam");
-
-        _steps.add("1) Put bread in toaster");
-        _steps.add("2) Toast bread at desired setting");
-        _steps.add("3) When done retrieve bread from toaster");
-        _steps.add("4) Using a butter knife spread jam on toast");
-        
-        _tools.add("1 toaster");
-        _tools.add("1 butter knife");
-        _tools.add("1 plate");
-
-    }
     
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) throws RuntimeException{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_info);
 
@@ -60,20 +36,13 @@ public class RecipeInfo extends AppCompatActivity {
             getSupportActionBar().setTitle(getString(R.string.recipe_info));
         }
 
-        //initialize instance variables
-        initVars();
+        Intent intent = getIntent();
+        _name = intent.getStringExtra("recipe_name");
+        if(_name.length()==0){
+            // TODO: 10/14/16 Dont throw exception do something "nicer"
+            throw new RuntimeException();
+        }
 
-        //set text views with recipe info
-        /*
-        TextView text  = (TextView) findViewById(R.id.recipe_name_text);
-        text.setText(_name);
-        text  = (TextView) findViewById(R.id.recipe_steps_text);
-        text.setText(getSteps());
-        text  = (TextView) findViewById(R.id.recipe_ingredients_text);
-        text.setText(getIngredients());
-        text  = (TextView) findViewById(R.id.recipe_tools_text);
-        text.setText(getTools());
-        */
 
 
         RecyclerView mRecyclerView;
@@ -124,33 +93,6 @@ public class RecipeInfo extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    // These functions convert the arraylists of strings to a single string
-    private String getSteps(){
-        String result = "";
-
-        for(String step:_steps){
-            result = result+"\n"+step;
-        }
-
-        return result;
-    }
-
-    private String getIngredients(){
-        String result = "";
-        for(String Ingredient : _ingredients ){
-            result = result+"\n"+Ingredient;
-        }
-        return result;
-    }
-    
-    private String getTools(){
-        String result = "";
-        for(String tool : _tools ){
-            result = result+"\n"+tool;
-        }
-        return result;
     }
 
     //These functions handle toolbar button presses.
