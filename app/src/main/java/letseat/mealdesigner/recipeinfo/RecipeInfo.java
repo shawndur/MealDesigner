@@ -3,6 +3,8 @@ package letseat.mealdesigner.recipeinfo;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -62,6 +64,7 @@ public class RecipeInfo extends AppCompatActivity {
         initVars();
 
         //set text views with recipe info
+        /*
         TextView text  = (TextView) findViewById(R.id.recipe_name_text);
         text.setText(_name);
         text  = (TextView) findViewById(R.id.recipe_steps_text);
@@ -70,6 +73,28 @@ public class RecipeInfo extends AppCompatActivity {
         text.setText(getIngredients());
         text  = (TextView) findViewById(R.id.recipe_tools_text);
         text.setText(getTools());
+        */
+
+
+        RecyclerView mRecyclerView;
+        RecyclerView.Adapter mAdapter;
+        RecyclerView.LayoutManager mLayoutManager;
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        // specify an adapter (see also next example)
+        String [] s = {"a","b","c"};
+        mAdapter = new RecipeInfoAdapter(s);
+        mRecyclerView.setAdapter(mAdapter);
+
     }
 
     @Override
