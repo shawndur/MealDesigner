@@ -13,13 +13,16 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import letseat.mealdesigner.MealDesignerApp;
 import letseat.mealdesigner.R;
 import letseat.mealdesigner.cook.Cook;
+import letseat.mealdesigner.long_term_memory.Long_Term_Interface;
 
 public class RecipeInfo extends AppCompatActivity {
 
     ArrayList<String> _steps;
     String _name ;
+    Long_Term_Interface _LTI;
 
     
     @Override
@@ -40,10 +43,10 @@ public class RecipeInfo extends AppCompatActivity {
         _name = intent.getStringExtra("recipe_name");
         if(_name.length()==0){
             // TODO: 10/14/16 Dont throw exception do something "nicer"
-            throw new RuntimeException();
+            throw new RuntimeException("No Recipe Name Found or Supplied");
         }
 
-
+        _LTI = ((MealDesignerApp) getApplication()).getLTI();
 
         RecyclerView mRecyclerView;
         RecyclerView.Adapter mAdapter;
