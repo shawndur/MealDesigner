@@ -16,13 +16,16 @@ import java.util.concurrent.ExecutionException;
 import letseat.mealdesigner.MealDesignerApp;
 import letseat.mealdesigner.R;
 import letseat.mealdesigner.cook.Cook;
+import letseat.mealdesigner.long_term_memory.ListComponent;
 import letseat.mealdesigner.long_term_memory.Long_Term_Interface;
+import letseat.mealdesigner.long_term_memory.RecipeHead;
 
 public class RecipeInfo extends AppCompatActivity {
 
     ArrayList<String> _steps;
     String _name ;
     Long_Term_Interface _LTI;
+    RecipeHead _recipe;
 
     
     @Override
@@ -47,6 +50,7 @@ public class RecipeInfo extends AppCompatActivity {
         }
 
         _LTI = ((MealDesignerApp) getApplication()).getLTI();
+        _recipe = _LTI.parseLineToRecipe( _LTI.getLinesFromFile("").get(0) );
 
         RecyclerView mRecyclerView;
         RecyclerView.Adapter mAdapter;
