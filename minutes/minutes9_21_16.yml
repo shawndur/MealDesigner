@@ -1,0 +1,15 @@
+date: September 21, 2016
+meeting_type: ta
+attendance: [<cnzytari>, <cpark22>, <shawndur>, <vanhoose>]
+absent: []
+excused_absences: []
+task_progress:[
+  {ubit: <cnzytari>, progress: started on xml layouts for recipe walkthrough.},
+  {ubit: <vanhoose>, progress: looked at different database types.},
+  {ubit: <cpark22>, progress: worked on design for shopping list.},
+  {ubit: <shawndur>, progress: redesigned the overall UI layout. }
+  ]
+issues: [ # Post any issues here. Issues that cannot be addressed by the group should especially be included
+  ]
+Notes:  | # Anything covered in the meeting that doesn't fit elsewhere.
+  # 

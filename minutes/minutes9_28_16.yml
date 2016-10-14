@@ -1,0 +1,17 @@
+date: September 28, 2016
+meeting_type: ta
+attendance: [<cnzytari>, <cpark22>, <shawndur>, <vanhoose>]
+absent: []
+excused_absences: []
+task_progress:[
+  {ubit: <cnzytari>, progress: finished xml layouts, added allergy info and began to set up buttons.},
+  {ubit: <vanhoose>, progress: database can retrive files from long term local meomory, write/read back string.},
+  {ubit: <cpark22>, progress: shopping list xml files.},
+  {ubit: <shawndur>, progress: set up button functionality, added favorites tab. }
+  ]
+issues: [ # Post any issues here. Issues that cannot be addressed by the group should especially be included
+  ]
+Notes:  | # Anything covered in the meeting that doesn't fit elsewhere.
+  # add edit button/or review of recipe creation before creating recipe
+  # work on cooking walkthrough 
+  # make sure to add new activites to Android Manifest
