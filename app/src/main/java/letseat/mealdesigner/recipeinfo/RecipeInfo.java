@@ -46,7 +46,7 @@ public class RecipeInfo extends AppCompatActivity {
 
         Intent intent = getIntent();
         _name = intent.getStringExtra("recipe_name");
-        if(_name.equals(null)){
+        if(_name == null){
             // TODO: 10/14/16 Handle null name
             /*
             throw new RuntimeException("No Recipe Name Found or Supplied");
