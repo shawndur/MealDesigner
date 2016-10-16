@@ -6,6 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import letseat.mealdesigner.R;
 
 /**
@@ -14,34 +21,42 @@ import letseat.mealdesigner.R;
 
 public class RecipeInfoAdapter extends RecyclerView.Adapter<RecipeInfoAdapter.ViewHolder> {
 
-    private String[] mDataset;
+    private Map<String,List<String>> _dataset;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView mTextView;
+        private TextView _header,_text;
         public ViewHolder(View v) {
             super(v);
-            mTextView = (TextView) v.findViewById(R.id.info_item_header);
+            _header = (TextView) v.findViewById(R.id.info_item_header);
+            _text = (TextView) v.findViewById(R.id.info_item_text);
+        }
+
+        public void setHeader(String header){
+            _header.setText(header);
+        }
+
+        public void setText(List<String> text){
+            _text.setText("");
+            for(String s : text){
+                _text.append(s);
+            }
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public RecipeInfoAdapter(String[] myDataset) {
-        mDataset = myDataset;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.activity_recipe_info_item, parent, false);
-        // set the view's size, margins, paddings and layout parameters
-        //...
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -49,16 +64,20 @@ public class RecipeInfoAdapter extends RecyclerView.Adapter<RecipeInfoAdapter.Vi
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        holder.mTextView.setText(mDataset[position]);
+        Iterator<Map.Entry<String,List<String>>> it = _dataset.entrySet().iterator();
+        for(int i=0;i<position && it.hasNext();++i ) it.next();
 
+        if(it.hasNext()) {
+            Map.Entry<String, List<String>> entry = it.next();
+            holder.setHeader(entry.getKey());
+            holder.setText(entry.getValue());
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return _dataset.size();
     }
 
 }
