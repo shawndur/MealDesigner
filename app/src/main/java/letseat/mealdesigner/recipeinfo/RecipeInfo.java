@@ -98,7 +98,7 @@ public class RecipeInfo extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new RecipeInfoAdapter(_dataset));
+        recyclerView.setAdapter(new RecipeInfoAdapter(name,_dataset));
     }
 
     @Override

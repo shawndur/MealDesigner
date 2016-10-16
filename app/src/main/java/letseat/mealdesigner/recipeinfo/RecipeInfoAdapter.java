@@ -117,7 +117,7 @@ class RecipeInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
         //get iterator at position i
         Iterator<Map.Entry<String,List<String>>> it = _dataset.entrySet().iterator();
-        for(int i=0;i<position && it.hasNext();++i ) it.next();
+        for(int i=0;i<position-1 && it.hasNext();++i ) it.next();
 
         if(it.hasNext()) {
             //get key value pair at position and update in viewholder
