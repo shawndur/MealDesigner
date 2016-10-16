@@ -51,7 +51,7 @@ class RecipeInfoAdapter extends RecyclerView.Adapter<RecipeInfoAdapter.ViewHolde
         void setText(List<String> text){
             _text.setText("");
             for(String s : text){
-                _text.append(s);
+                _text.append(s + '\n');
             }
         }
     }
