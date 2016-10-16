@@ -3,32 +3,26 @@ package letseat.mealdesigner.recipeinfo;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.appcompat.BuildConfig;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-
 import letseat.mealdesigner.MealDesignerApp;
 import letseat.mealdesigner.R;
 import letseat.mealdesigner.cook.Cook;
-import letseat.mealdesigner.long_term_memory.ListComponent;
 import letseat.mealdesigner.long_term_memory.Long_Term_Interface;
 import letseat.mealdesigner.long_term_memory.RecipeHead;
 
 public class RecipeInfo extends AppCompatActivity {
 
-    Long_Term_Interface _LTI;
+    private Long_Term_Interface _LTI;
     //RecipeHead _recipe;
-    Map<String,List<String>> _dataset;
+    private LinkedHashMap<String,List<String>> _dataset;
 
     
     @Override
@@ -73,11 +67,33 @@ public class RecipeInfo extends AppCompatActivity {
             onBackPressed();
             //*/
             //*
-            name = "Toast";
-            //*/
-        }
+            _dataset = new LinkedHashMap<>();
 
-        RecipeHead recipe = _LTI.parseLineToRecipe(lines.get(0));
+            String key = "Ingredients";
+            ArrayList<String> data = new ArrayList<>();
+            data.add("1 Tbsp of Jam");
+            data.add("1 Slices of Bread");
+            _dataset.put(key,data);
+
+            key = "Tools";
+            data = new ArrayList<>();
+            data.add("1 toaster");
+            data.add("1 butter knife");
+            data.add("1 plate");
+            _dataset.put(key,data);
+
+            key = "Steps";
+            data = new ArrayList<>();
+            data.add("1) Put bread in toaster");
+            data.add("2) Toast bread at desired setting");
+            data.add("3) When done retrieve bread from toaster");
+            data.add("4) Using a butter knife spread jam on toast");
+            _dataset.put(key,data);
+            //*/
+        }else{
+            // TODO: 10/16/16 Retrieve from mem
+            RecipeHead recipe = _LTI.parseLineToRecipe(lines.get(0));
+        }
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -128,7 +144,7 @@ public class RecipeInfo extends AppCompatActivity {
         if(_dataset.containsKey("Steps")) {
             //create intent and pass steps
             Intent intent = new Intent(this, Cook.class);
-            intent.putExtra("Steps", (ArrayList<String>) _dataset.get("Steps"));
+            intent.putExtra("Steps", (ArrayList<String>)_dataset.get("Steps"));
             startActivity(intent);
         }else{
             Toast.makeText(getApplicationContext(),"No Steps Exist",Toast.LENGTH_LONG).show();
