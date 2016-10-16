@@ -5,11 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,27 +15,27 @@ import letseat.mealdesigner.R;
  * Created by shawn on 10/14/16.
  */
 
-public class RecipeInfoAdapter extends RecyclerView.Adapter<RecipeInfoAdapter.ViewHolder> {
+class RecipeInfoAdapter extends RecyclerView.Adapter<RecipeInfoAdapter.ViewHolder> {
 
     private Map<String,List<String>> _dataset;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         private TextView _header,_text;
-        public ViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
             _header = (TextView) v.findViewById(R.id.info_item_header);
             _text = (TextView) v.findViewById(R.id.info_item_text);
         }
 
-        public void setHeader(String header){
+        void setHeader(String header){
             _header.setText(header);
         }
 
-        public void setText(List<String> text){
+        void setText(List<String> text){
             _text.setText("");
             for(String s : text){
                 _text.append(s);
@@ -48,7 +44,8 @@ public class RecipeInfoAdapter extends RecyclerView.Adapter<RecipeInfoAdapter.Vi
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public RecipeInfoAdapter(String[] myDataset) {
+    RecipeInfoAdapter(Map<String,List<String>> myDataset) {
+        _dataset = myDataset;
     }
 
     // Create new views (invoked by the layout manager)
@@ -57,8 +54,7 @@ public class RecipeInfoAdapter extends RecyclerView.Adapter<RecipeInfoAdapter.Vi
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.activity_recipe_info_item, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
