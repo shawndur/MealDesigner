@@ -16,21 +16,33 @@ import letseat.mealdesigner.R;
  * This is used to create and modify the views for the recipe components
  */
 
-class RecipeInfoAdapter extends RecyclerView.Adapter<RecipeInfoAdapter.ViewHolder> {
+class RecipeInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private static final int TITLE = 0;
+    private static final int ITEM = 1;
     private Map<String,List<String>> _dataset; //holds names and values of components
+
+    static class ViewHolderHeader extends RecyclerView.ViewHolder {
+        /**
+         * Saves references to the views and subviews
+         * @param v view to be referenced
+         */
+        ViewHolderHeader(View v) {
+            super(v);
+        }
+    }
 
     /**
      * Holds and maintains references to views
      */
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolderItem extends RecyclerView.ViewHolder {
         private TextView _header,_text; //textviews used to display recipe info
 
         /**
          * Saves references to the views and subviews
          * @param v view to be referenced
          */
-        ViewHolder(View v) {
+        ViewHolderItem(View v) {
             super(v);
             _header = (TextView) v.findViewById(R.id.info_item_header);
             _text = (TextView) v.findViewById(R.id.info_item_text);
@@ -71,11 +83,18 @@ class RecipeInfoAdapter extends RecyclerView.Adapter<RecipeInfoAdapter.ViewHolde
      * @return A newly created view holder
      */
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activity_recipe_info_item, parent, false);
-        return new ViewHolder(v);
+        View v;
+        if(viewType == ITEM) {
+            v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.activity_recipe_info_item, parent, false);
+            return new ViewHolderItem(v);
+        }else{
+            v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.activity_recipe_info_header, parent, false);
+            return new ViewHolderHeader(v);
+        }
     }
 
     /**
@@ -84,7 +103,11 @@ class RecipeInfoAdapter extends RecyclerView.Adapter<RecipeInfoAdapter.ViewHolde
      * @param position Position in the list/dataset
      */
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if(position == 0){
+
+            return;
+        }
         //get iterator at position i
         Iterator<Map.Entry<String,List<String>>> it = _dataset.entrySet().iterator();
         for(int i=0;i<position && it.hasNext();++i ) it.next();
@@ -92,9 +115,15 @@ class RecipeInfoAdapter extends RecyclerView.Adapter<RecipeInfoAdapter.ViewHolde
         if(it.hasNext()) {
             //get key value pair at position and update in viewholder
             Map.Entry<String, List<String>> entry = it.next();
-            holder.setHeader(entry.getKey());
-            holder.setText(entry.getValue());
+            ((ViewHolderItem)holder).setHeader(entry.getKey());
+            ((ViewHolderItem)holder).setText(entry.getValue());
         }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) return TITLE;
+        return ITEM;
     }
 
     /**
@@ -103,7 +132,7 @@ class RecipeInfoAdapter extends RecyclerView.Adapter<RecipeInfoAdapter.ViewHolde
      */
     @Override
     public int getItemCount() {
-        return _dataset.size();
+        return _dataset.size() + 1 ;
     }
 
 }
