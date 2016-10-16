@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import letseat.mealdesigner.MealDesignerApp;
@@ -24,10 +26,9 @@ import letseat.mealdesigner.long_term_memory.RecipeHead;
 
 public class RecipeInfo extends AppCompatActivity {
 
-    ArrayList<String> _steps;
-    String _name ;
     Long_Term_Interface _LTI;
-    RecipeHead _recipe;
+    //RecipeHead _recipe;
+    Map<String,List<String>> _dataset;
 
     
     @Override
@@ -45,8 +46,8 @@ public class RecipeInfo extends AppCompatActivity {
         }
 
         Intent intent = getIntent();
-        _name = intent.getStringExtra("recipe_name");
-        if(_name == null){
+        String name = intent.getStringExtra("recipe_name");
+        if(name == null){
             // TODO: 10/14/16 Handle null name
             /*
             throw new RuntimeException("No Recipe Name Found or Supplied");
@@ -56,12 +57,12 @@ public class RecipeInfo extends AppCompatActivity {
             onBackPressed();
             //*/
             //*
-            _name = "Toast";
+            name = "Toast";
             //*/
         }
 
         _LTI = ((MealDesignerApp) getApplication()).getLTI();
-        ArrayList<String> lines = _LTI.getLinesFromFile(_name);
+        ArrayList<String> lines = _LTI.getLinesFromFile(name);
         if(lines.isEmpty()){
             // TODO: 10/15/16 handle empty file
             /*
@@ -72,29 +73,16 @@ public class RecipeInfo extends AppCompatActivity {
             onBackPressed();
             //*/
             //*
-            _name = "Toast";
+            name = "Toast";
             //*/
-        }else  _recipe = _LTI.parseLineToRecipe(lines.get(0));
+        }
 
-        RecyclerView mRecyclerView;
-        RecyclerView.Adapter mAdapter;
-        RecyclerView.LayoutManager mLayoutManager;
+        RecipeHead recipe = _LTI.parseLineToRecipe(lines.get(0));
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        // specify an adapter (see also next example)
-        String [] s = {"a","b","c"};
-        mAdapter = new RecipeInfoAdapter(s);
-        mRecyclerView.setAdapter(mAdapter);
-
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new RecipeInfoAdapter(_dataset));
     }
 
     @Override
@@ -137,10 +125,14 @@ public class RecipeInfo extends AppCompatActivity {
     }
 
     private void goToCook(){
-        //create intent and pass steps
-        Intent intent = new Intent(this,Cook.class);
-        intent.putExtra("Steps",_steps);
-        startActivity(intent);
+        if(_dataset.containsKey("Steps")) {
+            //create intent and pass steps
+            Intent intent = new Intent(this, Cook.class);
+            intent.putExtra("Steps", (ArrayList<String>) _dataset.get("Steps"));
+            startActivity(intent);
+        }else{
+            Toast.makeText(getApplicationContext(),"No Steps Exist",Toast.LENGTH_LONG).show();
+        }
     }
 
     /*@Override
