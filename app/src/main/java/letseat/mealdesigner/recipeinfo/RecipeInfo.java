@@ -3,9 +3,11 @@ package letseat.mealdesigner.recipeinfo;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.appcompat.BuildConfig;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -44,13 +46,35 @@ public class RecipeInfo extends AppCompatActivity {
 
         Intent intent = getIntent();
         _name = intent.getStringExtra("recipe_name");
-        if(_name.length()==0){
-            // TODO: 10/14/16 Dont throw exception do something "nicer"
+        if(_name.equals(null)){
+            // TODO: 10/14/16 Handle null name
+            /*
             throw new RuntimeException("No Recipe Name Found or Supplied");
+            //*/
+            /*
+            Toast.makeText(getApplicationContext(),"No Recipe Found",Toast.LENGTH_LONG).show();
+            onBackPressed();
+            //*/
+            //*
+            _name = "Toast";
+            //*/
         }
 
         _LTI = ((MealDesignerApp) getApplication()).getLTI();
-        _recipe = _LTI.parseLineToRecipe( _LTI.getLinesFromFile("").get(0) );
+        ArrayList<String> lines = _LTI.getLinesFromFile(_name);
+        if(lines.isEmpty()){
+            // TODO: 10/15/16 handle empty file
+            /*
+            throw new RuntimeException("Empty or Nonexistent File For: "+_name);
+            //*/
+            /*
+            Toast.makeText(getApplicationContext(),"Error No/Empty File",Toast.LENGTH_LONG).show();
+            onBackPressed();
+            //*/
+            //*
+            _name = "Toast";
+            //*/
+        }else  _recipe = _LTI.parseLineToRecipe(lines.get(0));
 
         RecyclerView mRecyclerView;
         RecyclerView.Adapter mAdapter;
