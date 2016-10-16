@@ -18,26 +18,31 @@ import letseat.mealdesigner.R;
 
 class RecipeInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final int TITLE = 0;
-    private static final int ITEM = 1;
+    private static final int TITLE = 0; //Value for title type view
+    private static final int ITEM = 1; //Value for item type view
     private Map<String,List<String>> _dataset; //holds names and values of components
+    private String _name;
 
-    static class ViewHolderHeader extends RecyclerView.ViewHolder {
+    /**
+     * holds and maintains references to title/header views
+     */
+    private static class ViewHolderHeader extends RecyclerView.ViewHolder {
+        TextView _title;
         /**
          * Saves references to the views and subviews
          * @param v view to be referenced
          */
         ViewHolderHeader(View v) {
             super(v);
+            _title = (TextView) itemView.findViewById(R.id.recipe_name_text);
         }
     }
 
     /**
-     * Holds and maintains references to views
+     * Holds and maintains references to regular views
      */
-    static class ViewHolderItem extends RecyclerView.ViewHolder {
+    private static class ViewHolderItem extends RecyclerView.ViewHolder {
         private TextView _header,_text; //textviews used to display recipe info
-
         /**
          * Saves references to the views and subviews
          * @param v view to be referenced
@@ -70,9 +75,11 @@ class RecipeInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     /**
      * Constructor for the adapter, stores the dataset
+     * @param name Name to be used ase title
      * @param myDataset Dataset to be used for the components
      */
-    RecipeInfoAdapter(Map<String,List<String>> myDataset) {
+    RecipeInfoAdapter(String name,Map<String,List<String>> myDataset) {
+        _name = name;
         _dataset = myDataset;
     }
 
@@ -86,11 +93,11 @@ class RecipeInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v;
-        if(viewType == ITEM) {
+        if(viewType == ITEM) { // Create item view
             v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.activity_recipe_info_item, parent, false);
             return new ViewHolderItem(v);
-        }else{
+        }else{ //create title/header view
             v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.activity_recipe_info_header, parent, false);
             return new ViewHolderHeader(v);
@@ -104,8 +111,8 @@ class RecipeInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
      */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(position == 0){
-
+        if(position == 0){ //Title view, set title
+            ((ViewHolderHeader)holder)._title.setText(_name);
             return;
         }
         //get iterator at position i
@@ -120,6 +127,11 @@ class RecipeInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
+    /**
+     * Calle by layout manager to vet the type of layout at a position
+     * @param position Position of the item
+     * @return the type of view
+     */
     @Override
     public int getItemViewType(int position) {
         if (position == 0) return TITLE;
@@ -128,7 +140,7 @@ class RecipeInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     /**
      * Used by the layout manager to get the size of the recycler view
-     * @return The size of the dataset
+     * @return The size of the dataset + the header
      */
     @Override
     public int getItemCount() {
