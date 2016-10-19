@@ -1,10 +1,8 @@
 package letseat.mealdesigner;
 
 import android.app.Application;
-import android.util.Log;
 
-import letseat.mealdesigner.long_term_memory.Database;
-import letseat.mealdesigner.long_term_memory.Long_Term_Interface;
+import letseat.mealdesigner.storage.Database;
 
 /**
  * This Is the application class for meal designer.

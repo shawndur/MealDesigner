@@ -1,4 +1,4 @@
-package letseat.mealdesigner.long_term_memory;
+package letseat.mealdesigner.storage;
 
 import java.util.ArrayList;
 
