@@ -1,5 +1,6 @@
 package letseat.mealdesigner.long_term_memory;
 
+import android.app.Application;
 import android.content.Context;
 
 import java.io.BufferedReader;
@@ -15,7 +16,7 @@ import java.util.HashMap;
 import java.util.Date;
 
 import letseat.mealdesigner.MainActivity;
-
+import letseat.mealdesigner.MealDesignerApp;
 
 
 /**
@@ -37,14 +38,14 @@ public class Long_Term_Interface
     private static final double INDEX_FILE_TOLERANCE = 2.5;
 
 
-    private MainActivity _top;
+    private Application _top;
     private File _appHomeDir;                           // the internal directory of the app
     private static final String EXTENSION = ".scgc";    // this can be changed, but all files which exist with the outdated extension need to be updated
     private static final String DEFAULT = "default_filename_";  // the default filename to be used if a given filename is invalid
 
 
 
-    public Long_Term_Interface(MainActivity top)
+    public Long_Term_Interface(Application top)
     {
         _top = top;
         _appHomeDir = _top.getFilesDir();
