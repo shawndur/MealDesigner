@@ -17,10 +17,14 @@ import letseat.mealdesigner.R;
 import letseat.mealdesigner.cook.Cook;
 import letseat.mealdesigner.long_term_memory.Long_Term_Interface;
 import letseat.mealdesigner.long_term_memory.RecipeHead;
+import letseat.mealdesigner.storage.Database;
+import letseat.mealdesigner.storage.Ingredient;
+import letseat.mealdesigner.storage.Recipe;
+import letseat.mealdesigner.storage.ShopList;
 
 public class RecipeInfo extends AppCompatActivity {
 
-    private Long_Term_Interface _LTI;
+    private Database _db;
     //RecipeHead _recipe;
     private LinkedHashMap<String,List<String>> _dataset;
 
@@ -55,9 +59,10 @@ public class RecipeInfo extends AppCompatActivity {
             //*/
         }
 
-        _LTI = ((MealDesignerApp) getApplication()).getLTI();
-        ArrayList<String> lines = _LTI.getLinesFromFile(name);
-        if(lines.isEmpty()){
+        _db = ((MealDesignerApp) getApplication()).getDatabase();
+        Recipe recipe = _db.getRecipe(name);
+
+        if(recipe == null){
             // TODO: 10/15/16 handle empty file
             /*
             throw new RuntimeException("Empty or Nonexistent File For: "+_name);
@@ -91,8 +96,12 @@ public class RecipeInfo extends AppCompatActivity {
             _dataset.put(key,data);
             //*/
         }else{
-            // TODO: 10/16/16 Retrieve from mem
-            RecipeHead recipe = _LTI.parseLineToRecipe(lines.get(0));
+            ArrayList<String> data = recipe.getIngredients();
+            if(data.size()>0)_dataset.put("Ingredients",data);
+            data = recipe.getTools();
+            if(data.size()>0)_dataset.put("Steps",data);
+            data = recipe.getSteps();
+            if(data.size()>0)_dataset.put("Tools",data);
         }
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -131,11 +140,22 @@ public class RecipeInfo extends AppCompatActivity {
     }
 
     //These functions handle toolbar button presses.
-    // TODO: 10/1/16 add to storage
     private void addToList(){
+        ShopList list = _db.getShopList();
+        ArrayList<Ingredient> ingredients = list.getIngredients();
+
+        for(String name : _dataset.get("Ingredients")){
+            for(Ingredient ingredient : ingredients){
+                if(name.equals(ingredient.getName())) {}
+            }
+        }
+
+        list.setIngredients(ingredients);
+        _db.setShopList(list);
         Toast.makeText(getApplicationContext(),"Recipe Added To Shopping List",Toast.LENGTH_LONG).show();
     }
 
+    // TODO: 10/1/16 add to storage
     private void addToFavs(){
         Toast.makeText(getApplicationContext(),"Recipe Added To Favorites",Toast.LENGTH_LONG).show();
     }
