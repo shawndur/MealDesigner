@@ -1,9 +1,8 @@
 package letseat.mealdesigner;
 
 import android.app.Application;
-import android.util.Log;
 
-import letseat.mealdesigner.long_term_memory.Long_Term_Interface;
+import letseat.mealdesigner.storage.Database;
 
 /**
  * This Is the application class for meal designer.
@@ -15,11 +14,11 @@ import letseat.mealdesigner.long_term_memory.Long_Term_Interface;
  */
 
 public class MealDesignerApp extends Application {
-    private Long_Term_Interface _storage; //Global Long_Term_Interface object
+    private Database _storage; //Global Long_Term_Interface object
 
     @Override
     public void onCreate(){
-        _storage = new Long_Term_Interface(this);
+        //_storage = new Long_Term_Interface(this);
         super.onCreate();
     }
 
@@ -27,7 +26,7 @@ public class MealDesignerApp extends Application {
      * This is a getter method for the global Long_Term_Interface
      * @return a Long_Term_Interface object
      */
-    public Long_Term_Interface getLTI(){
+    public Database getDatabase(){
         return _storage;
     }
 
