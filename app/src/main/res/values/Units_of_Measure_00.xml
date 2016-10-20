@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="Pounds">lb (pounds)</string>
+    <string name="Ounces">oz (ounces)</string>
+    <string name="Kilograms">kg (kilograms)</string>
+    <string name="Grams">g (grams)</string>
+    <string name="Fluid_Ounces">fl.oz. (fluid ounces)</string>
+    <string name="Tablespoons">Tbs. or T (tablespoons)</string>
+    <string name="Teaspoons">tsp. (teaspoons)</string>
+    <string name="Milliliters">mL (milliliters)</string>
+    <string name="Liters">L (liters)</string>
+
+</resources>

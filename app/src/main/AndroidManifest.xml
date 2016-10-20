@@ -3,6 +3,7 @@
     package="letseat.mealdesigner">
 
     <application
+        android:name=".MealDesignerApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -12,14 +13,11 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-
-            <!--
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
+            </intent-filter>-->
         </activity>
         <activity android:name=".recipies.MainRecipe">
             <intent-filter>
@@ -44,13 +42,18 @@
                 android:value=".recipies.MainRecipe" />
         </activity>
         <activity android:name=".shoppinglist.ShoppingListEdit"></activity>
-        <activity android:name=".cook.Cook"></activity>
         <activity android:name=".recipewalk.RecipeWalk1"></activity>
         <activity android:name=".recipewalk.RecipeWalk2"></activity>
         <activity android:name=".recipewalk.RecipeWalk3"></activity>
         <activity android:name=".recipewalk.RecipeWalk4"></activity>
         <activity android:name=".recipewalk.RecipeWalk5"></activity>
         <activity android:name=".recipewalk.RecipeWalk6"></activity>
+        <activity android:name=".cook.Cook"
+            android:parentActivityName=".recipeinfo.RecipeInfo">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".recipeinfo.RecipeInfo" />
+        </activity>
 
 
     </application>

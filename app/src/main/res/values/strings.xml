@@ -45,28 +45,14 @@
     <string name="allergenEgg">Does this recipe contain Eggs?</string>
     <string name="allergenNut">Does this recipe contain Nuts?</string>
     <string name="walk6">Please enter the following information about food allergies. Enter Yes or No, then click Create My Recipe</string>
-    <string-array name="equipment_array">
-        <item>Spoon</item>
-        <item>Knife</item>
-        <item>Fork</item>
-        <item>Measuring Cup</item>
-        <item>Large Pot</item>
-        <item>Medium Pot</item>
-        <item>Skillet</item>
-        <item>Strainer</item>
-    </string-array>
-    <string-array name="measurement">
-        <item>Cups</item>
-        <item>Tablespoon</item>
-        <item>Teaspoon</item>
-        <item>Oz</item>
-        <item>Grams</item>
-        <item>Fl Oz</item>
-        <item>Pinch</item>
-    </string-array>
     <string name="steps">Steps</string>
     <string name="tools">Tools</string>
+    <string name="recipe2">Some Recipe 2</string>
+    <string name="recipe3">Some Recipe 3</string>
+    <string name="recipe4">Some Recipe 4</string>
+    <string name="convert">Convert</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="convert_00">Convert Measurements</string>
 </resources>
