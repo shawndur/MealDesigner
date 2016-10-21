@@ -11,13 +11,16 @@ import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 
+import letseat.mealdesigner.MealDesignerApp;
 import letseat.mealdesigner.R;
 
 import letseat.mealdesigner.recipies.MainRecipe;
+import letseat.mealdesigner.storage.Database;
+import letseat.mealdesigner.storage.Recipe;
 
 public class RecipeWalk2 extends AppCompatActivity {
 
-
+    Database x = ((MealDesignerApp) getApplication()).getDatabase();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +47,8 @@ public class RecipeWalk2 extends AppCompatActivity {
             @Override //what to do with selected item
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.v("item", (String) parent.getItemAtPosition(position));
+              //  Recipe newRecipe;
+              //  x.setRecipe().setIngredients();
             }
 
             @Override //what to do if no item selected
