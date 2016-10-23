@@ -46,6 +46,7 @@ public class RecipeWalk4 extends AppCompatActivity {
     }
     //next step button
     public void step5(View view){
+        newRecipe.setSteps(steps);
         Intent intent = new Intent(this,RecipeWalk5.class);
         startActivity(intent);
     }
