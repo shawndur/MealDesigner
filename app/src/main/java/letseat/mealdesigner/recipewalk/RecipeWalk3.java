@@ -17,6 +17,7 @@ import letseat.mealdesigner.MealDesignerApp;
 import letseat.mealdesigner.R;
 import letseat.mealdesigner.recipies.MainRecipe;
 import letseat.mealdesigner.storage.Database;
+import letseat.mealdesigner.storage.Ingredient;
 import letseat.mealdesigner.storage.Recipe;
 
 public class RecipeWalk3 extends AppCompatActivity {
@@ -26,6 +27,7 @@ public class RecipeWalk3 extends AppCompatActivity {
     ArrayList<String> amount  = new ArrayList<>();
     ArrayAdapter<String> m_adapter;
     Recipe newRecipe;
+    Ingredient newIngredient;
     Database x = ((MealDesignerApp) getApplication()).getDatabase();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +60,8 @@ public class RecipeWalk3 extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.v("item", (String) parent.getItemAtPosition(position));
                 String label = parent.getItemAtPosition(position).toString();
-                amount.add(label);
-                amount.add(input2);
+                newIngredient.setName(label);
+                newIngredient.setAmount(input2);
            //     Recipe newRecipe;
            //     newRecipe.setName();
             }
@@ -84,7 +86,6 @@ public class RecipeWalk3 extends AppCompatActivity {
     //next step button
     public void step4(View view){
         newRecipe.setIngredients(ingredient);
-        newRecipe.setIngredients(amount);
         Intent intent = new Intent(this,RecipeWalk4.class);
         startActivity(intent);
     }
