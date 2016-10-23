@@ -7,7 +7,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import letseat.mealdesigner.MealDesignerApp;
 import letseat.mealdesigner.R;
@@ -16,6 +20,12 @@ import letseat.mealdesigner.storage.Database;
 import letseat.mealdesigner.storage.Recipe;
 
 public class RecipeWalk3 extends AppCompatActivity {
+    private EditText editTextName;
+    private EditText editTextAmount;
+    ArrayList<String> ingredient  = new ArrayList<>();
+    ArrayList<String> amount  = new ArrayList<>();
+    ArrayAdapter<String> m_adapter;
+    Recipe newRecipe;
     Database x = ((MealDesignerApp) getApplication()).getDatabase();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +34,8 @@ public class RecipeWalk3 extends AppCompatActivity {
 
         //has no toolbar
 
+        editTextName = (EditText) findViewById(R.id.editText5);
+        editTextAmount = (EditText) findViewById(R.id.editText6);
         //declare spinner
         Spinner measure_spinner = (Spinner) findViewById(R.id.measure_spinner);
 
@@ -39,10 +51,15 @@ public class RecipeWalk3 extends AppCompatActivity {
         //apply the adapter
         measure_spinner.setAdapter(adapter);
 
+        final String input2 = editTextAmount.getText().toString();
+
         measure_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override //what to do with selected item
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.v("item", (String) parent.getItemAtPosition(position));
+                String label = parent.getItemAtPosition(position).toString();
+                amount.add(label);
+                amount.add(input2);
            //     Recipe newRecipe;
            //     newRecipe.setName();
             }
@@ -53,9 +70,21 @@ public class RecipeWalk3 extends AppCompatActivity {
             }
         });
     }
-
+    final String input1 = editTextName.getText().toString();
+    //add ingredient button
+    public void addIngredient(View view){
+        if (input1.matches("")) {
+            Toast.makeText(this, "You did not enter an ingredient", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else{
+            ingredient.add(input1);
+        }
+    }
     //next step button
     public void step4(View view){
+        newRecipe.setIngredients(ingredient);
+        newRecipe.setIngredients(amount);
         Intent intent = new Intent(this,RecipeWalk4.class);
         startActivity(intent);
     }

@@ -7,9 +7,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
+
+import java.util.ArrayList;
 
 import letseat.mealdesigner.MealDesignerApp;
 import letseat.mealdesigner.R;
@@ -19,13 +22,17 @@ import letseat.mealdesigner.storage.Database;
 import letseat.mealdesigner.storage.Recipe;
 
 public class RecipeWalk2 extends AppCompatActivity {
-
+    private EditText editText1;
+    ArrayList<String> equipment  = new ArrayList<>();
+    ArrayAdapter<String> m_adapter;
+    Recipe newRecipe;
     Database x = ((MealDesignerApp) getApplication()).getDatabase();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_walk2);
 
+        editText1 = (EditText) findViewById(R.id.editText13);
         //has no toolbar
 
         //declare spinner
@@ -47,6 +54,8 @@ public class RecipeWalk2 extends AppCompatActivity {
             @Override //what to do with selected item
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.v("item", (String) parent.getItemAtPosition(position));
+                String label = parent.getItemAtPosition(position).toString();
+                equipment.add(label);
               //  Recipe newRecipe;
               //  x.setRecipe().setIngredients();
             }
@@ -59,9 +68,19 @@ public class RecipeWalk2 extends AppCompatActivity {
 
 
     }
-
+    final String input1 = editText1.getText().toString();
+    //add equipment button
+    public void addEquip(View view){
+        if (input1.matches("")) {
+            //void method to not add if empty
+        }
+        else{
+            equipment.add(input1);
+        }
+    }
     //next step button
     public void step3(View view){
+        newRecipe.setTools(equipment);
         Intent intent = new Intent(this,RecipeWalk3.class);
         startActivity(intent);
     }
