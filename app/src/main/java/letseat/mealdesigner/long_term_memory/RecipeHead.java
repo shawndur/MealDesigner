@@ -360,7 +360,8 @@ public class RecipeHead
             current = current.next();
         }
 
-        return output + _END_OF_RECIPE;
+        return output + _END_OF_RECIPE + getAllergensForMemory();
+//        return output + _END_OF_RECIPE;   // changed to ^
 
 
 
@@ -542,6 +543,21 @@ public class RecipeHead
 
     }
 
+    public String getAllergensForMemory()
+    {
+        String output = "";
+
+        int allrgFlags = getAllergenFlags();
+
+        if(allrgFlags > 0x0FF)  // in the future if more food allergens are discovered, this conditional may be necessary, but as it is today there are only 8 common food allergens which fits nicely into a single byte (or a char)
+        {
+            // code to handle extra allergens go here in case more are discovered in the future.
+        }
+
+        return (char) allrgFlags + "\0\0\0";
+
+    }
+
     public void decipherAllergenFlags(String allergenFlags)
     {
         if(allergenFlags.length() == 0)
@@ -584,11 +600,6 @@ public class RecipeHead
             default:
                 return UNKNOWN;
         }
-    }
-
-    private boolean decipher2(char input, int stamp)
-    {
-        return (input & stamp) == stamp;
     }
 
     /**
