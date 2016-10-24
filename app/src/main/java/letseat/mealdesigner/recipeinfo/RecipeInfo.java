@@ -144,11 +144,20 @@ public class RecipeInfo extends AppCompatActivity {
         ShopList list = _db.getShopList();
         ArrayList<Ingredient> ingredients = list.getIngredients();
 
+        if(!_dataset.containsKey("Ingredients")){
+            Toast.makeText(getApplicationContext(),"No Ingredients",Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        /*
         for(String name : _dataset.get("Ingredients")){
             for(Ingredient ingredient : ingredients){
                 if(name.equals(ingredient.getName())) {}
             }
         }
+        //*/
+        //*
+         //*/
 
         list.setIngredients(ingredients);
         _db.setShopList(list);
