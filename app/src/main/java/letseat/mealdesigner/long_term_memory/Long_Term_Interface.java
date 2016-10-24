@@ -277,7 +277,8 @@ public class Long_Term_Interface
 //                        COMPONENT + "Uncle Smalgard was adamant that mayonnaise would detract from the awesomeness of this recipe." + end_COMPONENT +
 //                        COMPONENT + "Unfortunately for dear Uncle Smalgard, he was killed less than a week after landing in NYC by a freak incident involving an exploding chicken and laundry detergent, but we just assumed it was an accident." + end_COMPONENT +
 //                    end_COMMENTS +
-//                END_OF_RECIPE;
+//                END_OF_RECIPE +
+//                  Allergen_flags (4 bytes);
 
 
 
@@ -305,9 +306,17 @@ public class Long_Term_Interface
         bySection.put(PROCEDURE, parseComponentsFromSpecialSubstring(input, PROCEDURE, end_PROCEDURE));
         bySection.put(COMMENTS, parseComponentsFromSpecialSubstring(input, COMMENTS, end_COMMENTS));
 
+        // added 10/24
+        String allergenInfo = input.substring(end_COMMENTS+1);  // under initial operation this is only one char long (as more food allergens are discovered this will become more than one char)
+
+
+
 //		System.out.println(bySection.toString());
 
         RecipeHead recipeHead = new RecipeHead(specialSubstring(input, RECIPE_NAME, end_RECIPE_NAME));
+
+        recipeHead.decipherAllergenFlags(allergenInfo); // added 10/24
+
 
         for(int i = 0; i < bySection.get(EQUIPMENT).size(); i++)
         {
