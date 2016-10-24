@@ -1,11 +1,19 @@
 package letseat.mealdesigner.long_term_memory;
 
+import android.app.AlertDialog;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 //import java.util.Iterator;
 //import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 import letseat.mealdesigner.long_term_memory.ListComponent.ComponentType;
+
+import static letseat.mealdesigner.long_term_memory.RecipeHead.Allergen.*;
+//import static letseat.mealdesigner.long_term_memory.RecipeHead.Allergen.FISH;
+//import static letseat.mealdesigner.long_term_memory.RecipeHead.Allergen.PEANUTS;
+//import static letseat.mealdesigner.long_term_memory.RecipeHead.Allergen.TREE_NUTS;
 
 //import static letseat.mealdesigner.long_term_memory.RecipeHead.List_Type.EQUIPMENT;
 //import static letseat.mealdesigner.long_term_memory.RecipeHead.List_Type.INGREDIENTS;
@@ -20,12 +28,31 @@ public class RecipeHead
 //    private int _equiCount, _ingrCount, _procCount, _commCount;
     private Map<ComponentType, Integer> _counts;
     private Map<ComponentType, ListComponent> _heads /* , _tails */;
+    private Map<Allergen, Boolean> _allergens;
     private String _recipeName;
+
+//    /**
+//     * Bit  Description
+//     * 7    Gluten (including wheat, barley, rye, oats)
+//     * 6    Soy
+//     * 5    Eggs
+//     * 4    Dairy / Lactose
+//     * 3    Shellfish
+//     * 2    Fish
+//     * 1    Tree nuts
+//     * 0    Peanuts
+//     */
+//    private int _allergenFlags = 0x00;
+
+    public enum Allergen
+    {
+        PEANUTS, TREE_NUTS, FISH, SHELLFISH, DAIRY_LACTOSE, EGGS, SOY, GLUTEN, UNKNOWN
+    }
 
 
 
     /**
-     * Used to create a recipe in dynamic memory, with no additional information given to the constructor other than the name of the recipe.
+     * Used to create a recipe in dynamic memory, with no additional information given to the constructor other than the name of the recipe. (this allows more generalized functionality)
      */
     public RecipeHead(String recipeName)
     {
@@ -39,8 +66,26 @@ public class RecipeHead
 
         _heads = new HashMap<ComponentType, ListComponent>();
 
+        _allergens = new HashMap<Allergen, Boolean>();
+
+        initializeAllergenMapToFalse();
+
+
+
 //        _tails = new HashMap<ComponentType, ListComponent>();
 
+    }
+
+    private void initializeAllergenMapToFalse()
+    {
+        _allergens.put(PEANUTS, false);
+        _allergens.put(TREE_NUTS, false);
+        _allergens.put(FISH, false);
+        _allergens.put(SHELLFISH, false);
+        _allergens.put(DAIRY_LACTOSE, false);
+        _allergens.put(EGGS, false);
+        _allergens.put(SOY, false);
+        _allergens.put(GLUTEN, false);
     }
 
     public String name()
@@ -417,6 +462,133 @@ public class RecipeHead
             _heads.get(ComponentType.COMMENT).printRelevantInfo();
         }
 
+    }
+
+
+    public boolean setAllergen(Allergen alerg)
+    {
+        _allergens.put(alerg,true);
+
+        System.out.println("Allergen \"" + alerg + "\" has been set to \"" + _allergens.get(alerg) + "\"");
+
+        return _allergens.get(alerg);
+    }
+
+    public boolean clearAllergen(Allergen alerg)
+    {
+        _allergens.put(alerg, false);
+
+        System.out.println("Allergen \"" + alerg + "\" has been set to \"" + _allergens.get(alerg) + "\"");
+
+        return _allergens.get(alerg);
+    }
+
+
+//    /**
+//     * Bit  Description
+//     * 7    Gluten (including wheat, barley, rye, oats)
+//     * 6    Soy
+//     * 5    Eggs
+//     * 4    Dairy / Lactose
+//     * 3    Shellfish
+//     * 2    Fish
+//     * 1    Tree nuts
+//     * 0    Peanuts
+//     */
+//
+//    public enum Allergen
+//    {
+//        PEANUTS, TREE_NUTS, FISH, SHELLFISH, DAIRY_LACTOSE, EGGS, SOY, GLUTEN, UNKNOWN
+//    }
+    public int getAllergenFlags()
+    {
+        int output = 0;
+
+
+        if(_allergens.get(PEANUTS))
+        {
+            output |= 0x01;
+        }
+        if(_allergens.get(TREE_NUTS))
+        {
+            output |= 0x02;
+        }
+        if(_allergens.get(FISH))
+        {
+            output |= 0x04;
+        }
+        if(_allergens.get(SHELLFISH))
+        {
+            output |= 0x08;
+        }
+        if(_allergens.get(DAIRY_LACTOSE))
+        {
+            output |= 0x10;
+        }
+        if(_allergens.get(EGGS))
+        {
+            output |= 0x20;
+        }
+        if(_allergens.get(SOY))
+        {
+            output |= 0x40;
+        }
+        if(_allergens.get(GLUTEN))
+        {
+            output |= 0x80;
+        }
+
+        return output;
+
+    }
+
+    public void decipherAllergenFlags(String allergenFlags)
+    {
+        if(allergenFlags.length() == 0)
+        {
+            return;
+        }
+
+        char current = allergenFlags.charAt(0);
+
+        Allergen cur_allrg = PEANUTS;
+
+        for(int stamp = 0x01; stamp < 257; stamp <<= 1)
+        {
+            if((current & stamp) == stamp)
+            {
+                setAllergen(cur_allrg);
+            }
+            cur_allrg = nextAllergen(cur_allrg);
+        }
+
+
+    }
+
+    private Allergen nextAllergen(Allergen current)
+    {
+        switch(current)
+        {
+            case PEANUTS:
+                return TREE_NUTS;
+            case TREE_NUTS:
+                return FISH;
+            case SHELLFISH:
+                return DAIRY_LACTOSE;
+            case DAIRY_LACTOSE:
+                return EGGS;
+            case EGGS:
+                return SOY;
+            case SOY:
+                return GLUTEN;
+            default:
+                return UNKNOWN;
+        }
+    }
+
+    private boolean decipher2(char input, int stamp)
+    {
+        return (input & stamp) == stamp;
     }
 
     /**
