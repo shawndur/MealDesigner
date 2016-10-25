@@ -40,7 +40,7 @@ public class Long_Term_Interface
 
     private Application _top;
     private File _appHomeDir;                           // the internal directory of the app
-    private static final String EXTENSION = ".scgc";    // this can be changed, but all files which exist with the outdated extension need to be updated
+    private static final String EXTENSION = ".txt";    // this can be changed, but all files which exist with the outdated extension need to be updated
     private static final String DEFAULT = "default_filename_";  // the default filename to be used if a given filename is invalid
 
 
@@ -53,7 +53,13 @@ public class Long_Term_Interface
     }
 
 
-
+    /**
+     * Retrieves all contents from the specified file in an ArrayList<String>
+     *
+     * In the case of an IO Exception, the output will contain, as its last member, a string with a single char whose value is 0x0FF.
+     * In the case of a File Not Found Exception, the output will contain a single string, which consists of a single char whose value is 0x0FE
+     *
+     */
     public ArrayList<String> getLinesFromFile(String filename)
     {
         ArrayList<String> output = new ArrayList();
@@ -82,6 +88,10 @@ public class Long_Term_Interface
             }
             catch(IOException IOE)
             {
+                char error_negative1 = 0x0FF;
+                String error1_string = "" + error_negative1;
+                output.add(error1_string);
+
                 // something clever should go here
             }
 
@@ -90,7 +100,10 @@ public class Long_Term_Interface
         }
         catch(FileNotFoundException FNFE)
         {
-            // code to fetch default files and present them to the user goes here.
+            // A single-character-string is passed back
+            char error_negative2 = 0x0FE;
+            String error2_string = ""+error_negative2;
+            output.add(error2_string);
         }
 
         return output;
@@ -698,6 +711,9 @@ public class Long_Term_Interface
 
     /**
      * Use in conjunction with "testUserSuppliedFileExists(...)" to guarantee that the caller knows when it can trust the output of this function, or when to provide the user with options for selecting the correct file.
+     * If the exact user-supplied name matches (case insensitive) one found in the index file, then the actual filename is returned as the sole member of the output.
+     * If the user-supplied name does not match, then a list of possible user-supplied recipe names are returned.
+     * Hence why it is important to use this function after checking the return value of " public boolean testUserSuppliedFileExists(...) ".
      */
     public ArrayList<String> getFilename(String userSupplied)
     {
@@ -823,6 +839,11 @@ public class Long_Term_Interface
 
 
         return possibleMatches;
+    }
+
+    public char getIndexFileDelimiter()
+    {
+        return INDEX_FILE_DELIM;
     }
 
 }
