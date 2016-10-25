@@ -117,13 +117,13 @@ public class Initializer
         chx.addProcedureWithTimer("Simmer on medium-low heat for 3 hours",(3*3600),"Do not stir, but do use the spider or slotted serving spoon to skim any foamy material off the top from time-to-time.  Some bubbles should break the surface, but do not let it reach a full boil.  Ideal temperature of the liquid is between 180 and 200 degrees Fahrenheit");
         chx.addProcedureWithoutTimer("Add the sache d'epices to the liquid","Use a piece of unwaxed twine to tie the sache to the pot's handle for easy retrieval!");
         chx.addProcedureWithTimer("Continue simmering for another hour",3600,"Make sure you have a garbage bin ready for the next step!");
-        chx.addProcedureWithoutTimer("CAREFULLY remove as many bones as you can without disturbing the stock.","Do not worry about getting all the bones out, it is more important that you try to keep them from breaking apart.");
+        chx.addProcedureWithoutTimer("CAREFULLY remove as many bones as you can and discard them without disturbing the stock.","Do not worry about getting all the bones out, it is more important that you try to keep them from breaking apart.");
         chx.addProcedureWithoutTimer("Place the cheesecloth inside the strainer, and place the strainer in the tupperware or glass container","Make sure all children and pets are clear of the area.");
         chx.addProcedureWithoutTimer("Pour the remaining liquid into the bowl through the cheesecloth-strainer setup","If you can, use the tongs to hold the remaining bones in place.");
-        chx.addProcedureWithoutTimer("Lay the clear plastic wrap gently on top of the liquid and place the container in the fridge","Leave until ");
+        chx.addProcedureWithoutTimer("Lay the clear plastic wrap gently on top of the liquid and place the container in the fridge","Leave until the stock has cooled.  It may take on a \"jiggly\" texture; the \"jigglier\" the better!");
         chx.addProcedureWithoutTimer("When the stock is fully-cooled (may take overnight) remove the plastic wrap and scrape the fat into the custard cup -sized container","");
         chx.addProcedureWithoutTimer("Use a spoon to remove any fat that has accumulated at the top of the stock","");
-        chx.addProcedureWithoutTimer("Save the fat you removed when for you want to make gravy or thick soups wit this stock.","The fat can be frozen for long periods of time");
+        chx.addProcedureWithoutTimer("Save the fat you removed when for you want to make gravy or thick soups wit this stock.","The fat can be frozen for long periods of time.");
 
         chx.addComment("If the stock does come out cloudy, don't worry:  There is nothing wrong with it -- it will taste the same.  Professional chefs who charge $20 per plate are really the only ones who worry about the clarity of the stock.");
         chx.addComment("Making stock is a great skill to have, there are so many recipes you can make using this stock.");
