@@ -17,6 +17,9 @@ import java.util.Date;
 
 import letseat.mealdesigner.MainActivity;
 import letseat.mealdesigner.MealDesignerApp;
+import letseat.mealdesigner.storage.Database;
+import letseat.mealdesigner.storage.Recipe;
+import letseat.mealdesigner.storage.ShopList;
 
 
 /**
@@ -24,7 +27,7 @@ import letseat.mealdesigner.MealDesignerApp;
  * If the functionality of this class is desired, use this as an inherited class.
  * Created by George_Sr on 9/20/2016.
  */
-public class Long_Term_Interface
+public class Long_Term_Interface implements Database
 {
     private static final char RECIPE_NAME = (char) 0x80, end_RECIPE_NAME = (char) 0x90,
             EQUIPMENT = (char) 0x81, end_EQUIPMENT = (char) 0x91,
@@ -42,7 +45,7 @@ public class Long_Term_Interface
     private File _appHomeDir;                           // the internal directory of the app
     private static final String EXTENSION = ".scgc";    // this can be changed, but all files which exist with the outdated extension need to be updated
     private static final String DEFAULT = "default_filename_";  // the default filename to be used if a given filename is invalid
-
+    private RecipeHead _temp;    //temporary recipe
 
 
     public Long_Term_Interface(Application top)
@@ -823,6 +826,60 @@ public class Long_Term_Interface
 
 
         return possibleMatches;
+    }
+
+    /****************************
+     * Interface Implementation *
+     *   -Shawn Durandetto      *
+     **************************/
+
+    // TODO: 10/25/16 Index file?
+
+    public Recipe newRecipe(String name){
+        return new RecipeHead(name);
+    }
+
+    public Recipe getRecipe(String name){
+        ArrayList<String> lines = getLinesFromFile(name);
+        if(lines.isEmpty()) return null;
+
+        return parseLineToRecipe(lines.get(0));
+    }
+
+    public boolean setRecipe(Recipe recipe){
+        convertRecipeToWriteable((RecipeHead) recipe);
+        // TODO: 10/25/16 filename?
+        return writeRecipeToFile(((RecipeHead) recipe).name(),convertRecipeToWriteable((RecipeHead) recipe));
+    }
+
+
+    public ShopList getShopList(){
+        // TODO: 10/25/16 return shopping list. How? 
+        return null;
+    }
+    
+    public boolean setShopList(ShopList shopList){
+        // TODO: 10/25/16 set shopping list. How? 
+        return false;
+    }
+
+
+    public ArrayList<String> getListOfRecipes(){
+        // TODO: 10/25/16 return list of recipes 
+        return null;
+    }
+    
+    public Recipe getTempRecipe(){
+        return _temp;
+    }
+
+    public boolean setTempRecipe(Recipe recipe){
+        _temp =  (RecipeHead) recipe;
+        return true;
+    }
+
+    public void clearTemp(){
+        _temp = null;
     }
 
 }
