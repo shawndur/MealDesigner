@@ -26,6 +26,8 @@ public class RecipeWalk3 extends AppCompatActivity {
     ArrayList<String> ingredient  = new ArrayList<>();
     ArrayList<String> amount  = new ArrayList<>();
     ArrayAdapter<String> m_adapter;
+    String unit = "";
+    String finalIngredient;
     Recipe newRecipe;
     Ingredient newIngredient;
     Database x = (Database) ((MealDesignerApp) getApplication()).getDatabase().getTempRecipe();
@@ -42,7 +44,7 @@ public class RecipeWalk3 extends AppCompatActivity {
         Spinner measure_spinner = (Spinner) findViewById(R.id.measure_spinner);
 
         //populate spinner
-        String[] items = new String[] { "Cup", "Ounce", "Gram", "Tablespoon", "Teaspoon", "Fld Ounce", "Liter" };
+        String[] items = new String[] { "   ", "Cup", "Ounce", "Gram", "Tablespoon", "Teaspoon", "Fld Ounce", "Liter" };
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, items);
@@ -53,17 +55,23 @@ public class RecipeWalk3 extends AppCompatActivity {
         //apply the adapter
         measure_spinner.setAdapter(adapter);
 
-        final String input2 = editTextAmount.getText().toString();
-
         measure_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
             @Override //what to do with selected item
+
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.v("item", (String) parent.getItemAtPosition(position));
-                String label = parent.getItemAtPosition(position).toString();
-                newIngredient.setName(label);
-                newIngredient.setAmount(input2);
-           //     Recipe newRecipe;
-           //     newRecipe.setName();
+                    Log.v("item", (String) parent.getItemAtPosition(position));
+                    final String label = parent.getItemAtPosition(position).toString();
+                    //newIngredient.setName(label);
+                    //newIngredient.setAmount(input2);
+                    unit = label;
+                    //ingredient.add(label);
+                    //String finalIngredient = input2 + label;
+                    //ingredient.add(finalIngredient);
+                    //     Recipe newRecipe;
+                    //     newRecipe.setName();
+
             }
 
             @Override //what to do if no item selected
@@ -72,15 +80,19 @@ public class RecipeWalk3 extends AppCompatActivity {
             }
         });
     }
+
     final String input1 = editTextName.getText().toString();
+    final String input2 = editTextAmount.getText().toString();
+
     //add ingredient button
     public void addIngredient(View view){
         if (input1.matches("")) {
-            Toast.makeText(this, "You did not enter an ingredient", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You did not fill in an ingredient", Toast.LENGTH_SHORT).show();
             return;
         }
         else{
-            ingredient.add(input1);
+            finalIngredient= input1 + " " + input2+ " " +unit;
+            ingredient.add(finalIngredient);
         }
     }
     //next step button

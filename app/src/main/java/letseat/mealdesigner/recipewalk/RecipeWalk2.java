@@ -43,7 +43,7 @@ public class RecipeWalk2 extends AppCompatActivity {
         Spinner equip_spinner = (Spinner) findViewById(R.id.equip_spinner);
 
         //populate spinner
-        String[] items = new String[] { "Fork", "Spoon", "Knife", "Measuring Cup", "Skillet", "Large Pot", "Strainer" };
+        String[] items = new String[] { "    ", "Fork", "Spoon", "Knife", "Measuring Cup", "Skillet", "Large Pot", "Strainer" };
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, items);
