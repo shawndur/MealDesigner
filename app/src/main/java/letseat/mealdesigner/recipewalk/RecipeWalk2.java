@@ -26,11 +26,15 @@ public class RecipeWalk2 extends AppCompatActivity {
     ArrayList<String> equipment  = new ArrayList<>();
     ArrayAdapter<String> m_adapter;
     Recipe newRecipe;
-    Database x = ((MealDesignerApp) getApplication()).getDatabase();
+
+    Database x = (Database) ((MealDesignerApp) getApplication()).getDatabase().getTempRecipe();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_walk2);
+
+        //Intent intent= getIntent();
+        //ArrayList name= intent.getStringArrayListExtra(newRecipe);
 
         editText1 = (EditText) findViewById(R.id.editText13);
         //has no toolbar
@@ -68,7 +72,8 @@ public class RecipeWalk2 extends AppCompatActivity {
 
 
     }
-    final String input1 = editText1.getText().toString();
+    String input1 = editText1.getText().toString();
+
     //add equipment button
     public void addEquip(View view){
         if (input1.matches("")) {
@@ -81,6 +86,7 @@ public class RecipeWalk2 extends AppCompatActivity {
     //next step button
     public void step3(View view){
         newRecipe.setTools(equipment);
+        x.setTempRecipe(newRecipe);
         Intent intent = new Intent(this,RecipeWalk3.class);
         startActivity(intent);
     }

@@ -38,10 +38,10 @@ public class RecipeWalk1 extends AppCompatActivity {
         //has no toolbar
 
     }
-    final String input1 = editText1.getText().toString();
-    final String input2 = editText2.getText().toString();
-    final String input3 = editText3.getText().toString();
-    final String input4 = editText4.getText().toString();
+    String input1 = editText1.getText().toString();
+    String input2 = editText2.getText().toString();
+    String input3 = editText3.getText().toString();
+    String input4 = editText4.getText().toString();
 
     //next step button
     public void step2(View view){
@@ -49,7 +49,8 @@ public class RecipeWalk1 extends AppCompatActivity {
         recipe.add(input2);
         recipe.add(input3);
         recipe.add(input4);
-        newRecipe.setSteps(recipe);
+        newRecipe.setTempRecipePass(recipe);
+        x.setTempRecipe(newRecipe);
 
         Intent intent = new Intent(this,RecipeWalk2.class);
         startActivity(intent);

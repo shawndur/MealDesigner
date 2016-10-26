@@ -23,7 +23,7 @@ public class RecipeWalk4 extends AppCompatActivity {
     ArrayList<String> steps  = new ArrayList<>();
     ArrayAdapter<String> m_adapter;
     Recipe newRecipe;
-    Database x = ((MealDesignerApp) getApplication()).getDatabase();
+    Database x = (Database) ((MealDesignerApp) getApplication()).getDatabase().getTempRecipe();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +47,7 @@ public class RecipeWalk4 extends AppCompatActivity {
     //next step button
     public void step5(View view){
         newRecipe.setSteps(steps);
+        x.setTempRecipe(newRecipe);
         Intent intent = new Intent(this,RecipeWalk5.class);
         startActivity(intent);
     }

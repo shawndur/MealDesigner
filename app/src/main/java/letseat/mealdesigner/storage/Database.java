@@ -48,4 +48,17 @@ public interface Database {
      * @return An ArrayList of strings, where each string is a recipe name
      */
     ArrayList<String> getListOfRecipes();
+
+    /**
+     * Store all data temporarily in the recipe before setting
+     * @param recipe An ArrayList of strings to carry the recipe through creation walk through
+     * @return Returns true if successful
+     */
+    boolean setTempRecipe(Recipe recipe);
+
+    /**
+     * Get a list of ingredients used in the recipe
+     * @return Returns an ArrayList of strings where each string is a ingredient
+     */
+    ArrayList<String> getTempRecipe();
 }

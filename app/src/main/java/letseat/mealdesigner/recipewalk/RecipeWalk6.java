@@ -26,7 +26,7 @@ public class RecipeWalk6 extends AppCompatActivity {
     ArrayList<String> allergies  = new ArrayList<>();
     ArrayAdapter<String> m_adapter;
     Recipe newRecipe;
-    Database x = ((MealDesignerApp) getApplication()).getDatabase();
+    Database x = (Database) ((MealDesignerApp) getApplication()).getDatabase().getTempRecipe();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +58,9 @@ public class RecipeWalk6 extends AppCompatActivity {
         allergies.add(input2);
         allergies.add(input3);
         allergies.add(input4);
+        allergies.add(input5);
         newRecipe.setSteps(allergies);
+        x.setTempRecipe(newRecipe);
         Intent intent = new Intent(this,MainRecipe.class);
         startActivity(intent);
     }

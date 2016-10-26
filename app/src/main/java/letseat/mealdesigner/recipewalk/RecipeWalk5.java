@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import letseat.mealdesigner.MealDesignerApp;
 import letseat.mealdesigner.R;
 import letseat.mealdesigner.recipies.MainRecipe;
+import letseat.mealdesigner.storage.Database;
 
 public class RecipeWalk5 extends AppCompatActivity {
+    Database x = (Database) ((MealDesignerApp) getApplication()).getDatabase().getTempRecipe();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
