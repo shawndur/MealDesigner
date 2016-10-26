@@ -1,0 +1,16 @@
+date: October 26, 2016
+meeting_type: group
+attendance: [<cnzytari>, <cpark22>, <shawndur>, <vanhoose>]
+absent: []
+excused_absences: []
+task_progress:[
+  {ubit: <cnzytari>, progress:  set up temp interfaces, used temp to save to memory.},
+  {ubit: <vanhoose>, progress: Still debugging database, pushed changes to dev branch.},
+  {ubit: <cpark22>, progress:  applied the interfaces, saving to memory.},
+  {ubit: <shawndur>, progress: implemented some of the interfaces.}
+  ]
+issues: [ # Post any issues here. Issues that cannot be addressed by the group should especially be included
+ ]
+Notes:  | # Anything covered in the meeting that doesn't fit elsewhere.
+  # Still need to implement all the interfaces
+  # Debug code to make sure it works

@@ -1,0 +1,17 @@
+date: October 24, 2016
+meeting_type: group
+attendance: [<cnzytari>, <cpark22>, <shawndur>, <vanhoose>]
+absent: []
+excused_absences: []
+task_progress:[
+  {ubit: <cnzytari>, progress: worked on code for connecting recipe creation info to database using interfaces.},
+  {ubit: <vanhoose>, progress: added allergen information to database, have been debugging database.},
+  {ubit: <cpark22>, progress: edited layout of shopping list so it can dynamically grow and shrink, used interfaces to call info from meomory.},
+  {ubit: <shawndur>, progress: set recipe info to call information from database to populate, basically done.}
+  ]
+issues: [ # Post any issues here. Issues that cannot be addressed by the group should especially be included
+ ]
+Notes:  | # Anything covered in the meeting that doesn't fit elsewhere.
+  # Need to set up temp interface to pass through recipe to store info for creation
+  # Still need to combine and then debug- meeting Wendesday
+  # Work on: Program check for index file before it sets off, need to creae file on device first time ran
