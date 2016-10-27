@@ -848,7 +848,6 @@ public class Long_Term_Interface implements Database
 
     public boolean setRecipe(Recipe recipe){
         convertRecipeToWriteable((RecipeHead) recipe);
-        // TODO: 10/25/16 filename?
         return writeRecipeToFile(((RecipeHead) recipe).name(),convertRecipeToWriteable((RecipeHead) recipe));
     }
 
