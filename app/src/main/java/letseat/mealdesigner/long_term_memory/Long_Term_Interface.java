@@ -15,9 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Date;
 
-import letseat.mealdesigner.MainActivity;
-import letseat.mealdesigner.MealDesignerApp;
-
 
 /**
  * This is the only class permitted (by group convention) to access the long-term memory of the device.
@@ -33,7 +30,15 @@ public class Long_Term_Interface
             COMMENTS = (char) 0x84, end_COMMENTS = (char) 0x94,
             END_OF_RECIPE = (char) 0x85,
             COMPONENT = (char) 0x86, end_COMPONENT = (char) 0x96,
-            COMMA = (char) 0x87, INDEX_FILE_DELIM = (char) 0x97;
+            COMMA = (char) 0x87, INDEX_FILE_DELIM = (char) 0x97,
+            _shopList_QTY = (char) 0x88, end_shopList_QTY = (char) 0x98,
+            _shopList_PRICE = (char) 0x89, end_shopList_PRICE = (char) 0x99,
+            _shopList_STORE = (char) 0x8a, end_shopList_STORE = (char) 0x9a,
+            _shopList_RECIPE_ADDED = (char) 0x8b, end_shopList_RECIPE_ADDED = (char) 0x9b,
+            _shopList_IN_CART = (char) 0x8c, end_shopList_IN_CART = (char) 0x9c;
+
+
+
 
     private static final double INDEX_FILE_TOLERANCE = 2.5;
 
@@ -845,5 +850,105 @@ public class Long_Term_Interface
     {
         return INDEX_FILE_DELIM;
     }
+
+    public ArrayList<ShoppingNode> getShoppingList()
+    {
+        ArrayList<String> shoplistLines = getLinesFromFile("ShoppingList");
+
+        ArrayList<ShoppingNode> output = new ArrayList<ShoppingNode>();
+
+        for(int i = 0; i < shoplistLines.size(); i++)
+        {
+            String current = shoplistLines.get(i);
+
+            String item = specialSubstring( current, INGREDIENT, end_INGREDIENT),
+                store = specialSubstring( current, _shopList_STORE, end_shopList_STORE),
+                addedFrom = specialSubstring( current, _shopList_RECIPE_ADDED, end_shopList_RECIPE_ADDED);
+
+//            Double qty = Double.parseDouble( specialSubstring( current,_shopList_QTY, end_shopList_QTY)),
+//                price = Double.parseDouble( specialSubstring( current, _shopList_PRICE, end_shopList_PRICE));
+
+            boolean inCart = specialSubstring( current, _shopList_IN_CART, end_shopList_IN_CART).compareToIgnoreCase("TRUE") == 0;
+
+            double qty = -1.0, price = -1.0;
+
+            try
+            {
+                qty = Double.parseDouble( specialSubstring( current, _shopList_QTY, end_shopList_QTY));
+                if(testBadOrNegativeDouble(qty))
+                {
+                    throw new NumberFormatException();
+                }
+//                switch(qty) // rats.  JVM won't allow this.
+//                {
+//                    case Double.NEGATIVE_INFINITY:
+//                    case Double.POSITIVE_INFINITY:
+//                    case Double.MAX_EXPONENT:
+//                    case Double.MAX_VALUE:
+//                    {
+//                        throw new NumberFormatException();
+//                    }
+//                    default:
+//                    {
+//                        break;
+//                    }
+//                }
+            }
+            catch(NumberFormatException q)
+            {
+                System.out.println("Error parsing quantity information while retrieving the shopping list.  Non-critical error, quantity will be set to -1.0");
+                qty = -1.0;
+            }
+            try
+            {
+                price = Double.parseDouble( specialSubstring( current, _shopList_PRICE, end_shopList_PRICE));
+                if(testBadOrNegativeDouble(price))
+                {
+                    throw new NumberFormatException();
+                }
+            }
+            catch(NumberFormatException p)
+            {
+                System.out.println("Error parsing price information while retrieving the shopping list.  Non-critical error, price will be set to -1.0");
+                price = -1.0;
+            }
+
+            ShoppingNode sNode = new ShoppingNode();
+
+            sNode.in_cart = inCart;
+            sNode.name = item;
+            sNode.price = price;
+            sNode.quantity = qty;
+            sNode.store = store;
+            sNode.recipeAddedFrom = addedFrom;
+
+            output.add(sNode);
+
+
+
+
+        }
+
+        return output;
+
+    }
+
+    private boolean testBadOrNegativeDouble(double input)
+    {
+        return input < 0 || Double.isInfinite(input) || Double.isNaN(input) || input == Double.MAX_EXPONENT || input == Double.MAX_VALUE;
+    }
+
+    public class ShoppingNode
+    {
+        public String name = "", store = "", recipeAddedFrom = "";
+//        RecipeHead recipeAddedFrom = null;    // whichever you decide to use...
+        public double quantity = -1.0, price = -1.0;
+        public boolean in_cart = false;
+
+
+
+    }
+
+
 
 }
