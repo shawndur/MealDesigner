@@ -12,6 +12,8 @@ import letseat.mealdesigner.long_term_memory.ListComponent.ComponentType;
 import letseat.mealdesigner.storage.Recipe;
 
 import static letseat.mealdesigner.long_term_memory.ListComponent.ComponentType.*;
+import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.NO_UOM;
+import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.UOM_ERR;
 import static letseat.mealdesigner.long_term_memory.RecipeHead.Allergen.*;
 //import static letseat.mealdesigner.long_term_memory.RecipeHead.Allergen.FISH;
 //import static letseat.mealdesigner.long_term_memory.RecipeHead.Allergen.PEANUTS;
@@ -684,7 +686,8 @@ public class RecipeHead implements Recipe
         for(;ingr.hasNext();ingr = ingr.next()){
             String toAdd = "";
             if(ingr.hasQuantity()) toAdd += ingr.getQuantity();
-            // TODO: 10/25/16 unit of measurement
+            if(ingr.unitOfMeasure() != NO_UOM &&  ingr.unitOfMeasure() != UOM_ERR)
+                toAdd += ingr.unitOfMeasure();
             toAdd += ingr.name();
             stringr.add(toAdd);
         }
@@ -696,10 +699,10 @@ public class RecipeHead implements Recipe
         ListComponent curr = null;
         for(String ingredient : ingredients){
             if(head == null){
-                head = new ListComponent(ingredient,0,"", ListComponent.UnitOfMeasure.NO_UOM);
+                head = new ListComponent(ingredient,0,"", NO_UOM);
                 curr=head;
             }else{
-                curr.setNext(new ListComponent(ingredient,0,"", ListComponent.UnitOfMeasure.NO_UOM));
+                curr.setNext(new ListComponent(ingredient,0,"", NO_UOM));
                 curr = curr.next();
             }
         }
