@@ -159,8 +159,8 @@ public class RecipeInfo extends AppCompatActivity {
         //*
          //*/
 
-        list.setIngredients(ingredients);
-        _db.setShopList(list);
+        //list.setIngredients(ingredients);
+        //_db.setShopList(list);
         Toast.makeText(getApplicationContext(),"Recipe Added To Shopping List",Toast.LENGTH_LONG).show();
     }
 
