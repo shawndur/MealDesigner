@@ -2,6 +2,7 @@ package letseat.mealdesigner;
 
 import android.app.Application;
 
+import letseat.mealdesigner.long_term_memory.Initializer;
 import letseat.mealdesigner.long_term_memory.Long_Term_Interface;
 import letseat.mealdesigner.storage.Database;
 
@@ -20,6 +21,7 @@ public class MealDesignerApp extends Application {
     @Override
     public void onCreate(){
         _storage = new Long_Term_Interface(this);
+        (new Initializer(_storage)).initialize();
         super.onCreate();
     }
 
