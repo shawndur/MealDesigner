@@ -15,8 +15,6 @@ import java.util.List;
 import letseat.mealdesigner.MealDesignerApp;
 import letseat.mealdesigner.R;
 import letseat.mealdesigner.cook.Cook;
-import letseat.mealdesigner.long_term_memory.Long_Term_Interface;
-import letseat.mealdesigner.long_term_memory.RecipeHead;
 import letseat.mealdesigner.storage.Database;
 import letseat.mealdesigner.storage.Ingredient;
 import letseat.mealdesigner.storage.Recipe;
@@ -52,6 +50,7 @@ public class RecipeInfo extends AppCompatActivity {
 
         _db = ((MealDesignerApp) getApplication()).getDatabase();
         Recipe recipe = _db.getRecipe(name);
+        _dataset = new LinkedHashMap<>();
 
         if(recipe == null){
             Toast.makeText(getApplicationContext(),"Error No/Empty File",Toast.LENGTH_LONG).show();
