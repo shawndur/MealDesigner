@@ -51,11 +51,11 @@ public class MainRecipe extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //ArrayList<String> names = ((MealDesignerApp)getApplicationContext()).getDatabase().getListOfRecipes();
-        ArrayList<String> names = new ArrayList<>();
+        ArrayList<String> names = ((MealDesignerApp)getApplicationContext()).getDatabase().getListOfRecipes();
+        /*ArrayList<String> names = new ArrayList<>();
         names.add("Toast");
         names.add("Toast");
-        names.add("Toast");
+        names.add("Toast");*/
         _recyclerView = (RecyclerView) findViewById(R.id.recipe_recycler_view);
         _recyclerView.setHasFixedSize(true);
         _layoutManager = new LinearLayoutManager(this);
