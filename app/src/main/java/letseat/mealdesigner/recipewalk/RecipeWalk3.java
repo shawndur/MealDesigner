@@ -27,12 +27,12 @@ public class RecipeWalk3 extends AppCompatActivity {
     String unit = "";
     String finalIngredient;
     Recipe newRecipe;
-    Database x = ((MealDesignerApp) getApplication()).getDatabase();
+    Database x ;//= ((MealDesignerApp) getApplication()).getDatabase();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_walk3);
-
+        x = ((MealDesignerApp) getApplication()).getDatabase();
         newRecipe = x.getTempRecipe();
         //has no toolbar
 

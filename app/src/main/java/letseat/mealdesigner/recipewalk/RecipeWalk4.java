@@ -22,12 +22,12 @@ public class RecipeWalk4 extends AppCompatActivity {
     private EditText editText1;
     ArrayList<String> steps  = new ArrayList<>();
     Recipe newRecipe;
-    Database x = ((MealDesignerApp) getApplication()).getDatabase();
+    Database x ;//= ((MealDesignerApp) getApplication()).getDatabase();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_walk4);
-
+        x = ((MealDesignerApp) getApplication()).getDatabase();
         newRecipe = x.getTempRecipe();
 
         //has no toolbar
