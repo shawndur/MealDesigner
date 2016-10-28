@@ -1038,10 +1038,13 @@ public class Long_Term_Interface implements Database, ShopList
         return false;
     }
 
-
     public ArrayList<String> getListOfRecipes(){
-        // TODO: 10/25/16 return list of recipes
-        return null;
+        ArrayList<String> toReturn = new ArrayList<>();
+        ArrayList<String> indexFileLines = getIndexFileLines();
+        for(int i =0;i<indexFileLines.size();++i) {
+            toReturn.add(getFilenameFromIndex(indexFileLines, i));
+        }
+        return toReturn;
     }
 
     public Recipe getTempRecipe(){
