@@ -24,7 +24,6 @@ import letseat.mealdesigner.storage.Recipe;
 public class RecipeWalk2 extends AppCompatActivity {
     private EditText editText1;
     ArrayList<String> equipment  = new ArrayList<>();
-    ArrayAdapter<String> m_adapter;
     Recipe newRecipe;
 
     Database x = (Database) ((MealDesignerApp) getApplication()).getDatabase().getTempRecipe();
@@ -33,29 +32,22 @@ public class RecipeWalk2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_walk2);
 
-        //Intent intent= getIntent();
-        //ArrayList name= intent.getStringArrayListExtra(newRecipe);
-
         editText1 = (EditText) findViewById(R.id.editText13);
         //has no toolbar
 
+
+
         //declare spinner
         Spinner equip_spinner = (Spinner) findViewById(R.id.equip_spinner);
-
         //populate spinner
-        String[] items = new String[] { "    ", "Fork", "Spoon", "Knife", "Measuring Cup", "Skillet", "Large Pot", "Strainer" };
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, items);
-
+        String[] items = new String[] { "Select an Item", "Fork", "Spoon", "Knife", "Measuring Cup", "Skillet", "Large Pot", "Strainer" };
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
         // Specify the layout to be more spaced out
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         //apply the adapter
         equip_spinner.setAdapter(adapter);
-
         equip_spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override //what to do with selected item
+            @Override //what to do with selected item from spinner
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.v("item", (String) parent.getItemAtPosition(position));
                 String label = parent.getItemAtPosition(position).toString();
@@ -72,15 +64,16 @@ public class RecipeWalk2 extends AppCompatActivity {
 
 
     }
-    String input1 = editText1.getText().toString();
+    //get string from fill in blank
+    String equipname = editText1.getText().toString();
 
     //add equipment button
     public void addEquip(View view){
-        if (input1.matches("")) {
+        if (equipname.matches("")) {
             //void method to not add if empty
         }
         else{
-            equipment.add(input1);
+            equipment.add(equipname);
         }
     }
     //next step button

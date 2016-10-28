@@ -25,7 +25,7 @@ public class RecipeWalk5 extends AppCompatActivity {
 
     }
 
-    //next step button
+    //next step button to allergies
     public void step6(View view){
         Intent intent = new Intent(this,RecipeWalk6.class);
         startActivity(intent);

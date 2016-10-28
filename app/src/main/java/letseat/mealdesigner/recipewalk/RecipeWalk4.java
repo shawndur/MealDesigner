@@ -21,7 +21,6 @@ import letseat.mealdesigner.storage.Recipe;
 public class RecipeWalk4 extends AppCompatActivity {
     private EditText editText1;
     ArrayList<String> steps  = new ArrayList<>();
-    ArrayAdapter<String> m_adapter;
     Recipe newRecipe;
     Database x = (Database) ((MealDesignerApp) getApplication()).getDatabase().getTempRecipe();
     @Override
@@ -33,15 +32,16 @@ public class RecipeWalk4 extends AppCompatActivity {
         editText1 = (EditText) findViewById(R.id.editText7);
 
     }
-    final String input1 = editText1.getText().toString();
+    String step = editText1.getText().toString();
 
     public void addStep(View view){
-        if (input1.matches("")) {
+        if (step.matches("")) {
             Toast.makeText(this, "You did not enter a step", Toast.LENGTH_SHORT).show();
             return;
         }
         else{
-            steps.add(input1);
+            steps.add(step);
+            //TODO clear fill in for next step
         }
     }
     //next step button
