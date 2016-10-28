@@ -21,7 +21,7 @@ public class MealDesignerApp extends Application {
     @Override
     public void onCreate(){
         _storage = new Long_Term_Interface(this);
-        (new Initializer(_storage)).initialize();
+        (new Initializer(_storage)).initialize(false);
         super.onCreate();
     }
 
