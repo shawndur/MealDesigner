@@ -26,12 +26,12 @@ public class RecipeWalk6 extends AppCompatActivity {
     ArrayList<String> allergies  = new ArrayList<>();
     ArrayAdapter<String> m_adapter;
     Recipe newRecipe;
-    Database x = (Database) ((MealDesignerApp) getApplication()).getDatabase().getTempRecipe();
-    @Override
+    Database x = ((MealDesignerApp) getApplication()).getDatabase();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_walk6);
 
+        newRecipe = x.getTempRecipe();
         //has no toolbar
 
         editText1 = (EditText) findViewById(R.id.editText8);
@@ -41,11 +41,11 @@ public class RecipeWalk6 extends AppCompatActivity {
         editText5 = (EditText) findViewById(R.id.editText12);
     }
 
-    final String input1 = editText1.getText().toString();
-    final String input2 = editText2.getText().toString();
-    final String input3 = editText3.getText().toString();
-    final String input4 = editText4.getText().toString();
-    final String input5 = editText5.getText().toString();
+    String input1 = editText1.getText().toString();
+    String input2 = editText2.getText().toString();
+    String input3 = editText3.getText().toString();
+    String input4 = editText4.getText().toString();
+    String input5 = editText5.getText().toString();
 
     //exit button back to main recipe page
     public void exit(View view){
@@ -59,8 +59,9 @@ public class RecipeWalk6 extends AppCompatActivity {
         allergies.add(input3);
         allergies.add(input4);
         allergies.add(input5);
-        newRecipe.setSteps(allergies);
-        x.setTempRecipe(newRecipe);
+        //newRecipe.setSteps(allergies);  TODO interface not set yet
+        x.setRecipe(newRecipe);
+        x.clearTemp();
         Intent intent = new Intent(this,MainRecipe.class);
         startActivity(intent);
     }
