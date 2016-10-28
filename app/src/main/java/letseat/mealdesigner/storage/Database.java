@@ -49,4 +49,21 @@ public interface Database {
      */
     ArrayList<String> getListOfRecipes();
 
+    /**
+     * Retrieves a temp recipe
+     * @return The retrieved recipe
+     */
+    Recipe getTempRecipe();
+
+    /**
+     * Saves the temp recipe.
+     * @param recipe Recipe to be saved
+     * @return Returns true if successful
+     */
+    boolean setTempRecipe(Recipe recipe);
+
+    /**
+     * Clears the temp recipe
+     */
+    void clearTemp();
 }
