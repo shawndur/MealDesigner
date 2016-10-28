@@ -3,49 +3,31 @@ package letseat.mealdesigner.recipeinfo;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import letseat.mealdesigner.MealDesignerApp;
 import letseat.mealdesigner.R;
 import letseat.mealdesigner.cook.Cook;
+import letseat.mealdesigner.storage.Database;
+import letseat.mealdesigner.storage.Ingredient;
+import letseat.mealdesigner.storage.Recipe;
+import letseat.mealdesigner.storage.ShopList;
 
 public class RecipeInfo extends AppCompatActivity {
 
-    /**
-     * Instance variables to hold recipe info
-     */
-    ArrayList<String> _steps = new ArrayList<>();
-    ArrayList<String> _ingredients = new ArrayList<>();
-    ArrayList<String> _tools = new ArrayList<>();
-    String _name ;
+    private Database _db;
+    private LinkedHashMap<String,List<String>> _dataset;
 
-
-    /**
-     * Initializes instance variables. Currently uses hardcoded strings
-     */
-    // TODO: 10/1/16 retrieve recipe info from storage 
-    private void initVars(){
-        _name = "Toast";
-
-        _ingredients.add("1 Slices of Bread");
-        _ingredients.add("1 Tbsp of Jam");
-
-        _steps.add("1) Put bread in toaster");
-        _steps.add("2) Toast bread at desired setting");
-        _steps.add("3) When done retrieve bread from toaster");
-        _steps.add("4) Using a butter knife spread jam on toast");
-        
-        _tools.add("1 toaster");
-        _tools.add("1 butter knife");
-        _tools.add("1 plate");
-
-    }
     
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) throws RuntimeException{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_info);
 
@@ -58,18 +40,58 @@ public class RecipeInfo extends AppCompatActivity {
             getSupportActionBar().setTitle(getString(R.string.recipe_info));
         }
 
-        //initialize instance variables
-        initVars();
+        Intent intent = getIntent();
+        String name = intent.getStringExtra("recipe_name");
+        if(name == null){
+            Toast.makeText(getApplicationContext(),"No Recipe Found",Toast.LENGTH_LONG).show();
+            onBackPressed();
+            //name = "Toast";
+        }
 
-        //set text views with recipe info
-        TextView text  = (TextView) findViewById(R.id.recipe_name_text);
-        text.setText(_name);
-        text  = (TextView) findViewById(R.id.recipe_steps_text);
-        text.setText(getSteps());
-        text  = (TextView) findViewById(R.id.recipe_ingredients_text);
-        text.setText(getIngredients());
-        text  = (TextView) findViewById(R.id.recipe_tools_text);
-        text.setText(getTools());
+        _db = ((MealDesignerApp) getApplication()).getDatabase();
+        Recipe recipe = _db.getRecipe(name);
+        _dataset = new LinkedHashMap<>();
+
+        if(recipe == null){
+            Toast.makeText(getApplicationContext(),"Error No/Empty File",Toast.LENGTH_LONG).show();
+            onBackPressed();
+            /*
+            _dataset = new LinkedHashMap<>();
+
+            String key = "Ingredients";
+            ArrayList<String> data = new ArrayList<>();
+            data.add("1 Tbsp of Jam");
+            data.add("1 Slices of Bread");
+            _dataset.put(key,data);
+
+            key = "Tools";
+            data = new ArrayList<>();
+            data.add("1 toaster");
+            data.add("1 butter knife");
+            data.add("1 plate");
+            _dataset.put(key,data);
+
+            key = "Steps";
+            data = new ArrayList<>();
+            data.add("1) Put bread in toaster");
+            data.add("2) Toast bread at desired setting");
+            data.add("3) When done retrieve bread from toaster");
+            data.add("4) Using a butter knife spread jam on toast");
+            _dataset.put(key,data);
+            //*/
+        }else{
+            ArrayList<String> data = recipe.getIngredients();
+            if(data.size()>0)_dataset.put("Ingredients",data);
+            data = recipe.getTools();
+            if(data.size()>0)_dataset.put("Steps",data);
+            data = recipe.getSteps();
+            if(data.size()>0)_dataset.put("Tools",data);
+        }
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new RecipeInfoAdapter(name,_dataset));
     }
 
     @Override
@@ -101,48 +123,33 @@ public class RecipeInfo extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // These functions convert the arraylists of strings to a single string
-    private String getSteps(){
-        String result = "";
-
-        for(String step:_steps){
-            result = result+"\n"+step;
-        }
-
-        return result;
-    }
-
-    private String getIngredients(){
-        String result = "";
-        for(String Ingredient : _ingredients ){
-            result = result+"\n"+Ingredient;
-        }
-        return result;
-    }
-    
-    private String getTools(){
-        String result = "";
-        for(String tool : _tools ){
-            result = result+"\n"+tool;
-        }
-        return result;
-    }
-
     //These functions handle toolbar button presses.
-    // TODO: 10/1/16 add to storage
     private void addToList(){
+        if(!_dataset.containsKey("Ingredients")){
+            Toast.makeText(getApplicationContext(),"No Ingredients",Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        ShopList list = _db.getShopList();
+        ArrayList<Ingredient> ingredients = list.getIngredients();
+
         Toast.makeText(getApplicationContext(),"Recipe Added To Shopping List",Toast.LENGTH_LONG).show();
     }
 
+    // TODO: 10/1/16 add to storage
     private void addToFavs(){
         Toast.makeText(getApplicationContext(),"Recipe Added To Favorites",Toast.LENGTH_LONG).show();
     }
 
     private void goToCook(){
-        //create intent and pass steps
-        Intent intent = new Intent(this,Cook.class);
-        intent.putExtra("Steps",_steps);
-        startActivity(intent);
+        if(_dataset.containsKey("Steps")) {
+            //create intent and pass steps
+            Intent intent = new Intent(this, Cook.class);
+            intent.putExtra("Steps", (ArrayList<String>)_dataset.get("Steps"));
+            startActivity(intent);
+        }else{
+            Toast.makeText(getApplicationContext(),"No Steps Exist",Toast.LENGTH_LONG).show();
+        }
     }
 
     /*@Override
