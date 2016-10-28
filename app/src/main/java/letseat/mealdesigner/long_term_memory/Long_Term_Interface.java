@@ -17,6 +17,10 @@ import java.util.Date;
 
 import letseat.mealdesigner.MainActivity;
 import letseat.mealdesigner.MealDesignerApp;
+import letseat.mealdesigner.storage.Database;
+import letseat.mealdesigner.storage.Ingredient;
+import letseat.mealdesigner.storage.Recipe;
+import letseat.mealdesigner.storage.ShopList;
 
 
 /**
@@ -24,7 +28,7 @@ import letseat.mealdesigner.MealDesignerApp;
  * If the functionality of this class is desired, use this as an inherited class.
  * Created by George_Sr on 9/20/2016.
  */
-public class Long_Term_Interface
+public class Long_Term_Interface implements Database, ShopList
 {
     private static final char RECIPE_NAME = (char) 0x80, end_RECIPE_NAME = (char) 0x90,
             EQUIPMENT = (char) 0x81, end_EQUIPMENT = (char) 0x91,
@@ -33,16 +37,24 @@ public class Long_Term_Interface
             COMMENTS = (char) 0x84, end_COMMENTS = (char) 0x94,
             END_OF_RECIPE = (char) 0x85,
             COMPONENT = (char) 0x86, end_COMPONENT = (char) 0x96,
-            COMMA = (char) 0x87, INDEX_FILE_DELIM = (char) 0x97;
+            COMMA = (char) 0x87, INDEX_FILE_DELIM = (char) 0x97,
+            _shopList_QTY = (char) 0x88, end_shopList_QTY = (char) 0x98,
+            _shopList_PRICE = (char) 0x89, end_shopList_PRICE = (char) 0x99,
+            _shopList_STORE = (char) 0x8a, end_shopList_STORE = (char) 0x9a,
+            _shopList_RECIPE_ADDED = (char) 0x8b, end_shopList_RECIPE_ADDED = (char) 0x9b,
+            _shopList_IN_CART = (char) 0x8c, end_shopList_IN_CART = (char) 0x9c;
+
+
+
 
     private static final double INDEX_FILE_TOLERANCE = 2.5;
 
 
     private Application _top;
     private File _appHomeDir;                           // the internal directory of the app
-    private static final String EXTENSION = ".scgc";    // this can be changed, but all files which exist with the outdated extension need to be updated
+    private static final String EXTENSION = ".txt";    // this can be changed, but all files which exist with the outdated extension need to be updated
     private static final String DEFAULT = "default_filename_";  // the default filename to be used if a given filename is invalid
-
+    private RecipeHead _temp;    //temporary recipe
 
 
     public Long_Term_Interface(Application top)
@@ -53,7 +65,13 @@ public class Long_Term_Interface
     }
 
 
-
+    /**
+     * Retrieves all contents from the specified file in an ArrayList<String>
+     *
+     * In the case of an IO Exception, the output will contain, as its last member, a string with a single char whose value is 0x0FF.
+     * In the case of a File Not Found Exception, the output will contain a single string, which consists of a single char whose value is 0x0FE
+     *
+     */
     public ArrayList<String> getLinesFromFile(String filename)
     {
         ArrayList<String> output = new ArrayList();
@@ -82,6 +100,10 @@ public class Long_Term_Interface
             }
             catch(IOException IOE)
             {
+                char error_negative1 = 0x0FF;
+                String error1_string = "" + error_negative1;
+                output.add(error1_string);
+
                 // something clever should go here
             }
 
@@ -90,7 +112,10 @@ public class Long_Term_Interface
         }
         catch(FileNotFoundException FNFE)
         {
-            // code to fetch default files and present them to the user goes here.
+            // A single-character-string is passed back
+            char error_negative2 = 0x0FE;
+            String error2_string = ""+error_negative2;
+            output.add(error2_string);
         }
 
         return output;
@@ -698,6 +723,9 @@ public class Long_Term_Interface
 
     /**
      * Use in conjunction with "testUserSuppliedFileExists(...)" to guarantee that the caller knows when it can trust the output of this function, or when to provide the user with options for selecting the correct file.
+     * If the exact user-supplied name matches (case insensitive) one found in the index file, then the actual filename is returned as the sole member of the output.
+     * If the user-supplied name does not match, then a list of possible user-supplied recipe names are returned.
+     * Hence why it is important to use this function after checking the return value of " public boolean testUserSuppliedFileExists(...) ".
      */
     public ArrayList<String> getFilename(String userSupplied)
     {
@@ -823,6 +851,213 @@ public class Long_Term_Interface
 
 
         return possibleMatches;
+    }
+
+    public char getIndexFileDelimiter()
+    {
+        return INDEX_FILE_DELIM;
+    }
+
+    public ArrayList<ShoppingNode> getShoppingList()
+    {
+        ArrayList<String> shoplistLines = getLinesFromFile("ShoppingList");
+
+        ArrayList<ShoppingNode> output = new ArrayList<ShoppingNode>();
+
+        for(int i = 0; i < shoplistLines.size(); i++)
+        {
+            String current = shoplistLines.get(i);
+
+            String item = specialSubstring( current, INGREDIENT, end_INGREDIENT),
+                store = specialSubstring( current, _shopList_STORE, end_shopList_STORE),
+                addedFrom = specialSubstring( current, _shopList_RECIPE_ADDED, end_shopList_RECIPE_ADDED);
+
+//            Double qty = Double.parseDouble( specialSubstring( current,_shopList_QTY, end_shopList_QTY)),
+//                price = Double.parseDouble( specialSubstring( current, _shopList_PRICE, end_shopList_PRICE));
+
+            boolean inCart = specialSubstring( current, _shopList_IN_CART, end_shopList_IN_CART).compareToIgnoreCase("TRUE") == 0;
+
+            double qty = -1.0, price = -1.0;
+
+            try
+            {
+                qty = Double.parseDouble( specialSubstring( current, _shopList_QTY, end_shopList_QTY));
+                if(testBadOrNegativeDouble(qty))
+                {
+                    throw new NumberFormatException();
+                }
+//                switch(qty) // rats.  JVM won't allow this.
+//                {
+//                    case Double.NEGATIVE_INFINITY:
+//                    case Double.POSITIVE_INFINITY:
+//                    case Double.MAX_EXPONENT:
+//                    case Double.MAX_VALUE:
+//                    {
+//                        throw new NumberFormatException();
+//                    }
+//                    default:
+//                    {
+//                        break;
+//                    }
+//                }
+            }
+            catch(NumberFormatException q)
+            {
+                System.out.println("Error parsing quantity information while retrieving the shopping list.  Non-critical error, quantity will be set to -1.0");
+                qty = -1.0;
+            }
+            try
+            {
+                price = Double.parseDouble( specialSubstring( current, _shopList_PRICE, end_shopList_PRICE));
+                if(testBadOrNegativeDouble(price))
+                {
+                    throw new NumberFormatException();
+                }
+            }
+            catch(NumberFormatException p)
+            {
+                System.out.println("Error parsing price information while retrieving the shopping list.  Non-critical error, price will be set to -1.0");
+                price = -1.0;
+            }
+
+            ShoppingNode sNode = new ShoppingNode();
+
+            sNode.in_cart = inCart;
+            sNode.name = item;
+            sNode.price = price;
+            sNode.quantity = qty;
+            sNode.store = store;
+            sNode.recipeAddedFrom = addedFrom;
+
+            output.add(sNode);
+
+
+
+
+        }
+
+        return output;
+
+    }
+
+    private boolean testBadOrNegativeDouble(double input)
+    {
+        return input < 0 || Double.isInfinite(input) || Double.isNaN(input) || input == Double.MAX_EXPONENT || input == Double.MAX_VALUE;
+    }
+
+    public class ShoppingNode implements Ingredient
+    {
+        public String name = "", store = "", recipeAddedFrom = "";
+//        RecipeHead recipeAddedFrom = null;    // whichever you decide to use...
+        public double quantity = -1.0, price = -1.0;
+        public boolean in_cart = false;
+
+        //These functions are getters to get each field
+        public String getName(){return name;}
+        public String getAmount(){return "" + quantity;}
+        public String getPrice(){return "" + price;}
+        public String getStore(){return store;}
+        public ArrayList<String> getRecipes(){
+            ArrayList<String> toReturn = new ArrayList<>();
+            toReturn.add(recipeAddedFrom);
+            return toReturn;
+        }
+
+        //These functions are setters for each field
+        //      Note: They will overwrite each existing field
+        public boolean setName(String newName){
+            name = newName;
+            return true;
+        }
+        public boolean setAmount(String amount){
+            quantity = Double.parseDouble(amount);
+            return true;
+        }
+        public boolean setPrice(String newPrice){
+            price = Double.parseDouble(newPrice);
+            return true;
+        }
+        public boolean setStore(String newStore){
+            store = newStore;
+            return true;
+        }
+        public boolean setRecipes(ArrayList<String> recipes){
+            if(recipes.isEmpty()) return true;
+            recipeAddedFrom = recipes.get(0);
+            return true;
+        }
+
+    }
+
+    /****************************
+     * Interface Implementation *
+     *   -Shawn Durandetto      *
+     **************************/
+
+    // TODO: 10/25/16 Index file?
+
+    public Recipe newRecipe(String name){
+        return new RecipeHead(name);
+    }
+
+    public Recipe getRecipe(String name){
+        ArrayList<String> lines = getLinesFromFile(name);
+        if(lines.isEmpty()) return null;
+
+        return parseLineToRecipe(lines.get(0));
+    }
+
+    public boolean setRecipe(Recipe recipe){
+        convertRecipeToWriteable((RecipeHead) recipe);
+        return writeRecipeToFile(((RecipeHead) recipe).name(),convertRecipeToWriteable((RecipeHead) recipe));
+    }
+
+
+    public ShopList getShopList(){
+        return this;
+    }
+
+    public ArrayList<Ingredient> getIngredients(){
+        ArrayList<Ingredient> toReturn = new ArrayList<>();
+        for(ShoppingNode x : getShoppingList()){
+            toReturn.add(x);
+        }
+        return toReturn;
+    }
+
+    public boolean setIngredients(ArrayList<Ingredient> ingredients){
+        return false;
+    }
+
+    public Ingredient newIngredient(){
+        return new ShoppingNode();
+    }
+
+    public boolean setShopList(ShopList shopList){
+        // TODO: 10/25/16 set shopping list. How?
+        return false;
+    }
+
+    public ArrayList<String> getListOfRecipes(){
+        ArrayList<String> toReturn = new ArrayList<>();
+        ArrayList<String> indexFileLines = getIndexFileLines();
+        for(int i =0;i<indexFileLines.size();++i) {
+            toReturn.add(getFilenameFromIndex(indexFileLines, i));
+        }
+        return toReturn;
+    }
+
+    public Recipe getTempRecipe(){
+        return _temp;
+    }
+
+    public boolean setTempRecipe(Recipe recipe){
+        _temp =  (RecipeHead) recipe;
+        return true;
+    }
+
+    public void clearTemp(){
+        _temp = null;
     }
 
 }
