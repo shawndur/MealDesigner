@@ -23,12 +23,12 @@ public class RecipeWalk1 extends AppCompatActivity {
     ArrayList<String> recipe  = new ArrayList<>();
     ArrayAdapter<String> m_adapter;
     Recipe newRecipe;
-    Database x = ((MealDesignerApp) getApplication()).getDatabase();
+    Database x ;//= ((MealDesignerApp) getApplication()).getDatabase();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_walk1);
-
+        x = ((MealDesignerApp) getApplication()).getDatabase();
         editText1 = (EditText) findViewById(R.id.editText);
         editText2 = (EditText) findViewById(R.id.editText2);
         editText3 = (EditText) findViewById(R.id.editText3);
