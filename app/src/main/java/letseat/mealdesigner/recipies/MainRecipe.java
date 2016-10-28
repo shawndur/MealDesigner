@@ -117,7 +117,7 @@ public class MainRecipe extends AppCompatActivity
     }
 
     public void openRecipeInfo(View view){
-        String name = "" + ((TextView) view);
+        String name = ((TextView) view).getText().toString();
         Intent intent = new Intent(this,RecipeInfo.class);
         intent.putExtra("recipe_name",name);
         startActivity(intent);

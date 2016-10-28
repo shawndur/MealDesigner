@@ -167,7 +167,7 @@ public class Initializer
 
     }
 
-    private RecipeHead lotsOfBacon()
+    public RecipeHead lotsOfBacon()
     {
         RecipeHead bac = new RecipeHead("Lots of bacon at once");
 

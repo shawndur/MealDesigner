@@ -83,9 +83,9 @@ public class RecipeInfo extends AppCompatActivity {
             ArrayList<String> data = recipe.getIngredients();
             if(data.size()>0)_dataset.put("Ingredients",data);
             data = recipe.getTools();
-            if(data.size()>0)_dataset.put("Steps",data);
-            data = recipe.getSteps();
             if(data.size()>0)_dataset.put("Tools",data);
+            data = recipe.getSteps();
+            if(data.size()>0)_dataset.put("Steps",data);
         }
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
