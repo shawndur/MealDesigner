@@ -635,6 +635,7 @@ public class RecipeHead implements Recipe
         for(;steps.hasNext();steps = steps.next()){
             strsteps.add(steps.name());
         }
+        strsteps.add(steps.name());
         return strsteps;
     }
 
@@ -661,6 +662,7 @@ public class RecipeHead implements Recipe
         for(;tools.hasNext();tools = tools.next()){
             strtools.add(tools.name());
         }
+        strtools.add(tools.name());
         return strtools;
     }
     
@@ -684,14 +686,21 @@ public class RecipeHead implements Recipe
     public ArrayList<String> getIngredients(){
         ArrayList<String> stringr = new ArrayList<>();
         ListComponent ingr =  getList( INGREDIENT );
+        if(ingr == null) return stringr;
         for(;ingr.hasNext();ingr = ingr.next()){
             String toAdd = "";
-            if(ingr.hasQuantity()) toAdd += ingr.getQuantity();
+            if(ingr.hasQuantity()) toAdd += ingr.getQuantity()+" ";
             if(ingr.unitOfMeasure() != NO_UOM &&  ingr.unitOfMeasure() != UOM_ERR)
-                toAdd += ingr.unitOfMeasure();
+                toAdd += ingr.unitOfMeasure()+" ";
             toAdd += ingr.name();
             stringr.add(toAdd);
         }
+        String toAdd = "";
+        if(ingr.hasQuantity()) toAdd += ingr.getQuantity()+" ";
+        if(ingr.unitOfMeasure() != NO_UOM &&  ingr.unitOfMeasure() != UOM_ERR)
+            toAdd += ingr.unitOfMeasure()+" ";
+        toAdd += ingr.name();
+        stringr.add(toAdd);
         return stringr;
     }
     
