@@ -1,6 +1,7 @@
 package letseat.mealdesigner;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -77,7 +78,7 @@ public class Long_Term_Interface
         }
         catch(FileNotFoundException e)
         {
-            System.out.println("Unable to open "+filename);
+            Log.d("status","Unable to open "+filename);
             e.printStackTrace();
             return false;
         }
@@ -99,7 +100,7 @@ public class Long_Term_Interface
         }
         catch(IOException e)
         {
-            System.out.println(outStream_writing? "<"+current_line+"> could not be printed, write to file abandoned on line "+i : "FileOutputStream experienced an error while closing.");
+            Log.d("status",outStream_writing? "<"+current_line+"> could not be printed, write to file abandoned on line "+i : "FileOutputStream experienced an error while closing.");
             e.printStackTrace();
             return false;
         }
