@@ -76,13 +76,21 @@ public class ShoppingList extends AppCompatActivity {
         Database x = ((MealDesignerApp) getApplication()).getDatabase();
         ShopList shopList = x.getShopList();
         ArrayList<Ingredient> ingredients = shopList.getIngredients();
+        for(Ingredient ingredient: ingredients){
+            ArrayList<String> ingredientArray = new ArrayList<String>();
+            ingredientArray.add(ingredient.getName());
+            ingredientArray.add(ingredient.getAmount());
+            ingredientArray.add(ingredient.getPrice());
+            ingredientArray.add(ingredient.getStore());
+            ingredientsList.add(ingredientArray);
+        }
         */
-        ArrayList<String> testArray = new ArrayList<String>();
-        testArray.add("sadfasdf");
-        testArray.add("234234");
-        testArray.add("234314");
-        testArray.add("Walmart");
-        ingredientsList.add(testArray);
+        ArrayList<String> ingredientArray = new ArrayList<String>();
+        ingredientArray.add("Bacon");
+        ingredientArray.add("8");
+        ingredientArray.add("1.5");
+        ingredientArray.add("Wegmens");
+        ingredientsList.add(ingredientArray);
 
         TableLayout ll = (TableLayout) findViewById(R.id.shoplist_table);
         showIngredients(ll);
@@ -249,7 +257,7 @@ public class ShoppingList extends AppCompatActivity {
             placeView.setWidth(400);
 
             Spinner dropdown = new Spinner(this);
-            String[] items = new String[]{"Recipes", "-Spaghetti", "-Soup"};
+            String[] items = new String[]{"Recipes", "-Loaf"};
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
             dropdown.setAdapter(adapter);
             dropdown.setOnItemSelectedListener(new OnItemSelectedListener() {
