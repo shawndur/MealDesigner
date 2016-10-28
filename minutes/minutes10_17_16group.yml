@@ -1,0 +1,16 @@
+date: October 17, 2016
+meeting_type: group
+attendance: [<cnzytari>, <cpark22>, <shawndur>]
+absent: [<vanhoose>]
+excused_absences: [{ubit: <vanhoose>, reason: wife had surgery and son sick} ]
+task_progress:[
+  {ubit: <cnzytari>, progress: read through database methods, helped set up interface.},
+  {ubit: <vanhoose>, progress: .},
+  {ubit: <cpark22>, progress: read through database methods, helped set up interface.},
+  {ubit: <shawndur>, progress: read through database methods, helped set up interface.}
+  ]
+issues: [ # Post any issues here. Issues that cannot be addressed by the group should especially be included
+ ]
+Notes:  | # Anything covered in the meeting that doesn't fit elsewhere.
+  # Need to set up interfaces to simplify save/call from memory
+  # Talk to George about how functions for memory storage work
