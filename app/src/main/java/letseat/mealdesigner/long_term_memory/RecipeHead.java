@@ -710,4 +710,8 @@ public class RecipeHead implements Recipe
         _heads.put(INGREDIENT,head);
         return true;
     }
+
+    public boolean setTempRecipePass(ArrayList<String> temp) {
+        return false;
+    }
 }
