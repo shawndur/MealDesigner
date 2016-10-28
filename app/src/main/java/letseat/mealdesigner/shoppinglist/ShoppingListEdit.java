@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import letseat.mealdesigner.MealDesignerApp;
 import letseat.mealdesigner.R;
 
 import android.support.v7.widget.Toolbar;
@@ -36,7 +38,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import letseat.mealdesigner.recipeinfo.RecipeInfo;
+import letseat.mealdesigner.storage.Database;
 import letseat.mealdesigner.storage.Ingredient;
+import letseat.mealdesigner.storage.ShopList;
 
 public class ShoppingListEdit extends AppCompatActivity {
 
@@ -66,6 +70,25 @@ public class ShoppingListEdit extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.navdrawer_list_edit));
+        /*
+        Database x = ((MealDesignerApp) getApplication()).getDatabase();
+        ShopList shopList = x.getShopList();
+        ArrayList<Ingredient> ingredients = shopList.getIngredients();
+        for(Ingredient ingredient: ingredients){
+            ArrayList<String> ingredientArray = new ArrayList<String>();
+            ingredientArray.add(ingredient.getName());
+            ingredientArray.add(ingredient.getAmount());
+            ingredientArray.add(ingredient.getPrice());
+            ingredientArray.add(ingredient.getStore());
+            ingredientsList.add(ingredientArray);
+        }
+        */
+        ArrayList<String> ingredientArray = new ArrayList<String>();
+        ingredientArray.add("Bacon");
+        ingredientArray.add("8");
+        ingredientArray.add("1.5");
+        ingredientArray.add("Wegmens");
+        ingredientsList.add(ingredientArray);
 
         TableLayout ll = (TableLayout) findViewById(R.id.shoplist_edit_table);
         showEditIngredients(ll);
