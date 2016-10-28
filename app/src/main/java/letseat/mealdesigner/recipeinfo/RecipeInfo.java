@@ -25,7 +25,6 @@ import letseat.mealdesigner.storage.ShopList;
 public class RecipeInfo extends AppCompatActivity {
 
     private Database _db;
-    //RecipeHead _recipe;
     private LinkedHashMap<String,List<String>> _dataset;
 
     
@@ -46,32 +45,18 @@ public class RecipeInfo extends AppCompatActivity {
         Intent intent = getIntent();
         String name = intent.getStringExtra("recipe_name");
         if(name == null){
-            // TODO: 10/14/16 Handle null name
-            /*
-            throw new RuntimeException("No Recipe Name Found or Supplied");
-            //*/
-            /*
             Toast.makeText(getApplicationContext(),"No Recipe Found",Toast.LENGTH_LONG).show();
             onBackPressed();
-            //*/
-            //*
-            name = "Toast";
-            //*/
+            //name = "Toast";
         }
 
         _db = ((MealDesignerApp) getApplication()).getDatabase();
         Recipe recipe = _db.getRecipe(name);
 
         if(recipe == null){
-            // TODO: 10/15/16 handle empty file
-            /*
-            throw new RuntimeException("Empty or Nonexistent File For: "+_name);
-            //*/
-            /*
             Toast.makeText(getApplicationContext(),"Error No/Empty File",Toast.LENGTH_LONG).show();
             onBackPressed();
-            //*/
-            //*
+            /*
             _dataset = new LinkedHashMap<>();
 
             String key = "Ingredients";
@@ -141,26 +126,14 @@ public class RecipeInfo extends AppCompatActivity {
 
     //These functions handle toolbar button presses.
     private void addToList(){
-        ShopList list = _db.getShopList();
-        ArrayList<Ingredient> ingredients = list.getIngredients();
-
         if(!_dataset.containsKey("Ingredients")){
             Toast.makeText(getApplicationContext(),"No Ingredients",Toast.LENGTH_LONG).show();
             return;
         }
 
-        /*
-        for(String name : _dataset.get("Ingredients")){
-            for(Ingredient ingredient : ingredients){
-                if(name.equals(ingredient.getName())) {}
-            }
-        }
-        //*/
-        //*
-         //*/
+        ShopList list = _db.getShopList();
+        ArrayList<Ingredient> ingredients = list.getIngredients();
 
-        //list.setIngredients(ingredients);
-        //_db.setShopList(list);
         Toast.makeText(getApplicationContext(),"Recipe Added To Shopping List",Toast.LENGTH_LONG).show();
     }
 
