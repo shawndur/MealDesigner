@@ -1,5 +1,7 @@
 package letseat.mealdesigner.long_term_memory;
 
+import android.util.Log;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.*;
@@ -31,7 +33,7 @@ public class Initializer
             return true;
         }
 
-        return (indexFileContents.get(0).length() == 0)? true : indexFileContents.get(0).charAt(0) != 0x0FF;
+        return (indexFileContents.get(0).length() == 0)? true : indexFileContents.get(0).charAt(0) != 0x0FF && indexFileContents.get(0).charAt(0) != 0x0FE;
 
 //        try
 //        {
@@ -49,8 +51,10 @@ public class Initializer
     {
         if(checkIfIndexFileExists())
         {
+            Log.d("status","file exists");
             return true;
         }
+        Log.d("status","file does not exists");
 
 //
 //          // if we want to hardcode a way to keep people from using the price-reduced beta release after a certain date, here is how we can cause the app to crash fairly easily.
@@ -79,10 +83,10 @@ public class Initializer
 //        indexFileKernel.add("Thickener: Slurry"+ indexFileDelim + "aak");
 //        indexFileKernel.add("Sauces: Demi-glace" + indexFileDelim + "aal");
         indexFileKernel.add("Mirepoix"+indexFileDelim+"aam");
-
+        Log.d("status",indexFileKernel.toString());
         if(!_lti.writeToFile("IndexFile",indexFileKernel))
         {
-            System.out.println("Failed to create Index File kernel in long-term memory");
+            Log.d("Status" , "Failed to create Index File kernel in long-term memory");
             return false;
         }
 

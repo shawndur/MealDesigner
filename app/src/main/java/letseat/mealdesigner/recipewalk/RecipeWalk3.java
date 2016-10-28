@@ -27,12 +27,13 @@ public class RecipeWalk3 extends AppCompatActivity {
     String unit = "";
     String finalIngredient;
     Recipe newRecipe;
-    Database x = (Database) ((MealDesignerApp) getApplication()).getDatabase().getTempRecipe();
+    Database x = ((MealDesignerApp) getApplication()).getDatabase();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_walk3);
 
+        newRecipe = x.getTempRecipe();
         //has no toolbar
 
         editTextName = (EditText) findViewById(R.id.editText5);
@@ -62,11 +63,10 @@ public class RecipeWalk3 extends AppCompatActivity {
         });
     }
     //get string from fill in boxes
-    String name = editTextName.getText().toString();
-    String amounts = editTextAmount.getText().toString();
-
     //add ingredient button
     public void addIngredient(View view){
+        String name = editTextName.getText().toString();
+        String amounts = editTextAmount.getText().toString();
         if (name.matches("")) {
             Toast.makeText(this, "You did not fill in an ingredient", Toast.LENGTH_SHORT).show();
             return;

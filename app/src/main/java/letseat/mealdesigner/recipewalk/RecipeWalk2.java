@@ -26,11 +26,13 @@ public class RecipeWalk2 extends AppCompatActivity {
     ArrayList<String> equipment  = new ArrayList<>();
     Recipe newRecipe;
 
-    Database x = (Database) ((MealDesignerApp) getApplication()).getDatabase().getTempRecipe();
+    Database x = ((MealDesignerApp) getApplication()).getDatabase();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_walk2);
+
+        newRecipe = x.getTempRecipe();
 
         editText1 = (EditText) findViewById(R.id.editText13);
         //has no toolbar
@@ -64,11 +66,11 @@ public class RecipeWalk2 extends AppCompatActivity {
 
 
     }
-    //get string from fill in blank
-    String equipname = editText1.getText().toString();
 
     //add equipment button
     public void addEquip(View view){
+        //get string from fill in blank
+        String equipname = editText1.getText().toString();
         if (equipname.matches("")) {
             //void method to not add if empty
         }

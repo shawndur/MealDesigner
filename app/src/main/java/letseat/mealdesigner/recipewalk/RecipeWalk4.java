@@ -22,19 +22,21 @@ public class RecipeWalk4 extends AppCompatActivity {
     private EditText editText1;
     ArrayList<String> steps  = new ArrayList<>();
     Recipe newRecipe;
-    Database x = (Database) ((MealDesignerApp) getApplication()).getDatabase().getTempRecipe();
+    Database x = ((MealDesignerApp) getApplication()).getDatabase();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_walk4);
 
+        newRecipe = x.getTempRecipe();
+
         //has no toolbar
         editText1 = (EditText) findViewById(R.id.editText7);
 
     }
-    String step = editText1.getText().toString();
 
     public void addStep(View view){
+        String step = editText1.getText().toString();
         if (step.matches("")) {
             Toast.makeText(this, "You did not enter a step", Toast.LENGTH_SHORT).show();
             return;

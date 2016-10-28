@@ -13,8 +13,6 @@ import letseat.mealdesigner.recipies.MainRecipe;
 import letseat.mealdesigner.storage.Database;
 
 public class RecipeWalk5 extends AppCompatActivity {
-    Database x = (Database) ((MealDesignerApp) getApplication()).getDatabase().getTempRecipe();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
