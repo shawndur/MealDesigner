@@ -18,6 +18,7 @@ import java.util.Date;
 import letseat.mealdesigner.MainActivity;
 import letseat.mealdesigner.MealDesignerApp;
 import letseat.mealdesigner.storage.Database;
+import letseat.mealdesigner.storage.Ingredient;
 import letseat.mealdesigner.storage.Recipe;
 import letseat.mealdesigner.storage.ShopList;
 
@@ -27,7 +28,7 @@ import letseat.mealdesigner.storage.ShopList;
  * If the functionality of this class is desired, use this as an inherited class.
  * Created by George_Sr on 9/20/2016.
  */
-public class Long_Term_Interface implements Database
+public class Long_Term_Interface implements Database, ShopList
 {
     private static final char RECIPE_NAME = (char) 0x80, end_RECIPE_NAME = (char) 0x90,
             EQUIPMENT = (char) 0x81, end_EQUIPMENT = (char) 0x91,
@@ -944,14 +945,47 @@ public class Long_Term_Interface implements Database
         return input < 0 || Double.isInfinite(input) || Double.isNaN(input) || input == Double.MAX_EXPONENT || input == Double.MAX_VALUE;
     }
 
-    public class ShoppingNode
+    public class ShoppingNode implements Ingredient
     {
         public String name = "", store = "", recipeAddedFrom = "";
 //        RecipeHead recipeAddedFrom = null;    // whichever you decide to use...
         public double quantity = -1.0, price = -1.0;
         public boolean in_cart = false;
 
+        //These functions are getters to get each field
+        public String getName(){return name;}
+        public String getAmount(){return "" + quantity;}
+        public String getPrice(){return "" + price;}
+        public String getStore(){return store;}
+        public ArrayList<String> getRecipes(){
+            ArrayList<String> toReturn = new ArrayList<>();
+            toReturn.add(recipeAddedFrom);
+            return toReturn;
+        }
 
+        //These functions are setters for each field
+        //      Note: They will overwrite each existing field
+        public boolean setName(String newName){
+            name = newName;
+            return true;
+        }
+        public boolean setAmount(String amount){
+            quantity = Double.parseDouble(amount);
+            return true;
+        }
+        public boolean setPrice(String newPrice){
+            price = Double.parseDouble(newPrice);
+            return true;
+        }
+        public boolean setStore(String newStore){
+            store = newStore;
+            return true;
+        }
+        public boolean setRecipes(ArrayList<String> recipes){
+            if(recipes.isEmpty()) return true;
+            recipeAddedFrom = recipes.get(0);
+            return true;
+        }
 
     }
 
@@ -980,8 +1014,23 @@ public class Long_Term_Interface implements Database
 
 
     public ShopList getShopList(){
-        // TODO: 10/25/16 return shopping list. How?
-        return null;
+        return this;
+    }
+
+    public ArrayList<Ingredient> getIngredients(){
+        ArrayList<Ingredient> toReturn = new ArrayList<>();
+        for(ShoppingNode x : getShoppingList()){
+            toReturn.add(x);
+        }
+        return toReturn;
+    }
+
+    public boolean setIngredients(ArrayList<Ingredient> ingredients){
+        return false;
+    }
+
+    public Ingredient newIngredient(){
+        return new ShoppingNode();
     }
 
     public boolean setShopList(ShopList shopList){
