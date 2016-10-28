@@ -36,14 +36,22 @@ public class Long_Term_Interface implements Database
             COMMENTS = (char) 0x84, end_COMMENTS = (char) 0x94,
             END_OF_RECIPE = (char) 0x85,
             COMPONENT = (char) 0x86, end_COMPONENT = (char) 0x96,
-            COMMA = (char) 0x87, INDEX_FILE_DELIM = (char) 0x97;
+            COMMA = (char) 0x87, INDEX_FILE_DELIM = (char) 0x97,
+            _shopList_QTY = (char) 0x88, end_shopList_QTY = (char) 0x98,
+            _shopList_PRICE = (char) 0x89, end_shopList_PRICE = (char) 0x99,
+            _shopList_STORE = (char) 0x8a, end_shopList_STORE = (char) 0x9a,
+            _shopList_RECIPE_ADDED = (char) 0x8b, end_shopList_RECIPE_ADDED = (char) 0x9b,
+            _shopList_IN_CART = (char) 0x8c, end_shopList_IN_CART = (char) 0x9c;
+
+
+
 
     private static final double INDEX_FILE_TOLERANCE = 2.5;
 
 
     private Application _top;
     private File _appHomeDir;                           // the internal directory of the app
-    private static final String EXTENSION = ".scgc";    // this can be changed, but all files which exist with the outdated extension need to be updated
+    private static final String EXTENSION = ".txt";    // this can be changed, but all files which exist with the outdated extension need to be updated
     private static final String DEFAULT = "default_filename_";  // the default filename to be used if a given filename is invalid
     private RecipeHead _temp;    //temporary recipe
 
@@ -56,7 +64,13 @@ public class Long_Term_Interface implements Database
     }
 
 
-
+    /**
+     * Retrieves all contents from the specified file in an ArrayList<String>
+     *
+     * In the case of an IO Exception, the output will contain, as its last member, a string with a single char whose value is 0x0FF.
+     * In the case of a File Not Found Exception, the output will contain a single string, which consists of a single char whose value is 0x0FE
+     *
+     */
     public ArrayList<String> getLinesFromFile(String filename)
     {
         ArrayList<String> output = new ArrayList();
@@ -85,6 +99,10 @@ public class Long_Term_Interface implements Database
             }
             catch(IOException IOE)
             {
+                char error_negative1 = 0x0FF;
+                String error1_string = "" + error_negative1;
+                output.add(error1_string);
+
                 // something clever should go here
             }
 
@@ -93,7 +111,10 @@ public class Long_Term_Interface implements Database
         }
         catch(FileNotFoundException FNFE)
         {
-            // code to fetch default files and present them to the user goes here.
+            // A single-character-string is passed back
+            char error_negative2 = 0x0FE;
+            String error2_string = ""+error_negative2;
+            output.add(error2_string);
         }
 
         return output;
@@ -701,6 +722,9 @@ public class Long_Term_Interface implements Database
 
     /**
      * Use in conjunction with "testUserSuppliedFileExists(...)" to guarantee that the caller knows when it can trust the output of this function, or when to provide the user with options for selecting the correct file.
+     * If the exact user-supplied name matches (case insensitive) one found in the index file, then the actual filename is returned as the sole member of the output.
+     * If the user-supplied name does not match, then a list of possible user-supplied recipe names are returned.
+     * Hence why it is important to use this function after checking the return value of " public boolean testUserSuppliedFileExists(...) ".
      */
     public ArrayList<String> getFilename(String userSupplied)
     {
@@ -828,6 +852,109 @@ public class Long_Term_Interface implements Database
         return possibleMatches;
     }
 
+    public char getIndexFileDelimiter()
+    {
+        return INDEX_FILE_DELIM;
+    }
+
+    public ArrayList<ShoppingNode> getShoppingList()
+    {
+        ArrayList<String> shoplistLines = getLinesFromFile("ShoppingList");
+
+        ArrayList<ShoppingNode> output = new ArrayList<ShoppingNode>();
+
+        for(int i = 0; i < shoplistLines.size(); i++)
+        {
+            String current = shoplistLines.get(i);
+
+            String item = specialSubstring( current, INGREDIENT, end_INGREDIENT),
+                store = specialSubstring( current, _shopList_STORE, end_shopList_STORE),
+                addedFrom = specialSubstring( current, _shopList_RECIPE_ADDED, end_shopList_RECIPE_ADDED);
+
+//            Double qty = Double.parseDouble( specialSubstring( current,_shopList_QTY, end_shopList_QTY)),
+//                price = Double.parseDouble( specialSubstring( current, _shopList_PRICE, end_shopList_PRICE));
+
+            boolean inCart = specialSubstring( current, _shopList_IN_CART, end_shopList_IN_CART).compareToIgnoreCase("TRUE") == 0;
+
+            double qty = -1.0, price = -1.0;
+
+            try
+            {
+                qty = Double.parseDouble( specialSubstring( current, _shopList_QTY, end_shopList_QTY));
+                if(testBadOrNegativeDouble(qty))
+                {
+                    throw new NumberFormatException();
+                }
+//                switch(qty) // rats.  JVM won't allow this.
+//                {
+//                    case Double.NEGATIVE_INFINITY:
+//                    case Double.POSITIVE_INFINITY:
+//                    case Double.MAX_EXPONENT:
+//                    case Double.MAX_VALUE:
+//                    {
+//                        throw new NumberFormatException();
+//                    }
+//                    default:
+//                    {
+//                        break;
+//                    }
+//                }
+            }
+            catch(NumberFormatException q)
+            {
+                System.out.println("Error parsing quantity information while retrieving the shopping list.  Non-critical error, quantity will be set to -1.0");
+                qty = -1.0;
+            }
+            try
+            {
+                price = Double.parseDouble( specialSubstring( current, _shopList_PRICE, end_shopList_PRICE));
+                if(testBadOrNegativeDouble(price))
+                {
+                    throw new NumberFormatException();
+                }
+            }
+            catch(NumberFormatException p)
+            {
+                System.out.println("Error parsing price information while retrieving the shopping list.  Non-critical error, price will be set to -1.0");
+                price = -1.0;
+            }
+
+            ShoppingNode sNode = new ShoppingNode();
+
+            sNode.in_cart = inCart;
+            sNode.name = item;
+            sNode.price = price;
+            sNode.quantity = qty;
+            sNode.store = store;
+            sNode.recipeAddedFrom = addedFrom;
+
+            output.add(sNode);
+
+
+
+
+        }
+
+        return output;
+
+    }
+
+    private boolean testBadOrNegativeDouble(double input)
+    {
+        return input < 0 || Double.isInfinite(input) || Double.isNaN(input) || input == Double.MAX_EXPONENT || input == Double.MAX_VALUE;
+    }
+
+    public class ShoppingNode
+    {
+        public String name = "", store = "", recipeAddedFrom = "";
+//        RecipeHead recipeAddedFrom = null;    // whichever you decide to use...
+        public double quantity = -1.0, price = -1.0;
+        public boolean in_cart = false;
+
+
+
+    }
+
     /****************************
      * Interface Implementation *
      *   -Shawn Durandetto      *
@@ -853,21 +980,21 @@ public class Long_Term_Interface implements Database
 
 
     public ShopList getShopList(){
-        // TODO: 10/25/16 return shopping list. How? 
+        // TODO: 10/25/16 return shopping list. How?
         return null;
     }
-    
+
     public boolean setShopList(ShopList shopList){
-        // TODO: 10/25/16 set shopping list. How? 
+        // TODO: 10/25/16 set shopping list. How?
         return false;
     }
 
 
     public ArrayList<String> getListOfRecipes(){
-        // TODO: 10/25/16 return list of recipes 
+        // TODO: 10/25/16 return list of recipes
         return null;
     }
-    
+
     public Recipe getTempRecipe(){
         return _temp;
     }

@@ -46,6 +46,14 @@ public interface Recipe {
      * @return Returns true if successful
      */
     boolean setIngredients(ArrayList<String> ingredients);
+
+    /**
+     * Store the ingredients in the recipe
+     * @param temp An ArrayList of strings where each string passed through the creation walk through
+     * @return Returns true if successful
+     */
+    boolean setTempRecipePass(ArrayList<String> temp);
+
 }
 
 
