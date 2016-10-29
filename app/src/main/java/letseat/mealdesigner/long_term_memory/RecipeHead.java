@@ -632,6 +632,7 @@ public class RecipeHead implements Recipe
     public ArrayList<String> getSteps(){
         ArrayList<String> strsteps = new ArrayList<>();
         ListComponent steps =  getList( PROCEDURE );
+        if(steps == null) return strsteps;
         for(;steps.hasNext();steps = steps.next()){
             strsteps.add(steps.name());
         }
@@ -659,6 +660,7 @@ public class RecipeHead implements Recipe
     public ArrayList<String> getTools(){
         ArrayList<String> strtools = new ArrayList<>();
         ListComponent tools =  getList( EQUIPMENT );
+        if(tools == null) return strtools;
         for(;tools.hasNext();tools = tools.next()){
             strtools.add(tools.name());
         }
