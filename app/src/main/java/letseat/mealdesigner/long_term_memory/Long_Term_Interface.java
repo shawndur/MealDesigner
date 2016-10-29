@@ -1032,10 +1032,16 @@ public class Long_Term_Interface implements Database, ShopList
     }
 
     public boolean setRecipe(Recipe recipe){
-        // TODO: 10/28/16 convert name to filename
-        // TODO: 10/28/16 add to index file if dne
-        convertRecipeToWriteable((RecipeHead) recipe);
-        return writeRecipeToFile(((RecipeHead) recipe).name(),convertRecipeToWriteable((RecipeHead) recipe));
+        ArrayList<String> indexFileLines = getIndexFileLines();
+        String name = ((RecipeHead) recipe).name();
+        String filename;
+        if(!testUserSuppliedFileExists(name,indexFileLines)){
+            filename = generateFilename(name);
+            indexFileLines.add(name+getIndexFileDelimiter()+filename);
+        }else{
+            filename = getFilename(((RecipeHead) recipe).name()).get(0);
+        }
+        return writeRecipeToFile(filename,convertRecipeToWriteable((RecipeHead) recipe));
     }
 
 
