@@ -1008,27 +1008,12 @@ public class Long_Term_Interface implements Database, ShopList
 
     public Recipe getRecipe(String name){
         Log.d("status",name);
-        /*ArrayList<String> lines = getLinesFromFile(name);
-        if(lines.isEmpty()) return null;*/
-        RecipeHead bac = new RecipeHead("Lots of bacon at once");
-
-        bac.addEquipment("Cookie sheet",1,"Medium-gauge or thicker is preferred.");
-        bac.addEquipment("Parchment paper",1,"Sheet should cover the pan.");
-        bac.addEquipment("Oven",1,"Set to 380 Fahrenheit.");
-
-        bac.addIngredient("Bacon",8, ListComponent.UnitOfMeasure.STRIP,"");
-
-        bac.addProcedureWithoutTimer("Arrange the bacon strips flat on the cookie sheet","They can overlap a little bit");
-        bac.addProcedureWithTimer("Place the sheet in the oven.",(60*10),"");
-        bac.addProcedureWithTimer("Check the bacon",(60*3),"If it is starting to look very well done, then it is done cooking; otherwise, keep it in the oven.  Be careful to not let any grease drip in the oven.");
-        bac.addProcedureWithTimer("Check the bacon again.",60,"By now the baoon should be fully-cooked; if not, then continue to the next step.");
-        bac.addProcedureWithoutTimer("The bacon should be done by now","If not, your oven may need some service.  Either you aren't getting enough BTUs out of it or its thermostat needs to be calibrated -- this is common with older ovens!");
-
-        bac.addComment("This method is particularly useful when you have to make breakfast for everyone.  It saves space on your stovetop, and it gives you much more control and consistency over how you cook your bacon.");
-        bac.addComment("Double-smoked bacon is widely regarded as a high-end bacon.");
-        bac.addComment("Generally, the more meat which runs through the strip, the less that strip will shrink during cooking.");
-
-        return bac;
+        ArrayList<String> indexFileLines = getIndexFileLines();
+        if(!testUserSuppliedFileExists(name,indexFileLines))return null;
+        String filename = getFilename(name).get(0);
+        ArrayList<String> lines = getLinesFromFile(filename);
+        if(lines.isEmpty()) return null;
+        return parseLineToRecipe(lines.get(0));
     }
 
     public boolean setRecipe(Recipe recipe){
