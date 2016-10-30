@@ -51,10 +51,10 @@ public class Initializer
     {
         if(checkIfIndexFileExists())
         {
-            Log.d("status","file exists");
+            Log.d("status","index file exists");
             return true;
         }
-        Log.d("status","file does not exists");
+        Log.d("status","index file does not exists, creating it");
 
 //
 //          // if we want to hardcode a way to keep people from using the price-reduced beta release after a certain date, here is how we can cause the app to crash fairly easily.

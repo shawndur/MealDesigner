@@ -827,7 +827,7 @@ public class Long_Term_Interface implements Database, ShopList
 
     public ArrayList<String> trimToUserGeneratedRecipeNamesOnly(ArrayList<String> rawSimilarLinesFromIndexFile)
     {
-        Log.d("status",rawSimilarLinesFromIndexFile.toString());
+        //Log.d("status",rawSimilarLinesFromIndexFile.toString());
         ArrayList<String> output = new ArrayList<String>();
 
         for(int i = 0; i < rawSimilarLinesFromIndexFile.size(); i++)
@@ -1008,12 +1008,14 @@ public class Long_Term_Interface implements Database, ShopList
     }
 
     public Recipe getRecipe(String name){
-        Log.d("status",name);
+        Log.d("status","Getting recipe: "+name+" from storage");
         ArrayList<String> indexFileLines = getIndexFileLines();
         if(!testUserSuppliedFileExists(name,indexFileLines))return null;
+        Log.d("status","File for "+name+" exists");
         String filename = getFilename(name).get(0);
         ArrayList<String> lines = getLinesFromFile(filename);
         if(lines.isEmpty()) return null;
+        Log.d("status","Retrieved lines from file");
         return parseLineToRecipe(lines.get(0));
     }
 
