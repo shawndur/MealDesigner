@@ -68,11 +68,11 @@ public class Initializer
 
         ArrayList<String> indexFileKernel  = new ArrayList<String>();
 
-        char indexFileDelim = _lti.getIndexFileDelimiter();
+        //char indexFileDelim = _lti.getIndexFileDelimiter();
 
-        indexFileKernel.add("Chicken Stock"+indexFileDelim+"aaa");
-        indexFileKernel.add("Meatloaf"+indexFileDelim+"aab");
-        indexFileKernel.add("Lots of bacon at once"+indexFileDelim+"aac");
+        //indexFileKernel.add("Chicken Stock"+indexFileDelim+"aaa");
+        //indexFileKernel.add("Meatloaf"+indexFileDelim+"aab");
+        //indexFileKernel.add("Lots of bacon at once"+indexFileDelim+"aac");
 //        indexFileKernel.add("Knife skills:  Dice"+indexFileDelim+"aad");
 //        indexFileKernel.add("Knife skills:  Julienne"+indexFileDelim+"aae");
 //        indexFileKernel.add("Sauces: Bechamel (white) Sauce" + indexFileDelim + "aaf");
@@ -82,18 +82,20 @@ public class Initializer
 //        indexFileKernel.add("Thickener: Roux"+ indexFileDelim + "aaj");
 //        indexFileKernel.add("Thickener: Slurry"+ indexFileDelim + "aak");
 //        indexFileKernel.add("Sauces: Demi-glace" + indexFileDelim + "aal");
-        indexFileKernel.add("Mirepoix"+indexFileDelim+"aam");
-        Log.d("status",indexFileKernel.toString());
+        //indexFileKernel.add("Mirepoix"+indexFileDelim+"aam");
+        //Log.d("status",indexFileKernel.toString());
         if(!_lti.writeToFile("IndexFile",indexFileKernel))
         {
             Log.d("Status" , "Failed to create Index File kernel in long-term memory");
             return false;
         }
 
-        _lti.writeRecipeToFile("Chicken Stock",_lti.convertRecipeToWriteable(chickenStock()));
-        _lti.writeRecipeToFile("Lots of bacon at once",_lti.convertRecipeToWriteable(lotsOfBacon()));
-        _lti.writeRecipeToFile("Mirepoix",_lti.convertRecipeToWriteable(mirepoix()));
-
+        //_lti.writeRecipeToFile("Chicken Stock",_lti.convertRecipeToWriteable(chickenStock()));
+        //_lti.writeRecipeToFile("Lots of bacon at once",_lti.convertRecipeToWriteable(lotsOfBacon()));
+        //_lti.writeRecipeToFile("Mirepoix",_lti.convertRecipeToWriteable(mirepoix()));
+        _lti.setRecipe(chickenStock());
+        _lti.setRecipe(lotsOfBacon());
+        _lti.setRecipe(mirepoix());
 
         return true;
     }
