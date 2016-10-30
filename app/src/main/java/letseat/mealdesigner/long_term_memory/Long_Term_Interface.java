@@ -671,13 +671,16 @@ public class Long_Term_Interface implements Database, ShopList
     {
         ArrayList<String> indexFileLines = getIndexFileLines();
 
-        return indexFileLines.contains(input);
+        return testUserSuppliedFileExists(input,indexFileLines);
 
     }
 
     public boolean testUserSuppliedFileExists(String input,ArrayList<String> indexFileLines)
     {
-        return indexFileLines.contains(input);
+        for(String line : indexFileLines){
+            if(input.trim().equals(line.substring(0,line.indexOf(INDEX_FILE_DELIM)).trim())) return true;
+        }
+        return false;
     }
 
 
