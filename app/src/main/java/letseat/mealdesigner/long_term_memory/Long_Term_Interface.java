@@ -1025,13 +1025,16 @@ public class Long_Term_Interface implements Database, ShopList
     public boolean setRecipe(Recipe recipe){
         ArrayList<String> indexFileLines = getIndexFileLines();
         String name = ((RecipeHead) recipe).name();
+        Log.d("status","Saving recipe named: "+name);
         String filename;
         if(!testUserSuppliedFileExists(name,indexFileLines)){
             filename = generateFilename(name);
             indexFileLines.add(name+getIndexFileDelimiter()+filename);
             writeToFile("IndexFile",indexFileLines);
+            Log.d("status","New file, adding to index with filename "+filename);
         }else{
             filename = getFilename(((RecipeHead) recipe).name()).get(0);
+            Log.d("status","existing file, saving file as "+filename);
         }
         return writeRecipeToFile(filename,convertRecipeToWriteable((RecipeHead) recipe));
     }
