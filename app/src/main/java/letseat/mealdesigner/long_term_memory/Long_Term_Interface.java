@@ -771,7 +771,8 @@ public class Long_Term_Interface implements Database, ShopList
     {
         ArrayList<String> IFLines = getIndexFileLines();
 
-        String lastFilenameInIFLines = IFLines.get(IFLines.size()-1);
+        String lastFilenameInIFLines = "aaa";
+        if(IFLines.size() > 0) lastFilenameInIFLines = IFLines.get(IFLines.size()-1);
 
         lastFilenameInIFLines = lastFilenameInIFLines.substring(lastFilenameInIFLines.indexOf(INDEX_FILE_DELIM)+1);
 
@@ -1023,6 +1024,7 @@ public class Long_Term_Interface implements Database, ShopList
         if(!testUserSuppliedFileExists(name,indexFileLines)){
             filename = generateFilename(name);
             indexFileLines.add(name+getIndexFileDelimiter()+filename);
+            writeToFile("IndexFile",indexFileLines);
         }else{
             filename = getFilename(((RecipeHead) recipe).name()).get(0);
         }
