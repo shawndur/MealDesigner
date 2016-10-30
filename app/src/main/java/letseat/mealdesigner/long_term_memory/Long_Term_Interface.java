@@ -131,7 +131,7 @@ public class Long_Term_Interface implements Database, ShopList
      */
     private String specialSubstring(String input, final char beginDemarker, final char endDemarker)
     {
-//		Log.d("status","Generating special substring from:  "+input + ", [" + input.indexOf(beginDemarker) +","+ input.indexOf(endDemarker) +"]");
+		Log.d("status","Generating special substring from:  "+input + ", [" + input.indexOf(beginDemarker) +","+ input.indexOf(endDemarker) +"]");
 
 
         try
