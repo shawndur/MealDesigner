@@ -771,7 +771,7 @@ public class Long_Term_Interface implements Database, ShopList
     {
         ArrayList<String> IFLines = getIndexFileLines();
 
-        String lastFilenameInIFLines = "aaa";
+        String lastFilenameInIFLines = "a"+INDEX_FILE_DELIM+"aaa";
         if(IFLines.size() > 0) lastFilenameInIFLines = IFLines.get(IFLines.size()-1);
 
         lastFilenameInIFLines = lastFilenameInIFLines.substring(lastFilenameInIFLines.indexOf(INDEX_FILE_DELIM)+1);
