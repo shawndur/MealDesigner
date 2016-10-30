@@ -7,43 +7,55 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 
+import java.util.ArrayList;
+
+import letseat.mealdesigner.MealDesignerApp;
 import letseat.mealdesigner.R;
 
 import letseat.mealdesigner.recipies.MainRecipe;
+import letseat.mealdesigner.storage.Database;
+import letseat.mealdesigner.storage.Recipe;
 
 public class RecipeWalk2 extends AppCompatActivity {
+    private EditText editText1;
+    ArrayList<String> equipment  = new ArrayList<>();
+    Recipe newRecipe;
 
-
+    Database x;// = ((MealDesignerApp) getApplication()).getDatabase();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_walk2);
+        x = ((MealDesignerApp) getApplication()).getDatabase();
+        newRecipe = x.getTempRecipe();
 
+        editText1 = (EditText) findViewById(R.id.editText13);
         //has no toolbar
+
+
 
         //declare spinner
         Spinner equip_spinner = (Spinner) findViewById(R.id.equip_spinner);
-
         //populate spinner
-        String[] items = new String[] { "Fork", "Spoon", "Knife", "Measuring Cup", "Skillet", "Large Pot", "Strainer" };
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, items);
-
+        String[] items = new String[] { "Select an Item", "Fork", "Spoon", "Knife", "Measuring Cup", "Skillet", "Large Pot", "Strainer" };
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
         // Specify the layout to be more spaced out
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         //apply the adapter
         equip_spinner.setAdapter(adapter);
-
         equip_spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override //what to do with selected item
+            @Override //what to do with selected item from spinner
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.v("item", (String) parent.getItemAtPosition(position));
+                String label = parent.getItemAtPosition(position).toString();
+                equipment.add(label);
+              //  Recipe newRecipe;
+              //  x.setRecipe().setIngredients();
             }
 
             @Override //what to do if no item selected
@@ -55,8 +67,21 @@ public class RecipeWalk2 extends AppCompatActivity {
 
     }
 
+    //add equipment button
+    public void addEquip(View view){
+        //get string from fill in blank
+        String equipname = editText1.getText().toString();
+        if (equipname.matches("")) {
+            //void method to not add if empty
+        }
+        else{
+            equipment.add(equipname);
+        }
+    }
     //next step button
     public void step3(View view){
+        newRecipe.setTools(equipment);
+        x.setTempRecipe(newRecipe);
         Intent intent = new Intent(this,RecipeWalk3.class);
         startActivity(intent);
     }
