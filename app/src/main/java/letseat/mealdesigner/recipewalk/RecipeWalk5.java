@@ -35,6 +35,8 @@ public class RecipeWalk5 extends AppCompatActivity {
     }
     //button to created recipe page
     public void create(View view){
+        Database x = ((MealDesignerApp) getApplication()).getDatabase();
+        x.setRecipe(x.getTempRecipe());
         Intent intent = new Intent(this,MainRecipe.class);
         startActivity(intent);
     }

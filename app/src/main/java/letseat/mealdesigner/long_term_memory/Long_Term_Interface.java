@@ -131,7 +131,7 @@ public class Long_Term_Interface implements Database, ShopList
      */
     private String specialSubstring(String input, final char beginDemarker, final char endDemarker)
     {
-//		Log.d("status","Generating special substring from:  "+input + ", [" + input.indexOf(beginDemarker) +","+ input.indexOf(endDemarker) +"]");
+		Log.d("status","Generating special substring from:  "+input + ", [" + input.indexOf(beginDemarker) +","+ input.indexOf(endDemarker) +"]");
 
 
         try
@@ -671,13 +671,16 @@ public class Long_Term_Interface implements Database, ShopList
     {
         ArrayList<String> indexFileLines = getIndexFileLines();
 
-        return indexFileLines.contains(input);
+        return testUserSuppliedFileExists(input,indexFileLines);
 
     }
 
     public boolean testUserSuppliedFileExists(String input,ArrayList<String> indexFileLines)
     {
-        return indexFileLines.contains(input);
+        for(String line : indexFileLines){
+            if(input.trim().equals(line.substring(0,line.indexOf(INDEX_FILE_DELIM)).trim())) return true;
+        }
+        return false;
     }
 
 
@@ -771,7 +774,8 @@ public class Long_Term_Interface implements Database, ShopList
     {
         ArrayList<String> IFLines = getIndexFileLines();
 
-        String lastFilenameInIFLines = IFLines.get(IFLines.size()-1);
+        String lastFilenameInIFLines = "a"+INDEX_FILE_DELIM+"aaa";
+        if(IFLines.size() > 0) lastFilenameInIFLines = IFLines.get(IFLines.size()-1);
 
         lastFilenameInIFLines = lastFilenameInIFLines.substring(lastFilenameInIFLines.indexOf(INDEX_FILE_DELIM)+1);
 
@@ -826,7 +830,7 @@ public class Long_Term_Interface implements Database, ShopList
 
     public ArrayList<String> trimToUserGeneratedRecipeNamesOnly(ArrayList<String> rawSimilarLinesFromIndexFile)
     {
-        Log.d("status",rawSimilarLinesFromIndexFile.toString());
+        //Log.d("status",rawSimilarLinesFromIndexFile.toString());
         ArrayList<String> output = new ArrayList<String>();
 
         for(int i = 0; i < rawSimilarLinesFromIndexFile.size(); i++)
@@ -1007,35 +1011,32 @@ public class Long_Term_Interface implements Database, ShopList
     }
 
     public Recipe getRecipe(String name){
-        Log.d("status",name);
-        /*ArrayList<String> lines = getLinesFromFile(name);
-        if(lines.isEmpty()) return null;*/
-        RecipeHead bac = new RecipeHead("Lots of bacon at once");
-
-        bac.addEquipment("Cookie sheet",1,"Medium-gauge or thicker is preferred.");
-        bac.addEquipment("Parchment paper",1,"Sheet should cover the pan.");
-        bac.addEquipment("Oven",1,"Set to 380 Fahrenheit.");
-
-        bac.addIngredient("Bacon",8, ListComponent.UnitOfMeasure.STRIP,"");
-
-        bac.addProcedureWithoutTimer("Arrange the bacon strips flat on the cookie sheet","They can overlap a little bit");
-        bac.addProcedureWithTimer("Place the sheet in the oven.",(60*10),"");
-        bac.addProcedureWithTimer("Check the bacon",(60*3),"If it is starting to look very well done, then it is done cooking; otherwise, keep it in the oven.  Be careful to not let any grease drip in the oven.");
-        bac.addProcedureWithTimer("Check the bacon again.",60,"By now the baoon should be fully-cooked; if not, then continue to the next step.");
-        bac.addProcedureWithoutTimer("The bacon should be done by now","If not, your oven may need some service.  Either you aren't getting enough BTUs out of it or its thermostat needs to be calibrated -- this is common with older ovens!");
-
-        bac.addComment("This method is particularly useful when you have to make breakfast for everyone.  It saves space on your stovetop, and it gives you much more control and consistency over how you cook your bacon.");
-        bac.addComment("Double-smoked bacon is widely regarded as a high-end bacon.");
-        bac.addComment("Generally, the more meat which runs through the strip, the less that strip will shrink during cooking.");
-
-        return bac;
+        Log.d("status","Getting recipe: "+name+" from storage");
+        ArrayList<String> indexFileLines = getIndexFileLines();
+        if(!testUserSuppliedFileExists(name,indexFileLines))return null;
+        Log.d("status","File for "+name+" exists");
+        String filename = getFilename(name).get(0);
+        ArrayList<String> lines = getLinesFromFile(filename);
+        if(lines.isEmpty()) return null;
+        Log.d("status","Retrieved lines from file");
+        return parseLineToRecipe(lines.get(0));
     }
 
     public boolean setRecipe(Recipe recipe){
-        // TODO: 10/28/16 convert name to filename
-        // TODO: 10/28/16 add to index file if dne
-        convertRecipeToWriteable((RecipeHead) recipe);
-        return writeRecipeToFile(((RecipeHead) recipe).name(),convertRecipeToWriteable((RecipeHead) recipe));
+        ArrayList<String> indexFileLines = getIndexFileLines();
+        String name = ((RecipeHead) recipe).name();
+        Log.d("status","Saving recipe named: "+name);
+        String filename;
+        if(!testUserSuppliedFileExists(name,indexFileLines)){
+            filename = generateFilename(name);
+            indexFileLines.add(name+getIndexFileDelimiter()+filename);
+            writeToFile("IndexFile",indexFileLines);
+            Log.d("status","New file, adding to index with filename "+filename);
+        }else{
+            filename = getFilename(((RecipeHead) recipe).name()).get(0);
+            Log.d("status","existing file, saving file as "+filename);
+        }
+        return writeRecipeToFile(filename,convertRecipeToWriteable((RecipeHead) recipe));
     }
 
 
