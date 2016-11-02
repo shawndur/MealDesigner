@@ -338,7 +338,7 @@ public class Long_Term_Interface implements Database, ShopList
         bySection.put(COMMENTS, parseComponentsFromSpecialSubstring(input, COMMENTS, end_COMMENTS));
 
         // added 10/24
-        String allergenInfo = input.substring(end_COMMENTS+1);  // under initial operation this is only one char long (as more food allergens are discovered this will become more than one char)
+        String allergenInfo = input.substring(input.indexOf(end_COMMENTS)+1);  // under initial operation this is only one char long (as more food allergens are discovered this will become more than one char)
 
 
 
