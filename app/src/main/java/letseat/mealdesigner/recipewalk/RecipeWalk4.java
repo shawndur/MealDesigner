@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -39,11 +38,10 @@ public class RecipeWalk4 extends AppCompatActivity {
         String step = editText1.getText().toString();
         if (step.matches("")) {
             Toast.makeText(this, "You did not enter a step", Toast.LENGTH_SHORT).show();
-            return;
         }
         else{
             steps.add(step);
-            //TODO clear fill in for next step
+            editText1.setText("");
         }
     }
     //next step button

@@ -17,7 +17,6 @@ import letseat.mealdesigner.MealDesignerApp;
 import letseat.mealdesigner.R;
 import letseat.mealdesigner.recipies.MainRecipe;
 import letseat.mealdesigner.storage.Database;
-import letseat.mealdesigner.storage.Ingredient;
 import letseat.mealdesigner.storage.Recipe;
 
 public class RecipeWalk3 extends AppCompatActivity {
@@ -27,6 +26,8 @@ public class RecipeWalk3 extends AppCompatActivity {
     String unit = "";
     String finalIngredient;
     Recipe newRecipe;
+    //declare spinner
+    Spinner measure_spinner = (Spinner) findViewById(R.id.measure_spinner);
     Database x ;//= ((MealDesignerApp) getApplication()).getDatabase();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +41,9 @@ public class RecipeWalk3 extends AppCompatActivity {
         editTextAmount = (EditText) findViewById(R.id.editText6);
 
 
-        //declare spinner
-        Spinner measure_spinner = (Spinner) findViewById(R.id.measure_spinner);
         //populate spinner
         String[] items = new String[] { "Select a unit", "Cup", "Ounce", "Gram", "Tablespoon", "Teaspoon", "Fld Ounce", "Liter" };
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
         // Specify the layout to be more spaced out
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //apply the adapter
@@ -69,12 +68,14 @@ public class RecipeWalk3 extends AppCompatActivity {
         String amounts = editTextAmount.getText().toString();
         if (name.matches("")) {
             Toast.makeText(this, "You did not fill in an ingredient", Toast.LENGTH_SHORT).show();
-            return;
         }
         else{
             finalIngredient= name + " " + amounts+ " " +unit;
             ingredient.add(finalIngredient);
-            //TODO clear all for next ingredient
+            //clear all fill ins/selection
+            measure_spinner.setSelection(0);
+            editTextAmount.setText("");
+            editTextName.setText("");
         }
     }
     //next step button

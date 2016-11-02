@@ -11,13 +11,18 @@ import letseat.mealdesigner.MealDesignerApp;
 import letseat.mealdesigner.R;
 import letseat.mealdesigner.recipies.MainRecipe;
 import letseat.mealdesigner.storage.Database;
+import letseat.mealdesigner.storage.Recipe;
 
 public class RecipeWalk5 extends AppCompatActivity {
+    Recipe newRecipe;
+    Database x ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_walk5);
 
+        x = ((MealDesignerApp) getApplication()).getDatabase();
+        newRecipe = x.getTempRecipe();
         //has no toolbar
 
 
@@ -35,6 +40,8 @@ public class RecipeWalk5 extends AppCompatActivity {
     }
     //button to created recipe page
     public void create(View view){
+        x.setRecipe(newRecipe);
+        x.clearTemp();
         Intent intent = new Intent(this,MainRecipe.class);
         startActivity(intent);
     }

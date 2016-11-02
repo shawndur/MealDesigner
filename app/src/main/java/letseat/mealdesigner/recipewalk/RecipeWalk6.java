@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ public class RecipeWalk6 extends AppCompatActivity {
     private EditText editText4;
     private EditText editText5;
     ArrayList<String> allergies  = new ArrayList<>();
-    ArrayAdapter<String> m_adapter;
     Recipe newRecipe;
     Database x ;//= ((MealDesignerApp) getApplication()).getDatabase();
     protected void onCreate(Bundle savedInstanceState) {
