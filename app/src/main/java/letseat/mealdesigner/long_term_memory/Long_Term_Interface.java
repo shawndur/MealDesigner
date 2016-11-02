@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Date;
 
+import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.UOM_ERR;
+
 
 /**
  * This is the only class permitted (by group convention) to access the long-term memory of the device.
@@ -35,7 +37,8 @@ public class Long_Term_Interface
             _shopList_PRICE = (char) 0x89, end_shopList_PRICE = (char) 0x99,
             _shopList_STORE = (char) 0x8a, end_shopList_STORE = (char) 0x9a,
             _shopList_RECIPE_ADDED = (char) 0x8b, end_shopList_RECIPE_ADDED = (char) 0x9b,
-            _shopList_IN_CART = (char) 0x8c, end_shopList_IN_CART = (char) 0x9c;
+            _shopList_IN_CART = (char) 0x8c, end_shopList_IN_CART = (char) 0x9c,
+            _shopList_UOM = (char) 0x8d, end_shopList_UOM = (char) 0x9d;
 
 
 
@@ -145,7 +148,7 @@ public class Long_Term_Interface
     {
         if(input.length() < 3)
         {
-            return ListComponent.UnitOfMeasure.UOM_ERR; // 3 is the minimum length for any valid Unit of Measure
+            return UOM_ERR; // 3 is the minimum length for any valid Unit of Measure
         }
 
         input = input.toLowerCase();
@@ -262,7 +265,7 @@ public class Long_Term_Interface
             }
             default:
             {
-                return ListComponent.UnitOfMeasure.UOM_ERR;
+                return UOM_ERR;
             }
 
         }
@@ -851,6 +854,54 @@ public class Long_Term_Interface
         return INDEX_FILE_DELIM;
     }
 
+    public ArrayList<String> convertShoppingListToWriteable(ArrayList<ShoppingNode> shopList)
+    {
+        ArrayList<String> writeable = new ArrayList<String>();
+
+        for(int i = 0; i < shopList.size(); i++)
+        {
+            ShoppingNode current = shopList.get(i);
+            String itemName = INGREDIENT + current.name + end_INGREDIENT,
+                storeToPurchase = _shopList_STORE + current.store + end_shopList_STORE,
+                srcRecipe = _shopList_RECIPE_ADDED + current.recipeAddedFrom + end_shopList_RECIPE_ADDED,
+                addedToCart = _shopList_IN_CART + ( (current.in_cart)? "TRUE" : "FALSE" ) + end_shopList_IN_CART,
+                qtyToBuy = _shopList_QTY + "" + current.quantity + "" + end_shopList_QTY,
+                uom = _shopList_UOM + current.unit_of_measure.toString() + end_shopList_UOM;
+
+            String toAdd = itemName + storeToPurchase + srcRecipe + addedToCart + qtyToBuy + uom;
+
+
+
+            writeable.add(toAdd);
+
+        }
+
+        return writeable;
+/*
+ * for ease of reference:
+ *
+
+public class ShoppingNode
+{
+    public String name = "", store = "", recipeAddedFrom = "";
+//        RecipeHead recipeAddedFrom = null;    // whichever you decide to use...
+    public double quantity = -1.0, price = -1.0;
+    public boolean in_cart = false;
+}
+
+*/
+    }
+
+    public boolean writeToShoppingList(ArrayList<String> data)
+    {
+        return writeToFile("ShoppingList", data);
+    }
+
+    public boolean convertShoppingNodesAndWrite(ArrayList<ShoppingNode> input)
+    {
+        return writeToShoppingList( convertShoppingListToWriteable( input ) );
+    }
+
     public ArrayList<ShoppingNode> getShoppingList()
     {
         ArrayList<String> shoplistLines = getLinesFromFile("ShoppingList");
@@ -864,6 +915,8 @@ public class Long_Term_Interface
             String item = specialSubstring( current, INGREDIENT, end_INGREDIENT),
                 store = specialSubstring( current, _shopList_STORE, end_shopList_STORE),
                 addedFrom = specialSubstring( current, _shopList_RECIPE_ADDED, end_shopList_RECIPE_ADDED);
+
+            ListComponent.UnitOfMeasure uom = parseUnitOfMeasure( specialSubstring( current, _shopList_UOM, end_shopList_UOM));
 
 //            Double qty = Double.parseDouble( specialSubstring( current,_shopList_QTY, end_shopList_QTY)),
 //                price = Double.parseDouble( specialSubstring( current, _shopList_PRICE, end_shopList_PRICE));
@@ -921,6 +974,7 @@ public class Long_Term_Interface
             sNode.quantity = qty;
             sNode.store = store;
             sNode.recipeAddedFrom = addedFrom;
+            sNode.unit_of_measure = uom;
 
             output.add(sNode);
 
@@ -938,12 +992,16 @@ public class Long_Term_Interface
         return input < 0 || Double.isInfinite(input) || Double.isNaN(input) || input == Double.MAX_EXPONENT || input == Double.MAX_VALUE;
     }
 
+    /**
+     * All variables of ShoppingNode are initialized to some obviously-wrong value.  This is to make it adequately obvious when something has gone wrong.
+     */
     public class ShoppingNode
     {
         public String name = "", store = "", recipeAddedFrom = "";
 //        RecipeHead recipeAddedFrom = null;    // whichever you decide to use...
         public double quantity = -1.0, price = -1.0;
         public boolean in_cart = false;
+        public ListComponent.UnitOfMeasure unit_of_measure = UOM_ERR;
 
 
 
