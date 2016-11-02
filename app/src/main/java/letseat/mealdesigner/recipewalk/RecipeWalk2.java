@@ -74,7 +74,7 @@ public class RecipeWalk2 extends AppCompatActivity {
         //get string from fill in blank
         String equipname = editText1.getText().toString();
         //both blanks are empty
-        if(equipname.matches("") && equip_drop_down.equals("") ){
+        if(equipname.matches("") && equip_drop_down.matches("") ){
             Toast.makeText(this, "You did not fill in an equipment", Toast.LENGTH_SHORT).show();
         }
         //no equipment name written
