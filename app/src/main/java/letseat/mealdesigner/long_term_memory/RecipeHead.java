@@ -1,6 +1,7 @@
 package letseat.mealdesigner.long_term_memory;
 
 import android.app.AlertDialog;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -435,20 +436,20 @@ public class RecipeHead implements Recipe
 
 
 
-        System.out.println("Equipment:");
+        Log.d("status","Equipment:");
         if(_heads.containsKey(ComponentType.EQUIPMENT))
         {
 //            _heads.get(ComponentType.EQUIPMENT).printAllInfo();
             _heads.get(ComponentType.EQUIPMENT).printRelevantInfo();
         }
-        System.out.println("\nIngredients:");
+        Log.d("status","\nIngredients:");
         if(_heads.containsKey(ComponentType.INGREDIENT))
         {
 //            _heads.get(ComponentType.INGREDIENT).printAllInfo();
             _heads.get(ComponentType.INGREDIENT).printRelevantInfo();
         }
 
-        System.out.println("\nProcedures:");
+        Log.d("status","\nProcedures:");
         if(_heads.containsKey(PROCEDURE))
         {
 //            _heads.get(ComponentType.PROCEDURE).printAllInfo();
@@ -460,7 +461,7 @@ public class RecipeHead implements Recipe
             _heads.get(ComponentType.PROCEDURE_WITH_TIMER).printRelevantInfo();
         }
 
-        System.out.println("\nComments:");
+        Log.d("status","\nComments:");
         if(_heads.containsKey(ComponentType.COMMENT))
         {
 //            _heads.get(ComponentType.COMMENT).printAllInfo();
@@ -474,7 +475,7 @@ public class RecipeHead implements Recipe
     {
         _allergens.put(alerg,true);
 
-        System.out.println("Allergen \"" + alerg + "\" has been set to \"" + _allergens.get(alerg) + "\"");
+        Log.d("status","Allergen \"" + alerg + "\" has been set to \"" + _allergens.get(alerg) + "\"");
 
         return _allergens.get(alerg);
     }
@@ -483,7 +484,7 @@ public class RecipeHead implements Recipe
     {
         _allergens.put(alerg, false);
 
-        System.out.println("Allergen \"" + alerg + "\" has been set to \"" + _allergens.get(alerg) + "\"");
+        Log.d("status","Allergen \"" + alerg + "\" has been set to \"" + _allergens.get(alerg) + "\"");
 
         return _allergens.get(alerg);
     }
@@ -611,7 +612,7 @@ public class RecipeHead implements Recipe
      */
     public void println(String printable)
     {
-        System.out.println(printable);
+        Log.d("status",printable);
     }
 
     /**
@@ -631,9 +632,11 @@ public class RecipeHead implements Recipe
     public ArrayList<String> getSteps(){
         ArrayList<String> strsteps = new ArrayList<>();
         ListComponent steps =  getList( PROCEDURE );
+        if(steps == null) return strsteps;
         for(;steps.hasNext();steps = steps.next()){
             strsteps.add(steps.name());
         }
+        strsteps.add(steps.name());
         return strsteps;
     }
 
@@ -657,9 +660,11 @@ public class RecipeHead implements Recipe
     public ArrayList<String> getTools(){
         ArrayList<String> strtools = new ArrayList<>();
         ListComponent tools =  getList( EQUIPMENT );
+        if(tools == null) return strtools;
         for(;tools.hasNext();tools = tools.next()){
             strtools.add(tools.name());
         }
+        strtools.add(tools.name());
         return strtools;
     }
     
@@ -683,14 +688,21 @@ public class RecipeHead implements Recipe
     public ArrayList<String> getIngredients(){
         ArrayList<String> stringr = new ArrayList<>();
         ListComponent ingr =  getList( INGREDIENT );
+        if(ingr == null) return stringr;
         for(;ingr.hasNext();ingr = ingr.next()){
             String toAdd = "";
-            if(ingr.hasQuantity()) toAdd += ingr.getQuantity();
+            if(ingr.hasQuantity()) toAdd += ingr.getQuantity()+" ";
             if(ingr.unitOfMeasure() != NO_UOM &&  ingr.unitOfMeasure() != UOM_ERR)
-                toAdd += ingr.unitOfMeasure();
+                toAdd += ingr.unitOfMeasure()+" ";
             toAdd += ingr.name();
             stringr.add(toAdd);
         }
+        String toAdd = "";
+        if(ingr.hasQuantity()) toAdd += ingr.getQuantity()+" ";
+        if(ingr.unitOfMeasure() != NO_UOM &&  ingr.unitOfMeasure() != UOM_ERR)
+            toAdd += ingr.unitOfMeasure()+" ";
+        toAdd += ingr.name();
+        stringr.add(toAdd);
         return stringr;
     }
     
@@ -709,5 +721,9 @@ public class RecipeHead implements Recipe
         if(_heads.containsKey(INGREDIENT)) _heads.remove(INGREDIENT);
         _heads.put(INGREDIENT,head);
         return true;
+    }
+
+    public boolean setTempRecipePass(ArrayList<String> temp) {
+        return false;
     }
 }

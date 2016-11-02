@@ -1,0 +1,16 @@
+date: October 3, 2016
+meeting_type: ta
+attendance: [<cnzytari>, <cpark22>, <shawndur>, <vanhoose>]
+absent: []
+excused_absences: [ubit: <cnzytari>, reason: sick grandmother]
+task_progress:[
+  {ubit: <cnzytari>, progress: same as reg meeting.},
+  {ubit: <vanhoose>, progress: same as reg meeting.},
+  {ubit: <cpark22>, progress: same as reg meeting.},
+  {ubit: <shawndur>, progress: same as reg meeting.}
+  ]
+issues: [ # Post any issues here. Issues that cannot be addressed by the group should especially be included
+  ]
+Notes:  | # Anything covered in the meeting that doesn't fit elsewhere.
+  # Discussed searching memory for recipes
+  #Comparing 2 strings and apen source search engine for future use
