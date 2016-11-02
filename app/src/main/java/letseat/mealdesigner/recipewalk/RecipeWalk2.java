@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -72,12 +73,20 @@ public class RecipeWalk2 extends AppCompatActivity {
     public void addEquip(View view){
         //get string from fill in blank
         String equipname = editText1.getText().toString();
-        if (equipname.matches("")) {
+        //both blanks are empty
+        if(equipname.matches("") && equip_drop_down.equals("") ){
+            Toast.makeText(this, "You did not fill in an equipment", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //no equipment name written
+        else if (equipname.matches("")) {
             equipment.add(equip_drop_down);
             equip_spinner.setSelection(0);}
+        //equipment name was written
         else{
             equipment.add(equipname);
-            equip_spinner.setSelection(0);
+            //clear fill in blank
+            editText1.setText("");
         }
     }
     //next step button
