@@ -44,7 +44,7 @@ public class RecipeWalk2 extends AppCompatActivity {
 
         //populate spinner
         String[] items = new String[] { "Select an Item", "Fork", "Spoon", "Knife", "Measuring Cup", "Skillet", "Large Pot", "Strainer" };
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
         // Specify the layout to be more spaced out
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //apply the adapter
@@ -76,7 +76,6 @@ public class RecipeWalk2 extends AppCompatActivity {
         //both blanks are empty
         if(equipname.matches("") && equip_drop_down.equals("") ){
             Toast.makeText(this, "You did not fill in an equipment", Toast.LENGTH_SHORT).show();
-            return;
         }
         //no equipment name written
         else if (equipname.matches("")) {
