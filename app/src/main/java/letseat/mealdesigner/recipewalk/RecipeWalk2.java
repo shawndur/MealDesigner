@@ -25,6 +25,8 @@ public class RecipeWalk2 extends AppCompatActivity {
     private EditText editText1;
     ArrayList<String> equipment  = new ArrayList<>();
     Recipe newRecipe;
+    Spinner equip_spinner = (Spinner) findViewById(R.id.equip_spinner);
+    String equip_drop_down="";
 
     Database x;// = ((MealDesignerApp) getApplication()).getDatabase();
     @Override
@@ -39,8 +41,6 @@ public class RecipeWalk2 extends AppCompatActivity {
 
 
 
-        //declare spinner
-        Spinner equip_spinner = (Spinner) findViewById(R.id.equip_spinner);
         //populate spinner
         String[] items = new String[] { "Select an Item", "Fork", "Spoon", "Knife", "Measuring Cup", "Skillet", "Large Pot", "Strainer" };
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
@@ -53,7 +53,8 @@ public class RecipeWalk2 extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.v("item", (String) parent.getItemAtPosition(position));
                 String label = parent.getItemAtPosition(position).toString();
-                equipment.add(label);
+                equip_drop_down = label;
+                //equipment.add(label);
               //  Recipe newRecipe;
               //  x.setRecipe().setIngredients();
             }
@@ -72,10 +73,11 @@ public class RecipeWalk2 extends AppCompatActivity {
         //get string from fill in blank
         String equipname = editText1.getText().toString();
         if (equipname.matches("")) {
-            //void method to not add if empty
-        }
+            equipment.add(equip_drop_down);
+            equip_spinner.setSelection(0);}
         else{
             equipment.add(equipname);
+            equip_spinner.setSelection(0);
         }
     }
     //next step button
