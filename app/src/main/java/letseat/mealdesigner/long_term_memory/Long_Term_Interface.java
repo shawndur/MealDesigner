@@ -357,7 +357,7 @@ public class Long_Term_Interface implements Database, ShopList
             rawLine = rawLine.substring(rawLine.indexOf(COMMA)+1);
 
             // extracting the number of pieces of equipment required
-            int qty = Integer.parseInt(rawLine.substring(0,rawLine.indexOf(COMMA)));
+            Double qty = Double.parseDouble(rawLine.substring(0,rawLine.indexOf(COMMA)));
 
             rawLine = rawLine.substring(rawLine.indexOf(COMMA)+1);
 
