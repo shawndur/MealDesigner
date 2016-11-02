@@ -910,7 +910,7 @@ public class ShoppingNode
 
         for(int i = 0; i < shoplistLines.size(); i++)
         {
-            String current = shoplistLines.get(i);
+            String current = shoplistLines.get( i );
 
             String item = specialSubstring( current, INGREDIENT, end_INGREDIENT),
                 store = specialSubstring( current, _shopList_STORE, end_shopList_STORE),
