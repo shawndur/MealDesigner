@@ -1,5 +1,7 @@
 package letseat.mealdesigner.long_term_memory;
 
+import android.util.Log;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.*;
@@ -31,7 +33,7 @@ public class Initializer
             return true;
         }
 
-        return (indexFileContents.get(0).length() == 0)? true : indexFileContents.get(0).charAt(0) != 0x0FF;
+        return (indexFileContents.get(0).length() == 0)? true : indexFileContents.get(0).charAt(0) != 0x0FF && indexFileContents.get(0).charAt(0) != 0x0FE;
 
 //        try
 //        {
@@ -49,8 +51,10 @@ public class Initializer
     {
         if(checkIfIndexFileExists())
         {
+            Log.d("status","index file exists");
             return true;
         }
+        Log.d("status","index file does not exists, creating it");
 
 //
 //          // if we want to hardcode a way to keep people from using the price-reduced beta release after a certain date, here is how we can cause the app to crash fairly easily.
@@ -64,11 +68,11 @@ public class Initializer
 
         ArrayList<String> indexFileKernel  = new ArrayList<String>();
 
-        char indexFileDelim = _lti.getIndexFileDelimiter();
+        //char indexFileDelim = _lti.getIndexFileDelimiter();
 
-        indexFileKernel.add("Chicken Stock"+indexFileDelim+"aaa");
-        indexFileKernel.add("Meatloaf"+indexFileDelim+"aab");
-        indexFileKernel.add("Lots of bacon at once"+indexFileDelim+"aac");
+        //indexFileKernel.add("Chicken Stock"+indexFileDelim+"aaa");
+        //indexFileKernel.add("Meatloaf"+indexFileDelim+"aab");
+        //indexFileKernel.add("Lots of bacon at once"+indexFileDelim+"aac");
 //        indexFileKernel.add("Knife skills:  Dice"+indexFileDelim+"aad");
 //        indexFileKernel.add("Knife skills:  Julienne"+indexFileDelim+"aae");
 //        indexFileKernel.add("Sauces: Bechamel (white) Sauce" + indexFileDelim + "aaf");
@@ -78,18 +82,20 @@ public class Initializer
 //        indexFileKernel.add("Thickener: Roux"+ indexFileDelim + "aaj");
 //        indexFileKernel.add("Thickener: Slurry"+ indexFileDelim + "aak");
 //        indexFileKernel.add("Sauces: Demi-glace" + indexFileDelim + "aal");
-        indexFileKernel.add("Mirepoix"+indexFileDelim+"aam");
-
+        //indexFileKernel.add("Mirepoix"+indexFileDelim+"aam");
+        //Log.d("status",indexFileKernel.toString());
         if(!_lti.writeToFile("IndexFile",indexFileKernel))
         {
-            System.out.println("Failed to create Index File kernel in long-term memory");
+            Log.d("Status" , "Failed to create Index File kernel in long-term memory");
             return false;
         }
 
-        _lti.writeRecipeToFile("Chicken Stock",_lti.convertRecipeToWriteable(chickenStock()));
-        _lti.writeRecipeToFile("Lots of bacon at once",_lti.convertRecipeToWriteable(lotsOfBacon()));
-        _lti.writeRecipeToFile("Mirepoix",_lti.convertRecipeToWriteable(mirepoix()));
-
+        //_lti.writeRecipeToFile("Chicken Stock",_lti.convertRecipeToWriteable(chickenStock()));
+        //_lti.writeRecipeToFile("Lots of bacon at once",_lti.convertRecipeToWriteable(lotsOfBacon()));
+        //_lti.writeRecipeToFile("Mirepoix",_lti.convertRecipeToWriteable(mirepoix()));
+        _lti.setRecipe(chickenStock());
+        _lti.setRecipe(lotsOfBacon());
+        _lti.setRecipe(mirepoix());
 
         return true;
     }
@@ -163,7 +169,7 @@ public class Initializer
 
     }
 
-    private RecipeHead lotsOfBacon()
+    public RecipeHead lotsOfBacon()
     {
         RecipeHead bac = new RecipeHead("Lots of bacon at once");
 

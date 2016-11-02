@@ -1,6 +1,7 @@
 package letseat.mealdesigner;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,7 +35,7 @@ public class Long_Term_Interface
     // TODO:    FileInputStream may not be the class needed.  Research this.
     public ArrayList<String> getLinesFromFile(String filename)
     {
-        ArrayList<String> output = new ArrayList() < String >;
+        ArrayList<String> output = new ArrayList<>() ;
 
         FileInputStream iStream;
 
@@ -52,10 +53,11 @@ public class Long_Term_Interface
 
         int i = 0;
         String currentLine = "";
-        try
+        /*try
         {
-            while(iStream.)
-        }
+            //while(iStream.)
+        }*/
+        return output;
 
     }
         /**
@@ -76,7 +78,7 @@ public class Long_Term_Interface
         }
         catch(FileNotFoundException e)
         {
-            System.out.println("Unable to open "+filename);
+            Log.d("status","Unable to open "+filename);
             e.printStackTrace();
             return false;
         }
@@ -98,7 +100,7 @@ public class Long_Term_Interface
         }
         catch(IOException e)
         {
-            System.out.println(outStream_writing? "<"+current_line+"> could not be printed, write to file abandoned on line "+i : "FileOutputStream experienced an error while closing.");
+            Log.d("status",outStream_writing? "<"+current_line+"> could not be printed, write to file abandoned on line "+i : "FileOutputStream experienced an error while closing.");
             e.printStackTrace();
             return false;
         }

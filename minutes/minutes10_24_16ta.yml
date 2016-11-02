@@ -1,0 +1,16 @@
+date: October 24, 2016
+meeting_type: ta
+attendance: [<cnzytari>, <cpark22>, <shawndur>, <vanhoose>]
+absent: []
+excused_absences: []
+task_progress:[
+  {ubit: <cnzytari>, progress:  figured out how to set up temp recipe to pass through activity pages, change background color on pages with allergy info.},
+  {ubit: <vanhoose>, progress: Still debugging database.},
+  {ubit: <cpark22>, progress: working on calling shop list information to be visible in a layout that we want.},
+  {ubit: <shawndur>, progress: compiling, looking for errors.}
+  ]
+issues: [ # Post any issues here. Issues that cannot be addressed by the group should especially be included
+ ]
+Notes:  | # Anything covered in the meeting that doesn't fit elsewhere.
+  # Video Show- created recipe actually shows up
+  # Show- add and remove ingridients to shopping list from recipes

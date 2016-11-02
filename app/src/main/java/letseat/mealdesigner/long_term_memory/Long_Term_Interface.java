@@ -2,6 +2,7 @@ package letseat.mealdesigner.long_term_memory;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,13 +18,20 @@ import java.util.Date;
 
 import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.UOM_ERR;
 
+import letseat.mealdesigner.MainActivity;
+import letseat.mealdesigner.MealDesignerApp;
+import letseat.mealdesigner.storage.Database;
+import letseat.mealdesigner.storage.Ingredient;
+import letseat.mealdesigner.storage.Recipe;
+import letseat.mealdesigner.storage.ShopList;
+
 
 /**
  * This is the only class permitted (by group convention) to access the long-term memory of the device.
  * If the functionality of this class is desired, use this as an inherited class.
  * Created by George_Sr on 9/20/2016.
  */
-public class Long_Term_Interface
+public class Long_Term_Interface implements Database, ShopList
 {
     private static final char RECIPE_NAME = (char) 0x80, end_RECIPE_NAME = (char) 0x90,
             EQUIPMENT = (char) 0x81, end_EQUIPMENT = (char) 0x91,
@@ -50,13 +58,15 @@ public class Long_Term_Interface
     private File _appHomeDir;                           // the internal directory of the app
     private static final String EXTENSION = ".txt";    // this can be changed, but all files which exist with the outdated extension need to be updated
     private static final String DEFAULT = "default_filename_";  // the default filename to be used if a given filename is invalid
-
+    private RecipeHead _temp;    //temporary recipe
 
 
     public Long_Term_Interface(Application top)
     {
         _top = top;
         _appHomeDir = _top.getFilesDir();
+
+        Log.d("Status", "Files Dir = " + _appHomeDir);
 
     }
 
@@ -124,7 +134,7 @@ public class Long_Term_Interface
      */
     private String specialSubstring(String input, final char beginDemarker, final char endDemarker)
     {
-//		System.out.println("Generating special substring from:  "+input + ", [" + input.indexOf(beginDemarker) +","+ input.indexOf(endDemarker) +"]");
+		Log.d("status","Generating special substring from:  "+input + ", [" + input.indexOf(beginDemarker) +","+ input.indexOf(endDemarker) +"]");
 
 
         try
@@ -133,7 +143,7 @@ public class Long_Term_Interface
         }
         catch(IndexOutOfBoundsException e)
         {
-            System.out.println("Error on " + ((input.length() <= 10)? input : input.substring(0,10) + "... ") +":\n\tCannot parse because of demarkerBegin = " + input.indexOf(beginDemarker) + " or demarkerEnd = " + input.indexOf(endDemarker));
+            Log.d("status","Error on " + ((input.length() <= 10)? input : input.substring(0,10) + "... ") +":\n\tCannot parse because of demarkerBegin = " + input.indexOf(beginDemarker) + " or demarkerEnd = " + input.indexOf(endDemarker));
             return "";
         }
 
@@ -332,7 +342,7 @@ public class Long_Term_Interface
 
 
 
-//		System.out.println(bySection.toString());
+//		Log.d("status",bySection.toString());
 
         RecipeHead recipeHead = new RecipeHead(specialSubstring(input, RECIPE_NAME, end_RECIPE_NAME));
 
@@ -357,12 +367,12 @@ public class Long_Term_Interface
             String additionalText = rawLine;
 
 //			// all confirmed, good to go!
-//			System.out.println("Parsed info:\n\tName:\t"+ name +"\n\tQty:\t"+ (qty+3.1) + "\n\tText2:\t"+ additionalText);
+//			Log.d("status","Parsed info:\n\tName:\t"+ name +"\n\tQty:\t"+ (qty+3.1) + "\n\tText2:\t"+ additionalText);
 
             recipeHead.addEquipment(name, qty, additionalText);	// in the future, just add rawLine
 
         }
-//		System.out.println('\n');
+//		Log.d("status",'\n');
         for(int i = 0; i < bySection.get(INGREDIENT).size(); i++)
         {
             String rawLine = bySection.get(INGREDIENT).get(i);
@@ -371,7 +381,7 @@ public class Long_Term_Interface
 
             rawLine = rawLine.substring(rawLine.indexOf(COMMA)+1);
 
-//			System.out.println(rawLine);
+//			Log.d("status",rawLine);
 
             double qty;
             try
@@ -381,7 +391,7 @@ public class Long_Term_Interface
             }
             catch(NumberFormatException e)
             {
-                System.out.println("Blank or invalid string passed to Double.parseDouble(String) while parsing quantity information for "+ name +" in recipe "+recipeHead.name()+".\n\tPlease investigate, or prompt user for correct information.  By default, qty will be set to -1.");
+                Log.d("status","Blank or invalid string passed to Double.parseDouble(String) while parsing quantity information for "+ name +" in recipe "+recipeHead.name()+".\n\tPlease investigate, or prompt user for correct information.  By default, qty will be set to -1.");
                 qty = -1.0;
             }
 
@@ -391,13 +401,13 @@ public class Long_Term_Interface
 
             rawLine = rawLine.substring(rawLine.indexOf(COMMA)+1);
 
-//			System.out.println(rawLine);
+//			Log.d("status",rawLine);
 
-//			System.out.println("Ingredient info:\n\tName:\t" + name + "\n\tQuantity:\t"+qty+"\n\tUofM:\t"+uom.toString()+"\n\tText2:\t"+additionalText);
+//			Log.d("status","Ingredient info:\n\tName:\t" + name + "\n\tQuantity:\t"+qty+"\n\tUofM:\t"+uom.toString()+"\n\tText2:\t"+additionalText);
 
             recipeHead.addIngredient(name, qty, uom, rawLine);
         }
-//		System.out.println('\n');
+//		Log.d("status",'\n');
         for(int i = 0; i < bySection.get(PROCEDURE).size(); i++)
         {
             String rawLine = bySection.get(PROCEDURE).get(i);
@@ -417,20 +427,20 @@ public class Long_Term_Interface
             catch(NumberFormatException e)
             {
 //                timer = -1;
-                System.out.println("Blank or invalid string passed to Double.parseDouble(String) while parsing quantity information for "+ name +" in recipe "+recipeHead.name()+".\n\tPlease investigate, or prompt user for correct information.  By default, the timer will not be utilized, and this component of the Procedures list will have ComponentType.PROCEDURE set instead of ComponentType.PROCEDURE_WITH_TIMER.");
+                Log.d("status","Blank or invalid string passed to Double.parseDouble(String) while parsing quantity information for "+ name +" in recipe "+recipeHead.name()+".\n\tPlease investigate, or prompt user for correct information.  By default, the timer will not be utilized, and this component of the Procedures list will have ComponentType.PROCEDURE set instead of ComponentType.PROCEDURE_WITH_TIMER.");
                 recipeHead.addProcedureWithoutTimer(name, rawLine.substring(rawLine.indexOf(COMMA)+1));
 
             }
 
             rawLine = rawLine.substring(rawLine.indexOf(COMMA)+1);
 
-//			System.out.println("Procedure parsing:\n\tName:\t"+ name+"\n\tTimer:\t"+ timer+"\n\tText2:\t"+rawLine);
+//			Log.d("status","Procedure parsing:\n\tName:\t"+ name+"\n\tTimer:\t"+ timer+"\n\tText2:\t"+rawLine);
 
             recipeHead.addProcedureWithoutTimer(name, rawLine);
 
 
         }
-//		System.out.println('\n');
+//		Log.d("status",'\n');
 
         for(int i = 0; i< bySection.get(COMMENTS).size(); i++)
         {
@@ -454,11 +464,11 @@ public class Long_Term_Interface
 
         while(input.lastIndexOf(end_COMPONENT) >= 0)
         {
-//			System.out.println("Parsing over:  "+input);
+//			Log.d("status","Parsing over:  "+input);
 
             output.add(specialSubstring(input,COMPONENT,end_COMPONENT));
 
-//			System.out.println("In");
+//			Log.d("status","In");
             input = input.substring(input.indexOf(end_COMPONENT)+1);
 
         }
@@ -492,7 +502,7 @@ public class Long_Term_Interface
         }
         catch(FileNotFoundException e)
         {
-            System.out.println("Unable to access " + filename);
+            Log.d("status","Unable to access " + filename);
             e.printStackTrace();
             return false;
         }
@@ -509,7 +519,7 @@ public class Long_Term_Interface
         }
         catch(IOException e)
         {
-            System.out.println(outStream_writing? "<"+data+"> could not be printed." : "FileOutputStream experienced an error while closing.");
+            Log.d("status",outStream_writing? "<"+data+"> could not be printed." : "FileOutputStream experienced an error while closing.");
             e.printStackTrace();
             return false;
         }
@@ -536,7 +546,7 @@ public class Long_Term_Interface
         }
         catch(FileNotFoundException e)
         {
-            System.out.println("Unable to access "+filename);
+            Log.d("status","Unable to access "+filename);
             e.printStackTrace();
             return false;
         }
@@ -551,7 +561,7 @@ public class Long_Term_Interface
 //            for(; i < dataSize; i++)
             while(i < dataSize)
             {
-                current_line = data.get(i++);
+                current_line = data.get(i++) + '\n';
                 oStream.write(current_line.getBytes());
             }
 
@@ -562,7 +572,7 @@ public class Long_Term_Interface
         }
         catch(IOException e)
         {
-            System.out.println(outStream_writing? "<"+current_line+"> could not be printed, write to file abandoned on line "+i : "FileOutputStream experienced an error while closing.");
+            Log.d("status",outStream_writing? "<"+current_line+"> could not be printed, write to file abandoned on line "+i : "FileOutputStream experienced an error while closing.");
             e.printStackTrace();
             return false;
         }
@@ -591,14 +601,14 @@ public class Long_Term_Interface
         // if filename is an empty string, then the filename is not valid:
         if((filename_length = filename.length()) == 0)
         {
-            System.out.println("Filename is an empty string.");
+            Log.d("status","Filename is an empty string.");
             return false;
         }
 
         // if filename contains more than one '.', then the filename cannot be used, since the '.' may have been used to denote a sub-branch relating to another file of the same name
         if(filename.indexOf(".") != filename.lastIndexOf("."))
         {
-            System.out.println("Filename \"" + filename +"\" has more than one '.' char.");
+            Log.d("status","Filename \"" + filename +"\" has more than one '.' char.");
             return false;
         }
 
@@ -610,7 +620,7 @@ public class Long_Term_Interface
             // then the default filename must be returned
             if(filename.contains("."))
             {
-                System.out.println("Filename \"" + filename + "\" does not contain correct extension");
+                Log.d("status","Filename \"" + filename + "\" does not contain correct extension");
                 return false;
             }
         }
@@ -618,7 +628,7 @@ public class Long_Term_Interface
         // if filename does not begin with '\\', then it must be added in
         if(filename.charAt(0) != '\\')
         {
-            System.out.println("Filename \"" + filename +"\" does not start with '\\' char.");
+            Log.d("status","Filename \"" + filename +"\" does not start with '\\' char.");
             return false;
 
 //            filename = '\\' + filename;
@@ -629,7 +639,7 @@ public class Long_Term_Interface
         if(filename.contains(" "))
         {
 
-            System.out.println("Filename \"" + filename +"\" contains spaces.");
+            Log.d("status","Filename \"" + filename +"\" contains spaces.");
             return false;
 
         }
@@ -657,20 +667,23 @@ public class Long_Term_Interface
 
     public ArrayList<String> getIndexFileLines()
     {
-        return getLinesFromFile("IndexFile"+EXTENSION);
+        return getLinesFromFile("IndexFile");//+EXTENSION);
     }
 
     public boolean testUserSuppliedFileExists(String input)
     {
         ArrayList<String> indexFileLines = getIndexFileLines();
 
-        return indexFileLines.contains(input);
+        return testUserSuppliedFileExists(input,indexFileLines);
 
     }
 
     public boolean testUserSuppliedFileExists(String input,ArrayList<String> indexFileLines)
     {
-        return indexFileLines.contains(input);
+        for(String line : indexFileLines){
+            if(input.trim().equals(line.substring(0,line.indexOf(INDEX_FILE_DELIM)).trim())) return true;
+        }
+        return false;
     }
 
 
@@ -697,7 +710,7 @@ public class Long_Term_Interface
             diffs[i] = Math.abs(input0.charAt(i) - input1.charAt(i));
 //			System.out.print(diffs[i]+ " ");
         }
-//		System.out.println("}");
+//		Log.d("status","}");
         // by providing a linearly increasing set of integers to fill out the remainder of diffs[], strings which differ in length by one char are penalized less than strings which differ by more than one char
         for(int i = shorterLength; i < longerLength; i++)
         {
@@ -764,7 +777,8 @@ public class Long_Term_Interface
     {
         ArrayList<String> IFLines = getIndexFileLines();
 
-        String lastFilenameInIFLines = IFLines.get(IFLines.size()-1);
+        String lastFilenameInIFLines = "a"+INDEX_FILE_DELIM+"aaa";
+        if(IFLines.size() > 0) lastFilenameInIFLines = IFLines.get(IFLines.size()-1);
 
         lastFilenameInIFLines = lastFilenameInIFLines.substring(lastFilenameInIFLines.indexOf(INDEX_FILE_DELIM)+1);
 
@@ -819,11 +833,14 @@ public class Long_Term_Interface
 
     public ArrayList<String> trimToUserGeneratedRecipeNamesOnly(ArrayList<String> rawSimilarLinesFromIndexFile)
     {
+        //Log.d("status",rawSimilarLinesFromIndexFile.toString());
         ArrayList<String> output = new ArrayList<String>();
 
         for(int i = 0; i < rawSimilarLinesFromIndexFile.size(); i++)
         {
-            output.add(rawSimilarLinesFromIndexFile.get(i).substring(0,INDEX_FILE_DELIM));
+            String line = rawSimilarLinesFromIndexFile.get(i);
+            output.add(line.split(""+INDEX_FILE_DELIM)[0]);
+            //output.add(rawSimilarLinesFromIndexFile.get(i).substring(0,rawSimilarLinesFromIndexFile.get(i).indexOf(INDEX_FILE_DELIM)));
         }
 
         return output;
@@ -949,7 +966,7 @@ public class ShoppingNode
             }
             catch(NumberFormatException q)
             {
-                System.out.println("Error parsing quantity information while retrieving the shopping list.  Non-critical error, quantity will be set to -1.0");
+                Log.d("status","Error parsing quantity information while retrieving the shopping list.  Non-critical error, quantity will be set to -1.0");
                 qty = -1.0;
             }
             try
@@ -962,7 +979,7 @@ public class ShoppingNode
             }
             catch(NumberFormatException p)
             {
-                System.out.println("Error parsing price information while retrieving the shopping list.  Non-critical error, price will be set to -1.0");
+                Log.d("status","Error parsing price information while retrieving the shopping list.  Non-critical error, price will be set to -1.0");
                 price = -1.0;
             }
 
@@ -995,7 +1012,7 @@ public class ShoppingNode
     /**
      * All variables of ShoppingNode are initialized to some obviously-wrong value.  This is to make it adequately obvious when something has gone wrong.
      */
-    public class ShoppingNode
+    public class ShoppingNode implements Ingredient
     {
         public String name = "", store = "", recipeAddedFrom = "";
 //        RecipeHead recipeAddedFrom = null;    // whichever you decide to use...
@@ -1003,10 +1020,126 @@ public class ShoppingNode
         public boolean in_cart = false;
         public ListComponent.UnitOfMeasure unit_of_measure = UOM_ERR;
 
+        //These functions are getters to get each field
+        public String getName(){return name;}
+        public String getAmount(){return "" + quantity;}
+        public String getPrice(){return "" + price;}
+        public String getStore(){return store;}
+        public ArrayList<String> getRecipes(){
+            ArrayList<String> toReturn = new ArrayList<>();
+            toReturn.add(recipeAddedFrom);
+            return toReturn;
+        }
 
+        //These functions are setters for each field
+        //      Note: They will overwrite each existing field
+        public boolean setName(String newName){
+            name = newName;
+            return true;
+        }
+        public boolean setAmount(String amount){
+            quantity = Double.parseDouble(amount);
+            return true;
+        }
+        public boolean setPrice(String newPrice){
+            price = Double.parseDouble(newPrice);
+            return true;
+        }
+        public boolean setStore(String newStore){
+            store = newStore;
+            return true;
+        }
+        public boolean setRecipes(ArrayList<String> recipes){
+            if(recipes.isEmpty()) return true;
+            recipeAddedFrom = recipes.get(0);
+            return true;
+        }
 
     }
 
+    /****************************
+     * Interface Implementation *
+     *   -Shawn Durandetto      *
+     **************************/
 
+    // TODO: 10/25/16 Index file?
+
+    public Recipe newRecipe(String name){
+        return new RecipeHead(name);
+    }
+
+    public Recipe getRecipe(String name){
+        Log.d("status","Getting recipe: "+name+" from storage");
+        ArrayList<String> indexFileLines = getIndexFileLines();
+        if(!testUserSuppliedFileExists(name,indexFileLines))return null;
+        Log.d("status","File for "+name+" exists");
+        String filename = getFilename(name).get(0);
+        ArrayList<String> lines = getLinesFromFile(filename);
+        if(lines.isEmpty()) return null;
+        Log.d("status","Retrieved lines from file");
+        return parseLineToRecipe(lines.get(0));
+    }
+
+    public boolean setRecipe(Recipe recipe){
+        ArrayList<String> indexFileLines = getIndexFileLines();
+        String name = ((RecipeHead) recipe).name();
+        Log.d("status","Saving recipe named: "+name);
+        String filename;
+        if(!testUserSuppliedFileExists(name,indexFileLines)){
+            filename = generateFilename(name);
+            indexFileLines.add(name+getIndexFileDelimiter()+filename);
+            writeToFile("IndexFile",indexFileLines);
+            Log.d("status","New file, adding to index with filename "+filename);
+        }else{
+            filename = getFilename(((RecipeHead) recipe).name()).get(0);
+            Log.d("status","existing file, saving file as "+filename);
+        }
+        return writeRecipeToFile(filename,convertRecipeToWriteable((RecipeHead) recipe));
+    }
+
+
+    public ShopList getShopList(){
+        return this;
+    }
+
+    public ArrayList<Ingredient> getIngredients(){
+        ArrayList<Ingredient> toReturn = new ArrayList<>();
+        for(ShoppingNode x : getShoppingList()){
+            toReturn.add(x);
+        }
+        return toReturn;
+    }
+
+    public boolean setIngredients(ArrayList<Ingredient> ingredients){
+        return false;
+    }
+
+    public Ingredient newIngredient(){
+        return new ShoppingNode();
+    }
+
+    public boolean setShopList(ShopList shopList){
+        // TODO: 10/25/16 set shopping list. How?
+        return false;
+    }
+
+    public ArrayList<String> getListOfRecipes(){
+        ArrayList<String> indexFileLines = getIndexFileLines();
+        if(indexFileLines.isEmpty()) return new ArrayList<>();
+        return trimToUserGeneratedRecipeNamesOnly(indexFileLines);
+    }
+
+    public Recipe getTempRecipe(){
+        return _temp;
+    }
+
+    public boolean setTempRecipe(Recipe recipe){
+        _temp =  (RecipeHead) recipe;
+        return true;
+    }
+
+    public void clearTemp(){
+        _temp = null;
+    }
 
 }
