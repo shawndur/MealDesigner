@@ -1097,21 +1097,24 @@ public class ShoppingNode
         return writeRecipeToFile(filename,convertRecipeToWriteable((RecipeHead) recipe));
     }
 
+    ArrayList<Ingredient> _ingredients;
 
     public ShopList getShopList(){
-        return this;
-    }
-
-    public ArrayList<Ingredient> getIngredients(){
         ArrayList<Ingredient> toReturn = new ArrayList<>();
         for(ShoppingNode x : getShoppingList()){
             toReturn.add(x);
         }
-        return toReturn;
+        _ingredients = toReturn;
+        return this;
+    }
+
+    public ArrayList<Ingredient> getIngredients(){
+        return _ingredients;
     }
 
     public boolean setIngredients(ArrayList<Ingredient> ingredients){
-        return false;
+        _ingredients = ingredients;
+        return true;
     }
 
     public Ingredient newIngredient(){
@@ -1119,8 +1122,12 @@ public class ShoppingNode
     }
 
     public boolean setShopList(ShopList shopList){
-        // TODO: 10/25/16 set shopping list. How?
-        return false;
+        if(_ingredients == null)return false;
+        ArrayList<ShoppingNode> list  = new ArrayList<>();
+        for(Ingredient node : _ingredients){
+            list.add((ShoppingNode) node);
+        }
+        return convertShoppingNodesAndWrite(list);
     }
 
     public ArrayList<String> getListOfRecipes(){
