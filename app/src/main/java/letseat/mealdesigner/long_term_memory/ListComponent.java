@@ -1,5 +1,7 @@
 package letseat.mealdesigner.long_term_memory;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 //import java.util.ArrayList;
@@ -361,7 +363,7 @@ public class ListComponent
 //    {
 //    	if(i >= _comments.size())
 //    	{
-//    		System.out.println("Cannot delete comment within "+ _name +" component, because index at " + i + " is an invalid index.");
+//    		Log.d("status","Cannot delete comment within "+ _name +" component, because index at " + i + " is an invalid index.");
 //    		return;
 //    	}
 //        _comments.remove(i);
@@ -695,7 +697,7 @@ public class ListComponent
 //                }
 //                output.add(_additionalText);
 //
-////    			System.out.println(_name+", " + ((_quantity > 0.0)? _quantity+" "+_unitOfMeasure : "") + ", " + _additionalText);
+////    			Log.d("status",_name+", " + ((_quantity > 0.0)? _quantity+" "+_unitOfMeasure : "") + ", " + _additionalText);
 //                return output;
 //            }
 //            case INGREDIENT:
@@ -707,7 +709,7 @@ public class ListComponent
 //
 //                return output;
 //
-////    			System.out.println(_name + ", " + _quantity + " " + _unitOfMeasure.toString() + ", " + _additionalText);
+////    			Log.d("status",_name + ", " + _quantity + " " + _unitOfMeasure.toString() + ", " + _additionalText);
 ////    			break;
 //            }
 //            case PROCEDURE_WITH_TIMER:
@@ -719,7 +721,7 @@ public class ListComponent
 //
 //                return output;
 //
-////    			System.out.println(_name + " for " + _quantity + " seconds.  "+_additionalText);
+////    			Log.d("status",_name + " for " + _quantity + " seconds.  "+_additionalText);
 ////    			break;
 //            }
 //            case PROCEDURE:
@@ -729,7 +731,7 @@ public class ListComponent
 //
 //                return output;
 //
-////    			System.out.println(_name + ", " + _additionalText);
+////    			Log.d("status",_name + ", " + _additionalText);
 ////    			break;
 //            }
 //            case COMMENT:
@@ -738,7 +740,7 @@ public class ListComponent
 //
 //                return output;
 //
-////    			System.out.println(_name);
+////    			Log.d("status",_name);
 ////    			break;
 //            }
 //            default:
@@ -771,7 +773,7 @@ public class ListComponent
                 }
                 output.add(_additionalText);
 
-//    			System.out.println(_name+", " + ((_quantity > 0.0)? _quantity+" "+_unitOfMeasure : "") + ", " + _additionalText);
+//    			Log.d("status",_name+", " + ((_quantity > 0.0)? _quantity+" "+_unitOfMeasure : "") + ", " + _additionalText);
                 return output;
             }
             case INGREDIENT:
@@ -783,7 +785,7 @@ public class ListComponent
 
                 return output;
 
-//    			System.out.println(_name + ", " + _quantity + " " + _unitOfMeasure.toString() + ", " + _additionalText);
+//    			Log.d("status",_name + ", " + _quantity + " " + _unitOfMeasure.toString() + ", " + _additionalText);
 //    			break;
             }
             case PROCEDURE_WITH_TIMER:
@@ -795,7 +797,7 @@ public class ListComponent
 
                 return output;
 
-//    			System.out.println(_name + " for " + _quantity + " seconds.  "+_additionalText);
+//    			Log.d("status",_name + " for " + _quantity + " seconds.  "+_additionalText);
 //    			break;
             }
             case PROCEDURE:
@@ -805,7 +807,7 @@ public class ListComponent
 
                 return output;
 
-//    			System.out.println(_name + ", " + _additionalText);
+//    			Log.d("status",_name + ", " + _additionalText);
 //    			break;
             }
             case COMMENT:
@@ -814,7 +816,7 @@ public class ListComponent
 
                 return output;
 
-//    			System.out.println(_name);
+//    			Log.d("status",_name);
 //    			break;
             }
             default:
@@ -831,27 +833,27 @@ public class ListComponent
         {
             case EQUIPMENT:
             {
-                System.out.println(_name+", " + ((_quantity > 0.0)? _quantity+" "+_unitOfMeasure : "") + ", " + _additionalText);
+                Log.d("status",_name+", " + ((_quantity > 0.0)? _quantity+" "+_unitOfMeasure : "") + ", " + _additionalText);
                 break;
             }
             case INGREDIENT:
             {
-                System.out.println(_name + ", " + _quantity + " " + _unitOfMeasure.toString() + ", " + _additionalText);
+                Log.d("status",_name + ", " + _quantity + " " + _unitOfMeasure.toString() + ", " + _additionalText);
                 break;
             }
             case PROCEDURE_WITH_TIMER:
             {
-                System.out.println(_name + " for " + _quantity + " seconds.  "+_additionalText);
+                Log.d("status",_name + " for " + _quantity + " seconds.  "+_additionalText);
                 break;
             }
             case PROCEDURE:
             {
-                System.out.println(_name + ", " + _additionalText);
+                Log.d("status",_name + ", " + _additionalText);
                 break;
             }
             case COMMENT:
             {
-                System.out.println(_name);
+                Log.d("status",_name);
                 break;
             }
         }
@@ -867,7 +869,7 @@ public class ListComponent
      */
     public void printAllInfo()
     {
-        System.out.println(_compType.toString() + " >> " + _name + ", " + _quantity + " " + _unitOfMeasure + ", " + _additionalText);
+        Log.d("status",_compType.toString() + " >> " + _name + ", " + _quantity + " " + _unitOfMeasure + ", " + _additionalText);
 
         if(_next != null)
         {
