@@ -338,7 +338,7 @@ public class Long_Term_Interface implements Database, ShopList
         bySection.put(COMMENTS, parseComponentsFromSpecialSubstring(input, COMMENTS, end_COMMENTS));
 
         // added 10/24
-        String allergenInfo = input.substring(end_COMMENTS+1);  // under initial operation this is only one char long (as more food allergens are discovered this will become more than one char)
+        String allergenInfo = input.substring(input.indexOf(end_COMMENTS)+1);  // under initial operation this is only one char long (as more food allergens are discovered this will become more than one char)
 
 
 
@@ -360,7 +360,7 @@ public class Long_Term_Interface implements Database, ShopList
             rawLine = rawLine.substring(rawLine.indexOf(COMMA)+1);
 
             // extracting the number of pieces of equipment required
-            int qty = Integer.parseInt(rawLine.substring(0,rawLine.indexOf(COMMA)));
+            Double qty = Double.parseDouble(rawLine.substring(0,rawLine.indexOf(COMMA)));
 
             rawLine = rawLine.substring(rawLine.indexOf(COMMA)+1);
 
@@ -1097,21 +1097,24 @@ public class ShoppingNode
         return writeRecipeToFile(filename,convertRecipeToWriteable((RecipeHead) recipe));
     }
 
+    ArrayList<Ingredient> _ingredients;
 
     public ShopList getShopList(){
-        return this;
-    }
-
-    public ArrayList<Ingredient> getIngredients(){
         ArrayList<Ingredient> toReturn = new ArrayList<>();
         for(ShoppingNode x : getShoppingList()){
             toReturn.add(x);
         }
-        return toReturn;
+        _ingredients = toReturn;
+        return this;
+    }
+
+    public ArrayList<Ingredient> getIngredients(){
+        return _ingredients;
     }
 
     public boolean setIngredients(ArrayList<Ingredient> ingredients){
-        return false;
+        _ingredients = ingredients;
+        return true;
     }
 
     public Ingredient newIngredient(){
@@ -1119,8 +1122,12 @@ public class ShoppingNode
     }
 
     public boolean setShopList(ShopList shopList){
-        // TODO: 10/25/16 set shopping list. How?
-        return false;
+        if(_ingredients == null)return false;
+        ArrayList<ShoppingNode> list  = new ArrayList<>();
+        for(Ingredient node : _ingredients){
+            list.add((ShoppingNode) node);
+        }
+        return convertShoppingNodesAndWrite(list);
     }
 
     public ArrayList<String> getListOfRecipes(){
