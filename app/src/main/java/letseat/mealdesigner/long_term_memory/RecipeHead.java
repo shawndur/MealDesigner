@@ -159,7 +159,7 @@ public class RecipeHead implements Recipe
 ////        _tails.put(nodeType, node).setNext(node);	// this is the problem right here!
     }
 
-    public void addEquipment(String equipment_name, int quantity_needed/*, ArrayList<String> comments*/,String additionalText)
+    public void addEquipment(String equipment_name, double quantity_needed/*, ArrayList<String> comments*/,String additionalText)
     {
 
         addComponent(new ListComponent(equipment_name, quantity_needed, additionalText));
@@ -335,7 +335,7 @@ public class RecipeHead implements Recipe
             current = current.next();
         }
 
-        output += _end_EQUIPMENT + _INGREDIENT;
+        output += _end_EQUIPMENT+ "" + _INGREDIENT;
 
         current = _heads.get(ComponentType.INGREDIENT);
 
@@ -345,7 +345,7 @@ public class RecipeHead implements Recipe
             current = current.next();
         }
 
-        output += _end_INGREDIENT + _PROCEDURE;
+        output += _end_INGREDIENT+ "" + _PROCEDURE;
 
         current = _heads.get(PROCEDURE);
 
@@ -355,7 +355,7 @@ public class RecipeHead implements Recipe
             current = current.next();
         }
 
-        output += _end_PROCEDURE + _COMMENTS;
+        output += _end_PROCEDURE+ "" + _COMMENTS;
 
         current = _heads.get(ComponentType.COMMENT);
 
@@ -365,7 +365,7 @@ public class RecipeHead implements Recipe
             current = current.next();
         }
 
-        return output + _END_OF_RECIPE + getAllergensForMemory();
+        return output + _END_OF_RECIPE +""+ getAllergensForMemory();
 //        return output + _END_OF_RECIPE;   // changed to ^
 
 
