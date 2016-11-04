@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,6 +37,7 @@ import org.w3c.dom.Text;
 
 import letseat.mealdesigner.R;
 import letseat.mealdesigner.favorites.Favorites;
+import letseat.mealdesigner.recipies.MainRecipe;
 import letseat.mealdesigner.recipeinfo.RecipeInfo;
 import letseat.mealdesigner.storage.Database;
 import letseat.mealdesigner.MealDesignerApp;
@@ -51,7 +53,10 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 public class ShoppingList extends AppCompatActivity {
 
     ArrayList<Integer> rowIDs = new ArrayList<>();
-    ArrayList<ArrayList<String>> ingredientsList = new ArrayList<ArrayList<String>>();
+
+    Database x;
+    ShopList shopList;
+    ArrayList<Ingredient> ingredients;
 
 
     /**
@@ -72,26 +77,27 @@ public class ShoppingList extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.navdrawer_list));
 
+        x = ((MealDesignerApp) getApplication()).getDatabase();
+        shopList = x.getShopList();
+        ingredients = shopList.getIngredients();
         /*
-        Database x = ((MealDesignerApp) getApplication()).getDatabase();
-        ShopList shopList = x.getShopList();
-        ArrayList<Ingredient> ingredients = shopList.getIngredients();
-        for(Ingredient ingredient: ingredients){
-            ArrayList<String> ingredientArray = new ArrayList<String>();
-            ingredientArray.add(ingredient.getName());
-            ingredientArray.add(ingredient.getAmount());
-            ingredientArray.add(ingredient.getPrice());
-            ingredientArray.add(ingredient.getStore());
-            ingredientsList.add(ingredientArray);
+        Log.d("Chang","Size of Ingredient: "+Integer.toString(ingredients.size()));
+        for( Ingredient i : ingredients){
+            Log.d("Chang","Name: "+i.getName());
+            Log.d("Chang","Amount: "+i.getAmount());
+            Log.d("Chang","Price: "+i.getPrice());
+            Log.d("Chang","Store: "+i.getStore());
         }
         */
+
+        /*
         ArrayList<String> ingredientArray = new ArrayList<String>();
         ingredientArray.add("Bacon");
         ingredientArray.add("8");
         ingredientArray.add("1.5");
         ingredientArray.add("Wegmens");
         ingredientsList.add(ingredientArray);
-
+        */
         TableLayout ll = (TableLayout) findViewById(R.id.shoplist_table);
         showIngredients(ll);
 
@@ -179,23 +185,6 @@ public class ShoppingList extends AppCompatActivity {
     }
 
     public void showIngredients(TableLayout ll) {
-        /*
-        ArrayList<String> name = new ArrayList<>();
-        name.add("Carrot");
-        name.add("Tomato");
-
-        ArrayList<String> quantity = new ArrayList<>();
-        quantity.add("5lb");
-        quantity.add("3lb");
-
-        ArrayList<Integer> price = new ArrayList<>();
-        price.add(50);
-        price.add(30);
-
-        ArrayList<String> place = new ArrayList<>();
-        place.add("Walmart");
-        place.add("Wegmens");
-        */
 
         // Title part
         TableRow titleRow = new TableRow(this);
@@ -233,31 +222,43 @@ public class ShoppingList extends AppCompatActivity {
 
         ll.addView(titleRow, 0);
 
-        for (int i = 0; i < ingredientsList.size(); i++) {
+        for (int i = 0; i < ingredients.size(); i++) {
+            Ingredient currentIngredient = ingredients.get(i);
+
             TableRow row = new TableRow(this);
 
             TextView nameView = new TextView(this);
-            nameView.setText(ingredientsList.get(i).get(0));
+            nameView.setText(currentIngredient.getName());
             nameView.setGravity(Gravity.CENTER);
             nameView.setWidth(350);
 
             TextView quantityView = new TextView(this);
-            quantityView.setText(ingredientsList.get(i).get(1));
+            quantityView.setText(currentIngredient.getAmount());
             quantityView.setGravity(Gravity.CENTER);
             quantityView.setWidth(150);
 
             TextView priceView = new TextView(this);
-            priceView.setText(ingredientsList.get(i).get(2));
+            priceView.setText(currentIngredient.getPrice());
             priceView.setGravity(Gravity.CENTER);
             priceView.setWidth(150);
 
             TextView placeView = new TextView(this);
-            placeView.setText(ingredientsList.get(i).get(3));
+            placeView.setText(currentIngredient.getStore());
             placeView.setGravity(Gravity.CENTER);
             placeView.setWidth(400);
 
             Spinner dropdown = new Spinner(this);
-            String[] items = new String[]{"Recipes", "-Loaf"};
+            String[] items = new String[]{};
+            ArrayList<String> recipeList = currentIngredient.getRecipes();
+            //Log.d("Chang","Debugging");
+            //Log.d("Chang","recipeList.size(): "+Integer.toString(recipeList.size()));
+            //Log.d("Chang","recipeList.get(0): "+recipeList.get(0));
+            for (int j = 0; j < recipeList.size(); j++){
+                //Log.d("Chang",recipeList.get(j));
+                items[j] = recipeList.get(j);
+
+            }
+
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
             dropdown.setAdapter(adapter);
             dropdown.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -278,12 +279,13 @@ public class ShoppingList extends AppCompatActivity {
                 }
 
             });
+            
 
             row.addView(nameView);
             row.addView(quantityView);
             row.addView(priceView);
             row.addView(placeView);
-            row.addView(dropdown);
+            //row.addView(dropdown);
 
             ll.addView(row, i + 1);
         }
