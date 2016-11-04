@@ -45,9 +45,9 @@ import letseat.mealdesigner.storage.ShopList;
 public class ShoppingListEdit extends AppCompatActivity {
 
     ArrayList<Ingredient> ingredientsList = new ArrayList<Ingredient>();
-    Database x = ((MealDesignerApp) getApplication()).getDatabase();
-    ShopList shopList = x.getShopList();
-    ArrayList<Ingredient> ingredients = shopList.getIngredients();
+    Database x ;//= ((MealDesignerApp) getApplication()).getDatabase();
+    ShopList shopList;// = x.getShopList();
+    ArrayList<Ingredient> ingredients ;//= shopList.getIngredients();
 
 
 
@@ -68,7 +68,9 @@ public class ShoppingListEdit extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_list_edit);
-
+        x = ((MealDesignerApp) getApplication()).getDatabase();
+        shopList = x.getShopList();
+        ingredients = shopList.getIngredients();
         //set toolbar widget as action bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
