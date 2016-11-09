@@ -2,6 +2,7 @@ package letseat.mealdesigner.long_term_memory;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,8 +16,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Date;
 
+import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.UOM_ERR;
+
 import letseat.mealdesigner.MainActivity;
 import letseat.mealdesigner.MealDesignerApp;
+import letseat.mealdesigner.storage.Database;
+import letseat.mealdesigner.storage.Ingredient;
+import letseat.mealdesigner.storage.Recipe;
+import letseat.mealdesigner.storage.ShopList;
 
 
 /**
@@ -24,7 +31,7 @@ import letseat.mealdesigner.MealDesignerApp;
  * If the functionality of this class is desired, use this as an inherited class.
  * Created by George_Sr on 9/20/2016.
  */
-public class Long_Term_Interface
+public class Long_Term_Interface implements Database, ShopList
 {
     private static final char RECIPE_NAME = (char) 0x80, end_RECIPE_NAME = (char) 0x90,
             EQUIPMENT = (char) 0x81, end_EQUIPMENT = (char) 0x91,
@@ -33,16 +40,25 @@ public class Long_Term_Interface
             COMMENTS = (char) 0x84, end_COMMENTS = (char) 0x94,
             END_OF_RECIPE = (char) 0x85,
             COMPONENT = (char) 0x86, end_COMPONENT = (char) 0x96,
-            COMMA = (char) 0x87, INDEX_FILE_DELIM = (char) 0x97;
+            COMMA = (char) 0x87, INDEX_FILE_DELIM = (char) 0x97,
+            _shopList_QTY = (char) 0x88, end_shopList_QTY = (char) 0x98,
+            _shopList_PRICE = (char) 0x89, end_shopList_PRICE = (char) 0x99,
+            _shopList_STORE = (char) 0x8a, end_shopList_STORE = (char) 0x9a,
+            _shopList_RECIPE_ADDED = (char) 0x8b, end_shopList_RECIPE_ADDED = (char) 0x9b,
+            _shopList_IN_CART = (char) 0x8c, end_shopList_IN_CART = (char) 0x9c,
+            _shopList_UOM = (char) 0x8d, end_shopList_UOM = (char) 0x9d;
+
+
+
 
     private static final double INDEX_FILE_TOLERANCE = 2.5;
 
 
     private Application _top;
     private File _appHomeDir;                           // the internal directory of the app
-    private static final String EXTENSION = ".scgc";    // this can be changed, but all files which exist with the outdated extension need to be updated
+    private static final String EXTENSION = ".txt";    // this can be changed, but all files which exist with the outdated extension need to be updated
     private static final String DEFAULT = "default_filename_";  // the default filename to be used if a given filename is invalid
-
+    private RecipeHead _temp;    //temporary recipe
 
 
     public Long_Term_Interface(Application top)
@@ -50,10 +66,18 @@ public class Long_Term_Interface
         _top = top;
         _appHomeDir = _top.getFilesDir();
 
+        Log.d("Status", "Files Dir = " + _appHomeDir);
+
     }
 
 
-
+    /**
+     * Retrieves all contents from the specified file in an ArrayList<String>
+     *
+     * In the case of an IO Exception, the output will contain, as its last member, a string with a single char whose value is 0x0FF.
+     * In the case of a File Not Found Exception, the output will contain a single string, which consists of a single char whose value is 0x0FE
+     *
+     */
     public ArrayList<String> getLinesFromFile(String filename)
     {
         ArrayList<String> output = new ArrayList();
@@ -82,6 +106,10 @@ public class Long_Term_Interface
             }
             catch(IOException IOE)
             {
+                char error_negative1 = 0x0FF;
+                String error1_string = "" + error_negative1;
+                output.add(error1_string);
+
                 // something clever should go here
             }
 
@@ -90,7 +118,10 @@ public class Long_Term_Interface
         }
         catch(FileNotFoundException FNFE)
         {
-            // code to fetch default files and present them to the user goes here.
+            // A single-character-string is passed back
+            char error_negative2 = 0x0FE;
+            String error2_string = ""+error_negative2;
+            output.add(error2_string);
         }
 
         return output;
@@ -103,7 +134,7 @@ public class Long_Term_Interface
      */
     private String specialSubstring(String input, final char beginDemarker, final char endDemarker)
     {
-//		System.out.println("Generating special substring from:  "+input + ", [" + input.indexOf(beginDemarker) +","+ input.indexOf(endDemarker) +"]");
+		Log.d("status","Generating special substring from:  "+input + ", [" + input.indexOf(beginDemarker) +","+ input.indexOf(endDemarker) +"]");
 
 
         try
@@ -112,7 +143,7 @@ public class Long_Term_Interface
         }
         catch(IndexOutOfBoundsException e)
         {
-            System.out.println("Error on " + ((input.length() <= 10)? input : input.substring(0,10) + "... ") +":\n\tCannot parse because of demarkerBegin = " + input.indexOf(beginDemarker) + " or demarkerEnd = " + input.indexOf(endDemarker));
+            Log.d("status","Error on " + ((input.length() <= 10)? input : input.substring(0,10) + "... ") +":\n\tCannot parse because of demarkerBegin = " + input.indexOf(beginDemarker) + " or demarkerEnd = " + input.indexOf(endDemarker));
             return "";
         }
 
@@ -127,7 +158,7 @@ public class Long_Term_Interface
     {
         if(input.length() < 3)
         {
-            return ListComponent.UnitOfMeasure.UOM_ERR; // 3 is the minimum length for any valid Unit of Measure
+            return UOM_ERR; // 3 is the minimum length for any valid Unit of Measure
         }
 
         input = input.toLowerCase();
@@ -244,7 +275,7 @@ public class Long_Term_Interface
             }
             default:
             {
-                return ListComponent.UnitOfMeasure.UOM_ERR;
+                return UOM_ERR;
             }
 
         }
@@ -277,7 +308,8 @@ public class Long_Term_Interface
 //                        COMPONENT + "Uncle Smalgard was adamant that mayonnaise would detract from the awesomeness of this recipe." + end_COMPONENT +
 //                        COMPONENT + "Unfortunately for dear Uncle Smalgard, he was killed less than a week after landing in NYC by a freak incident involving an exploding chicken and laundry detergent, but we just assumed it was an accident." + end_COMPONENT +
 //                    end_COMMENTS +
-//                END_OF_RECIPE;
+//                END_OF_RECIPE +
+//                  Allergen_flags (4 bytes);
 
 
 
@@ -305,9 +337,17 @@ public class Long_Term_Interface
         bySection.put(PROCEDURE, parseComponentsFromSpecialSubstring(input, PROCEDURE, end_PROCEDURE));
         bySection.put(COMMENTS, parseComponentsFromSpecialSubstring(input, COMMENTS, end_COMMENTS));
 
-//		System.out.println(bySection.toString());
+        // added 10/24
+        String allergenInfo = input.substring(input.indexOf(end_COMMENTS)+1);  // under initial operation this is only one char long (as more food allergens are discovered this will become more than one char)
+
+
+
+//		Log.d("status",bySection.toString());
 
         RecipeHead recipeHead = new RecipeHead(specialSubstring(input, RECIPE_NAME, end_RECIPE_NAME));
+
+        recipeHead.decipherAllergenFlags(allergenInfo); // added 10/24
+
 
         for(int i = 0; i < bySection.get(EQUIPMENT).size(); i++)
         {
@@ -320,19 +360,19 @@ public class Long_Term_Interface
             rawLine = rawLine.substring(rawLine.indexOf(COMMA)+1);
 
             // extracting the number of pieces of equipment required
-            int qty = Integer.parseInt(rawLine.substring(0,rawLine.indexOf(COMMA)));
+            Double qty = Double.parseDouble(rawLine.substring(0,rawLine.indexOf(COMMA)));
 
             rawLine = rawLine.substring(rawLine.indexOf(COMMA)+1);
 
             String additionalText = rawLine;
 
 //			// all confirmed, good to go!
-//			System.out.println("Parsed info:\n\tName:\t"+ name +"\n\tQty:\t"+ (qty+3.1) + "\n\tText2:\t"+ additionalText);
+//			Log.d("status","Parsed info:\n\tName:\t"+ name +"\n\tQty:\t"+ (qty+3.1) + "\n\tText2:\t"+ additionalText);
 
             recipeHead.addEquipment(name, qty, additionalText);	// in the future, just add rawLine
 
         }
-//		System.out.println('\n');
+//		Log.d("status",'\n');
         for(int i = 0; i < bySection.get(INGREDIENT).size(); i++)
         {
             String rawLine = bySection.get(INGREDIENT).get(i);
@@ -341,7 +381,7 @@ public class Long_Term_Interface
 
             rawLine = rawLine.substring(rawLine.indexOf(COMMA)+1);
 
-//			System.out.println(rawLine);
+//			Log.d("status",rawLine);
 
             double qty;
             try
@@ -351,7 +391,7 @@ public class Long_Term_Interface
             }
             catch(NumberFormatException e)
             {
-                System.out.println("Blank or invalid string passed to Double.parseDouble(String) while parsing quantity information for "+ name +" in recipe "+recipeHead.name()+".\n\tPlease investigate, or prompt user for correct information.  By default, qty will be set to -1.");
+                Log.d("status","Blank or invalid string passed to Double.parseDouble(String) while parsing quantity information for "+ name +" in recipe "+recipeHead.name()+".\n\tPlease investigate, or prompt user for correct information.  By default, qty will be set to -1.");
                 qty = -1.0;
             }
 
@@ -361,13 +401,13 @@ public class Long_Term_Interface
 
             rawLine = rawLine.substring(rawLine.indexOf(COMMA)+1);
 
-//			System.out.println(rawLine);
+//			Log.d("status",rawLine);
 
-//			System.out.println("Ingredient info:\n\tName:\t" + name + "\n\tQuantity:\t"+qty+"\n\tUofM:\t"+uom.toString()+"\n\tText2:\t"+additionalText);
+//			Log.d("status","Ingredient info:\n\tName:\t" + name + "\n\tQuantity:\t"+qty+"\n\tUofM:\t"+uom.toString()+"\n\tText2:\t"+additionalText);
 
             recipeHead.addIngredient(name, qty, uom, rawLine);
         }
-//		System.out.println('\n');
+//		Log.d("status",'\n');
         for(int i = 0; i < bySection.get(PROCEDURE).size(); i++)
         {
             String rawLine = bySection.get(PROCEDURE).get(i);
@@ -387,20 +427,20 @@ public class Long_Term_Interface
             catch(NumberFormatException e)
             {
 //                timer = -1;
-                System.out.println("Blank or invalid string passed to Double.parseDouble(String) while parsing quantity information for "+ name +" in recipe "+recipeHead.name()+".\n\tPlease investigate, or prompt user for correct information.  By default, the timer will not be utilized, and this component of the Procedures list will have ComponentType.PROCEDURE set instead of ComponentType.PROCEDURE_WITH_TIMER.");
+                Log.d("status","Blank or invalid string passed to Double.parseDouble(String) while parsing quantity information for "+ name +" in recipe "+recipeHead.name()+".\n\tPlease investigate, or prompt user for correct information.  By default, the timer will not be utilized, and this component of the Procedures list will have ComponentType.PROCEDURE set instead of ComponentType.PROCEDURE_WITH_TIMER.");
                 recipeHead.addProcedureWithoutTimer(name, rawLine.substring(rawLine.indexOf(COMMA)+1));
 
             }
 
             rawLine = rawLine.substring(rawLine.indexOf(COMMA)+1);
 
-//			System.out.println("Procedure parsing:\n\tName:\t"+ name+"\n\tTimer:\t"+ timer+"\n\tText2:\t"+rawLine);
+//			Log.d("status","Procedure parsing:\n\tName:\t"+ name+"\n\tTimer:\t"+ timer+"\n\tText2:\t"+rawLine);
 
             recipeHead.addProcedureWithoutTimer(name, rawLine);
 
 
         }
-//		System.out.println('\n');
+//		Log.d("status",'\n');
 
         for(int i = 0; i< bySection.get(COMMENTS).size(); i++)
         {
@@ -424,11 +464,11 @@ public class Long_Term_Interface
 
         while(input.lastIndexOf(end_COMPONENT) >= 0)
         {
-//			System.out.println("Parsing over:  "+input);
+//			Log.d("status","Parsing over:  "+input);
 
             output.add(specialSubstring(input,COMPONENT,end_COMPONENT));
 
-//			System.out.println("In");
+//			Log.d("status","In");
             input = input.substring(input.indexOf(end_COMPONENT)+1);
 
         }
@@ -462,7 +502,7 @@ public class Long_Term_Interface
         }
         catch(FileNotFoundException e)
         {
-            System.out.println("Unable to access " + filename);
+            Log.d("status","Unable to access " + filename);
             e.printStackTrace();
             return false;
         }
@@ -479,7 +519,7 @@ public class Long_Term_Interface
         }
         catch(IOException e)
         {
-            System.out.println(outStream_writing? "<"+data+"> could not be printed." : "FileOutputStream experienced an error while closing.");
+            Log.d("status",outStream_writing? "<"+data+"> could not be printed." : "FileOutputStream experienced an error while closing.");
             e.printStackTrace();
             return false;
         }
@@ -506,7 +546,7 @@ public class Long_Term_Interface
         }
         catch(FileNotFoundException e)
         {
-            System.out.println("Unable to access "+filename);
+            Log.d("status","Unable to access "+filename);
             e.printStackTrace();
             return false;
         }
@@ -521,7 +561,7 @@ public class Long_Term_Interface
 //            for(; i < dataSize; i++)
             while(i < dataSize)
             {
-                current_line = data.get(i++);
+                current_line = data.get(i++) + '\n';
                 oStream.write(current_line.getBytes());
             }
 
@@ -532,7 +572,7 @@ public class Long_Term_Interface
         }
         catch(IOException e)
         {
-            System.out.println(outStream_writing? "<"+current_line+"> could not be printed, write to file abandoned on line "+i : "FileOutputStream experienced an error while closing.");
+            Log.d("status",outStream_writing? "<"+current_line+"> could not be printed, write to file abandoned on line "+i : "FileOutputStream experienced an error while closing.");
             e.printStackTrace();
             return false;
         }
@@ -561,14 +601,14 @@ public class Long_Term_Interface
         // if filename is an empty string, then the filename is not valid:
         if((filename_length = filename.length()) == 0)
         {
-            System.out.println("Filename is an empty string.");
+            Log.d("status","Filename is an empty string.");
             return false;
         }
 
         // if filename contains more than one '.', then the filename cannot be used, since the '.' may have been used to denote a sub-branch relating to another file of the same name
         if(filename.indexOf(".") != filename.lastIndexOf("."))
         {
-            System.out.println("Filename \"" + filename +"\" has more than one '.' char.");
+            Log.d("status","Filename \"" + filename +"\" has more than one '.' char.");
             return false;
         }
 
@@ -580,7 +620,7 @@ public class Long_Term_Interface
             // then the default filename must be returned
             if(filename.contains("."))
             {
-                System.out.println("Filename \"" + filename + "\" does not contain correct extension");
+                Log.d("status","Filename \"" + filename + "\" does not contain correct extension");
                 return false;
             }
         }
@@ -588,7 +628,7 @@ public class Long_Term_Interface
         // if filename does not begin with '\\', then it must be added in
         if(filename.charAt(0) != '\\')
         {
-            System.out.println("Filename \"" + filename +"\" does not start with '\\' char.");
+            Log.d("status","Filename \"" + filename +"\" does not start with '\\' char.");
             return false;
 
 //            filename = '\\' + filename;
@@ -599,7 +639,7 @@ public class Long_Term_Interface
         if(filename.contains(" "))
         {
 
-            System.out.println("Filename \"" + filename +"\" contains spaces.");
+            Log.d("status","Filename \"" + filename +"\" contains spaces.");
             return false;
 
         }
@@ -627,20 +667,23 @@ public class Long_Term_Interface
 
     public ArrayList<String> getIndexFileLines()
     {
-        return getLinesFromFile("IndexFile"+EXTENSION);
+        return getLinesFromFile("IndexFile");//+EXTENSION);
     }
 
     public boolean testUserSuppliedFileExists(String input)
     {
         ArrayList<String> indexFileLines = getIndexFileLines();
 
-        return indexFileLines.contains(input);
+        return testUserSuppliedFileExists(input,indexFileLines);
 
     }
 
     public boolean testUserSuppliedFileExists(String input,ArrayList<String> indexFileLines)
     {
-        return indexFileLines.contains(input);
+        for(String line : indexFileLines){
+            if(input.trim().equals(line.substring(0,line.indexOf(INDEX_FILE_DELIM)).trim())) return true;
+        }
+        return false;
     }
 
 
@@ -667,7 +710,7 @@ public class Long_Term_Interface
             diffs[i] = Math.abs(input0.charAt(i) - input1.charAt(i));
 //			System.out.print(diffs[i]+ " ");
         }
-//		System.out.println("}");
+//		Log.d("status","}");
         // by providing a linearly increasing set of integers to fill out the remainder of diffs[], strings which differ in length by one char are penalized less than strings which differ by more than one char
         for(int i = shorterLength; i < longerLength; i++)
         {
@@ -689,6 +732,9 @@ public class Long_Term_Interface
 
     /**
      * Use in conjunction with "testUserSuppliedFileExists(...)" to guarantee that the caller knows when it can trust the output of this function, or when to provide the user with options for selecting the correct file.
+     * If the exact user-supplied name matches (case insensitive) one found in the index file, then the actual filename is returned as the sole member of the output.
+     * If the user-supplied name does not match, then a list of possible user-supplied recipe names are returned.
+     * Hence why it is important to use this function after checking the return value of " public boolean testUserSuppliedFileExists(...) ".
      */
     public ArrayList<String> getFilename(String userSupplied)
     {
@@ -731,7 +777,8 @@ public class Long_Term_Interface
     {
         ArrayList<String> IFLines = getIndexFileLines();
 
-        String lastFilenameInIFLines = IFLines.get(IFLines.size()-1);
+        String lastFilenameInIFLines = "a"+INDEX_FILE_DELIM+"aaa";
+        if(IFLines.size() > 0) lastFilenameInIFLines = IFLines.get(IFLines.size()-1);
 
         lastFilenameInIFLines = lastFilenameInIFLines.substring(lastFilenameInIFLines.indexOf(INDEX_FILE_DELIM)+1);
 
@@ -786,11 +833,14 @@ public class Long_Term_Interface
 
     public ArrayList<String> trimToUserGeneratedRecipeNamesOnly(ArrayList<String> rawSimilarLinesFromIndexFile)
     {
+        //Log.d("status",rawSimilarLinesFromIndexFile.toString());
         ArrayList<String> output = new ArrayList<String>();
 
         for(int i = 0; i < rawSimilarLinesFromIndexFile.size(); i++)
         {
-            output.add(rawSimilarLinesFromIndexFile.get(i).substring(0,INDEX_FILE_DELIM));
+            String line = rawSimilarLinesFromIndexFile.get(i);
+            output.add(line.split(""+INDEX_FILE_DELIM)[0]);
+            //output.add(rawSimilarLinesFromIndexFile.get(i).substring(0,rawSimilarLinesFromIndexFile.get(i).indexOf(INDEX_FILE_DELIM)));
         }
 
         return output;
@@ -814,6 +864,289 @@ public class Long_Term_Interface
 
 
         return possibleMatches;
+    }
+
+    public char getIndexFileDelimiter()
+    {
+        return INDEX_FILE_DELIM;
+    }
+
+    public ArrayList<String> convertShoppingListToWriteable(ArrayList<ShoppingNode> shopList)
+    {
+        ArrayList<String> writeable = new ArrayList<String>();
+
+        for(int i = 0; i < shopList.size(); i++)
+        {
+            ShoppingNode current = shopList.get(i);
+            String itemName = INGREDIENT + current.name + end_INGREDIENT,
+                storeToPurchase = _shopList_STORE + current.store + end_shopList_STORE,
+                srcRecipe = _shopList_RECIPE_ADDED + current.recipeAddedFrom + end_shopList_RECIPE_ADDED,
+                addedToCart = _shopList_IN_CART + ( (current.in_cart)? "TRUE" : "FALSE" ) + end_shopList_IN_CART,
+                qtyToBuy = _shopList_QTY + "" + current.quantity + "" + end_shopList_QTY,
+                uom = _shopList_UOM + current.unit_of_measure.toString() + end_shopList_UOM;
+
+            String toAdd = itemName + storeToPurchase + srcRecipe + addedToCart + qtyToBuy + uom;
+
+
+
+            writeable.add(toAdd);
+
+        }
+
+        return writeable;
+/*
+ * for ease of reference:
+ *
+
+public class ShoppingNode
+{
+    public String name = "", store = "", recipeAddedFrom = "";
+//        RecipeHead recipeAddedFrom = null;    // whichever you decide to use...
+    public double quantity = -1.0, price = -1.0;
+    public boolean in_cart = false;
+}
+
+*/
+    }
+
+    public boolean writeToShoppingList(ArrayList<String> data)
+    {
+        return writeToFile("ShoppingList", data);
+    }
+
+    public boolean convertShoppingNodesAndWrite(ArrayList<ShoppingNode> input)
+    {
+        return writeToShoppingList( convertShoppingListToWriteable( input ) );
+    }
+
+    public ArrayList<ShoppingNode> getShoppingList()
+    {
+        ArrayList<String> shoplistLines = getLinesFromFile("ShoppingList");
+
+        ArrayList<ShoppingNode> output = new ArrayList<ShoppingNode>();
+
+        for(int i = 0; i < shoplistLines.size(); i++)
+        {
+            String current = shoplistLines.get( i );
+
+            String item = specialSubstring( current, INGREDIENT, end_INGREDIENT),
+                store = specialSubstring( current, _shopList_STORE, end_shopList_STORE),
+                addedFrom = specialSubstring( current, _shopList_RECIPE_ADDED, end_shopList_RECIPE_ADDED);
+
+            ListComponent.UnitOfMeasure uom = parseUnitOfMeasure( specialSubstring( current, _shopList_UOM, end_shopList_UOM));
+
+//            Double qty = Double.parseDouble( specialSubstring( current,_shopList_QTY, end_shopList_QTY)),
+//                price = Double.parseDouble( specialSubstring( current, _shopList_PRICE, end_shopList_PRICE));
+
+            boolean inCart = specialSubstring( current, _shopList_IN_CART, end_shopList_IN_CART).compareToIgnoreCase("TRUE") == 0;
+
+            double qty = -1.0, price = -1.0;
+
+            try
+            {
+                qty = Double.parseDouble( specialSubstring( current, _shopList_QTY, end_shopList_QTY));
+                if(testBadOrNegativeDouble(qty))
+                {
+                    throw new NumberFormatException();
+                }
+//                switch(qty) // rats.  JVM won't allow this.
+//                {
+//                    case Double.NEGATIVE_INFINITY:
+//                    case Double.POSITIVE_INFINITY:
+//                    case Double.MAX_EXPONENT:
+//                    case Double.MAX_VALUE:
+//                    {
+//                        throw new NumberFormatException();
+//                    }
+//                    default:
+//                    {
+//                        break;
+//                    }
+//                }
+            }
+            catch(NumberFormatException q)
+            {
+                Log.d("status","Error parsing quantity information while retrieving the shopping list.  Non-critical error, quantity will be set to -1.0");
+                qty = -1.0;
+            }
+            try
+            {
+                price = Double.parseDouble( specialSubstring( current, _shopList_PRICE, end_shopList_PRICE));
+                if(testBadOrNegativeDouble(price))
+                {
+                    throw new NumberFormatException();
+                }
+            }
+            catch(NumberFormatException p)
+            {
+                Log.d("status","Error parsing price information while retrieving the shopping list.  Non-critical error, price will be set to -1.0");
+                price = -1.0;
+            }
+
+            ShoppingNode sNode = new ShoppingNode();
+
+            sNode.in_cart = inCart;
+            sNode.name = item;
+            sNode.price = price;
+            sNode.quantity = qty;
+            sNode.store = store;
+            sNode.recipeAddedFrom = addedFrom;
+            sNode.unit_of_measure = uom;
+
+            output.add(sNode);
+
+
+
+
+        }
+
+        return output;
+
+    }
+
+    private boolean testBadOrNegativeDouble(double input)
+    {
+        return input < 0 || Double.isInfinite(input) || Double.isNaN(input) || input == Double.MAX_EXPONENT || input == Double.MAX_VALUE;
+    }
+
+    /**
+     * All variables of ShoppingNode are initialized to some obviously-wrong value.  This is to make it adequately obvious when something has gone wrong.
+     */
+    public class ShoppingNode implements Ingredient
+    {
+        public String name = "", store = "", recipeAddedFrom = "";
+//        RecipeHead recipeAddedFrom = null;    // whichever you decide to use...
+        public double quantity = -1.0, price = -1.0;
+        public boolean in_cart = false;
+        public ListComponent.UnitOfMeasure unit_of_measure = UOM_ERR;
+
+        //These functions are getters to get each field
+        public String getName(){return name;}
+        public String getAmount(){return "" + quantity;}
+        public String getPrice(){return "" + price;}
+        public String getStore(){return store;}
+        public ArrayList<String> getRecipes(){
+            ArrayList<String> toReturn = new ArrayList<>();
+            toReturn.add(recipeAddedFrom);
+            return toReturn;
+        }
+
+        //These functions are setters for each field
+        //      Note: They will overwrite each existing field
+        public boolean setName(String newName){
+            name = newName;
+            return true;
+        }
+        public boolean setAmount(String amount){
+            quantity = Double.parseDouble(amount);
+            return true;
+        }
+        public boolean setPrice(String newPrice){
+            price = Double.parseDouble(newPrice);
+            return true;
+        }
+        public boolean setStore(String newStore){
+            store = newStore;
+            return true;
+        }
+        public boolean setRecipes(ArrayList<String> recipes){
+            if(recipes.isEmpty()) return true;
+            recipeAddedFrom = recipes.get(0);
+            return true;
+        }
+
+    }
+
+    /****************************
+     * Interface Implementation *
+     *   -Shawn Durandetto      *
+     **************************/
+
+    // TODO: 10/25/16 Index file?
+
+    public Recipe newRecipe(String name){
+        return new RecipeHead(name);
+    }
+
+    public Recipe getRecipe(String name){
+        Log.d("status","Getting recipe: "+name+" from storage");
+        ArrayList<String> indexFileLines = getIndexFileLines();
+        if(!testUserSuppliedFileExists(name,indexFileLines))return null;
+        Log.d("status","File for "+name+" exists");
+        String filename = getFilename(name).get(0);
+        ArrayList<String> lines = getLinesFromFile(filename);
+        if(lines.isEmpty()) return null;
+        Log.d("status","Retrieved lines from file");
+        return parseLineToRecipe(lines.get(0));
+    }
+
+    public boolean setRecipe(Recipe recipe){
+        ArrayList<String> indexFileLines = getIndexFileLines();
+        String name = ((RecipeHead) recipe).name();
+        Log.d("status","Saving recipe named: "+name);
+        String filename;
+        if(!testUserSuppliedFileExists(name,indexFileLines)){
+            filename = generateFilename(name);
+            indexFileLines.add(name+getIndexFileDelimiter()+filename);
+            writeToFile("IndexFile",indexFileLines);
+            Log.d("status","New file, adding to index with filename "+filename);
+        }else{
+            filename = getFilename(((RecipeHead) recipe).name()).get(0);
+            Log.d("status","existing file, saving file as "+filename);
+        }
+        return writeRecipeToFile(filename,convertRecipeToWriteable((RecipeHead) recipe));
+    }
+
+    ArrayList<Ingredient> _ingredients;
+
+    public ShopList getShopList(){
+        ArrayList<Ingredient> toReturn = new ArrayList<>();
+        for(ShoppingNode x : getShoppingList()){
+            toReturn.add(x);
+        }
+        _ingredients = toReturn;
+        return this;
+    }
+
+    public ArrayList<Ingredient> getIngredients(){
+        return _ingredients;
+    }
+
+    public boolean setIngredients(ArrayList<Ingredient> ingredients){
+        _ingredients = ingredients;
+        return true;
+    }
+
+    public Ingredient newIngredient(){
+        return new ShoppingNode();
+    }
+
+    public boolean setShopList(ShopList shopList){
+        if(_ingredients == null)return false;
+        ArrayList<ShoppingNode> list  = new ArrayList<>();
+        for(Ingredient node : _ingredients){
+            list.add((ShoppingNode) node);
+        }
+        return convertShoppingNodesAndWrite(list);
+    }
+
+    public ArrayList<String> getListOfRecipes(){
+        ArrayList<String> indexFileLines = getIndexFileLines();
+        if(indexFileLines.isEmpty()) return new ArrayList<>();
+        return trimToUserGeneratedRecipeNamesOnly(indexFileLines);
+    }
+
+    public Recipe getTempRecipe(){
+        return _temp;
+    }
+
+    public boolean setTempRecipe(Recipe recipe){
+        _temp =  (RecipeHead) recipe;
+        return true;
+    }
+
+    public void clearTemp(){
+        _temp = null;
     }
 
 }

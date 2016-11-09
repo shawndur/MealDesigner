@@ -1,0 +1,17 @@
+date: October 3, 2016
+meeting_type: group
+attendance: [<cpark22>, <shawndur>, <vanhoose>]
+absent: []
+excused_absences: [ubit: <cnzytari>, reason: sick grandmother]
+task_progress:[
+  {ubit: <cnzytari>, progress: finished recipe add frontend.},
+  {ubit: <vanhoose>, progress: finished database added to dev.},
+  {ubit: <cpark22>, progress: finished recipe list frontend.},
+  {ubit: <shawndur>, progress: finished recipe walkthrough.}
+  ]
+issues: [ # Post any issues here. Issues that cannot be addressed by the group should especially be included
+  ]
+Notes:  | # Anything covered in the meeting that doesn't fit elsewhere.
+  #planned for sprint 3, sprint 3 will be focused on bringing together the back and frontend
+  #assigned basic tasks
+  
