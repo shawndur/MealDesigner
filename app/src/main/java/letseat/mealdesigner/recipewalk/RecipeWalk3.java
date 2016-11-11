@@ -27,13 +27,14 @@ public class RecipeWalk3 extends AppCompatActivity {
     String finalIngredient;
     Recipe newRecipe;
     //declare spinner
-    Spinner measure_spinner = (Spinner) findViewById(R.id.measure_spinner);
+    Spinner measure_spinner; // = (Spinner) findViewById(R.id.measure_spinner);
     Database x ;//= ((MealDesignerApp) getApplication()).getDatabase();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_walk3);
         x = ((MealDesignerApp) getApplication()).getDatabase();
+        measure_spinner = (Spinner) findViewById(R.id.measure_spinner);
         newRecipe = x.getTempRecipe();
         //has no toolbar
 

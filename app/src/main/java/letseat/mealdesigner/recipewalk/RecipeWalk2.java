@@ -26,7 +26,7 @@ public class RecipeWalk2 extends AppCompatActivity {
     private EditText editText1;
     ArrayList<String> equipment  = new ArrayList<>();
     Recipe newRecipe;
-    Spinner equip_spinner = (Spinner) findViewById(R.id.equip_spinner);
+    Spinner equip_spinner ;//= (Spinner) findViewById(R.id.equip_spinner);
     String equip_drop_down="";
 
     Database x;// = ((MealDesignerApp) getApplication()).getDatabase();
@@ -36,7 +36,7 @@ public class RecipeWalk2 extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_walk2);
         x = ((MealDesignerApp) getApplication()).getDatabase();
         newRecipe = x.getTempRecipe();
-
+        equip_spinner = (Spinner) findViewById(R.id.equip_spinner);
         editText1 = (EditText) findViewById(R.id.editText13);
         //has no toolbar
 
@@ -74,11 +74,12 @@ public class RecipeWalk2 extends AppCompatActivity {
         //get string from fill in blank
         String equipname = editText1.getText().toString();
         //both blanks are empty
-        if(equipname.matches("") && equip_drop_down.matches("") ){
-            Toast.makeText(this, "You did not fill in an equipment", Toast.LENGTH_SHORT).show();
-        }
+        //if(equipname.matches("") && equip_drop_down.matches("") ){
+        //    Toast.makeText(this, "You did not fill in an equipment", Toast.LENGTH_SHORT).show();
+        //}
         //no equipment name written
-        else if (equipname.matches("")) {
+        //else
+        if (equipname.matches("")) {
             equipment.add(equip_drop_down);
             equip_spinner.setSelection(0);}
         //equipment name was written

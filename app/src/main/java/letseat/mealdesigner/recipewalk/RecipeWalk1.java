@@ -36,9 +36,10 @@ public class RecipeWalk1 extends AppCompatActivity {
         //has no toolbar
 
     }
+
+
     //next step button
     public void step2(View view){
-
         String input1 = editText1.getText().toString();
         String input2 = editText2.getText().toString();
         String input3 = editText3.getText().toString();
