@@ -66,4 +66,12 @@ public interface Database {
      * Clears the temp recipe
      */
     void clearTemp();
+
+    /**
+     * Searches the database for a recipe
+     * @param name name to be searched
+     * @param tolerance tolerance of results
+     * @return recipes matching the name
+     */
+    ArrayList<String> searchRecipes(String name,double tolerance );
 }

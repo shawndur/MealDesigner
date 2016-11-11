@@ -1136,6 +1136,12 @@ public class ShoppingNode
         return trimToUserGeneratedRecipeNamesOnly(indexFileLines);
     }
 
+    public ArrayList<String> searchRecipes(String name,double tolerance ){
+        ArrayList<String> indexFileLines = getIndexFileLines();
+        if(indexFileLines.isEmpty()) return new ArrayList<>();
+        return getPossibleSimilarFilenames(name, indexFileLines,tolerance);
+    }
+
     public Recipe getTempRecipe(){
         return _temp;
     }
