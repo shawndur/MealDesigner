@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -17,32 +16,31 @@
             android:id="@+id/recipe_name_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="18sp"
-            android:onClick="openRecipeInfo"/>
+            android:onClick="openRecipeInfo"
+            android:layout_weight="100"/>
 
-        <Button
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/button15"
-            android:background="@drawable/delete"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <ToggleButton
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:id="@+id/toggleButton"
-            android:background="@drawable/fav"
-            android:textIsSelectable="false"
-            android:textOn=""
-            android:textOff=""
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:layout_alignBottom="@+id/recipe_name_text"
-            android:layout_toLeftOf="@+id/button15"
-            android:layout_toStartOf="@+id/button15" />
+            <ToggleButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/toggleButton"
+                android:background="@drawable/fav"
+                android:textIsSelectable="true"
+                android:textOff=""
+                android:textOn=""/>
 
+            <Button
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/button15"
+                android:background="@drawable/delete" />
+        </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
