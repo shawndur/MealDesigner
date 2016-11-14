@@ -248,8 +248,8 @@ public class ShoppingList extends AppCompatActivity {
             placeView.setWidth(400);
 
             Spinner dropdown = new Spinner(this);
-            String[] items = new String[]{};
             ArrayList<String> recipeList = currentIngredient.getRecipes();
+            String[] items = new String[recipeList.size()];
             //Log.d("Chang","Debugging");
             //Log.d("Chang","recipeList.size(): "+Integer.toString(recipeList.size()));
             //Log.d("Chang","recipeList.get(0): "+recipeList.get(0));
@@ -279,7 +279,7 @@ public class ShoppingList extends AppCompatActivity {
                 }
 
             });
-            
+
 
             row.addView(nameView);
             row.addView(quantityView);
