@@ -40,10 +40,10 @@
         android:layout_gravity="end" />
 
     <TextView
-        android:text="TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textViewSteps" />
+        android:id="@+id/textViewSteps"
+        android:inputType="textMultiLine"/>
 
     <Button
         style="?android:attr/buttonStyleSmall"

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -19,9 +20,14 @@ import letseat.mealdesigner.storage.Recipe;
 
 public class RecipeWalk4 extends AppCompatActivity {
     private EditText editText1;
+    private TextView textView;
+   // private EditText editText2;
     ArrayList<String> steps  = new ArrayList<>();
     Recipe newRecipe;
     Database x ;//= ((MealDesignerApp) getApplication()).getDatabase();
+    StringBuilder b = new StringBuilder();
+    ArrayList <String> reviewStep = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +37,8 @@ public class RecipeWalk4 extends AppCompatActivity {
 
         //has no toolbar
         editText1 = (EditText) findViewById(R.id.editText7);
+        textView = (TextView) findViewById(R.id.textViewSteps);
+        //editText2 = (EditText) findViewById(R.id.textViewSteps);
 
     }
 
@@ -41,7 +49,13 @@ public class RecipeWalk4 extends AppCompatActivity {
         }
         else{
             steps.add(step);
+            reviewStep.add(step);
             editText1.setText("");
+            textView.setText("");
+            for (String s : reviewStep){
+                b.append(s+"\n");
+            }
+            textView.setText(b.toString());
         }
     }
     //next step button
