@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -28,6 +29,9 @@ public class RecipeWalk2 extends AppCompatActivity {
     Recipe newRecipe;
     Spinner equip_spinner ;//= (Spinner) findViewById(R.id.equip_spinner);
     String equip_drop_down="";
+    StringBuilder b = new StringBuilder();
+    private TextView textView;
+
 
     Database x;// = ((MealDesignerApp) getApplication()).getDatabase();
     @Override
@@ -38,6 +42,9 @@ public class RecipeWalk2 extends AppCompatActivity {
         newRecipe = x.getTempRecipe();
         equip_spinner = (Spinner) findViewById(R.id.equip_spinner);
         editText1 = (EditText) findViewById(R.id.editText13);
+
+        textView = (TextView) findViewById(R.id.textViewEquip);
+        textView.setText("");
         //has no toolbar
 
 
@@ -70,7 +77,7 @@ public class RecipeWalk2 extends AppCompatActivity {
     }
 
     //add equipment button
-    public void addEquip(View view){
+    public void addEquip(View view) {
         //get string from fill in blank
         String equipname = editText1.getText().toString();
         //both blanks are empty
@@ -81,10 +88,17 @@ public class RecipeWalk2 extends AppCompatActivity {
         //else
         if (equipname.matches("")) {
             equipment.add(equip_drop_down);
-            equip_spinner.setSelection(0);}
+            equip_spinner.setSelection(0);
+            b.append(equip_drop_down + "\n");
+            textView.setText(b.toString());
+        }
+
         //equipment name was written
+
         else{
             equipment.add(equipname);
+            b.append(equipname+"\n");
+            textView.setText(b.toString());
             //clear fill in blank
             editText1.setText("");
         }
