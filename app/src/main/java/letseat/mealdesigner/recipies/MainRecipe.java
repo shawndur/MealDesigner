@@ -26,7 +26,8 @@ import letseat.mealdesigner.recipewalk.RecipeWalk1;
 import letseat.mealdesigner.shoppinglist.ShoppingList;
 
 public class MainRecipe extends AppCompatActivity
-        implements  NavigationView.OnNavigationItemSelectedListener{
+        implements  NavigationView.OnNavigationItemSelectedListener,
+        DeleteDialog.DeleteDialogListener{
 
     private RecyclerView _recyclerView;
     private RecyclerView.Adapter _adapter;
@@ -128,10 +129,18 @@ public class MainRecipe extends AppCompatActivity
 
     public void deleteRecipe(String name){
         DeleteDialog deleteDialog = new DeleteDialog();
+        Bundle args = new Bundle();
+        args.putString("recipe",name);
+        deleteDialog.setArguments(args);
         deleteDialog.show(getSupportFragmentManager(),"delete dialog");
     }
 
     public void favoriteRecipe(String name){
         _adapter.notifyDataSetChanged();
+    }
+
+    public void onButtonPress(boolean delete,String name){
+        if(!delete) return;
+
     }
 }
