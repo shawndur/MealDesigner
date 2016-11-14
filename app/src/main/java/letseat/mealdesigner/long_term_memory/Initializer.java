@@ -47,14 +47,12 @@ public class Initializer
 
     }
 
-    public boolean initialize(boolean betaTest)
-    {
-        if(checkIfIndexFileExists())
-        {
-            Log.d("status","index file exists");
+    public boolean initialize(boolean betaTest) {
+        if (checkIfIndexFileExists()) {
+            Log.d("status", "index file exists");
             return true;
         }
-        Log.d("status","index file does not exists, creating it");
+        Log.d("status", "index file does not exists, creating it");
 
 //
 //          // if we want to hardcode a way to keep people from using the price-reduced beta release after a certain date, here is how we can cause the app to crash fairly easily.
@@ -66,7 +64,7 @@ public class Initializer
 
         // program only proceeds to next segment if no index file was located.  In other words, this is the first time the app has been launched on this device.
 
-        ArrayList<String> indexFileKernel  = new ArrayList<String>();
+        ArrayList<String> indexFileKernel = new ArrayList<String>();
 
         //char indexFileDelim = _lti.getIndexFileDelimiter();
 
@@ -84,10 +82,18 @@ public class Initializer
 //        indexFileKernel.add("Sauces: Demi-glace" + indexFileDelim + "aal");
         //indexFileKernel.add("Mirepoix"+indexFileDelim+"aam");
         //Log.d("status",indexFileKernel.toString());
-        if(!_lti.writeToFile("IndexFile",indexFileKernel))
-        {
-            Log.d("Status" , "Failed to create Index File kernel in long-term memory");
+        if (!_lti.writeToFile("IndexFile", indexFileKernel)) {
+            Log.d("Status", "Failed to create Index File kernel in long-term memory");
             return false;
+        }
+
+        if (!_lti.writeToFile("Favorites", new ArrayList<String>())) {
+            Log.d("Status", "Failed to create \"Favorites\" file in long-term memory.  Non-critical error, but do investigate.");
+        }
+
+        if (!_lti.writeToFile("ShopList", new ArrayList<String>()))
+        {
+            Log.d("Status", "Failed to create \"Shopping List\" file in long-term memory.  Non-critical error, but do investigate.");
         }
 
         //_lti.writeRecipeToFile("Chicken Stock",_lti.convertRecipeToWriteable(chickenStock()));
