@@ -27,16 +27,15 @@
             <ToggleButton
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:id="@+id/toggleButton"
+                android:id="@+id/favorite_button"
                 android:background="@drawable/fav"
-                android:textIsSelectable="true"
                 android:textOff=""
                 android:textOn=""/>
 
             <Button
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:id="@+id/button15"
+                android:id="@+id/delete_button"
                 android:background="@drawable/delete" />
         </LinearLayout>
 

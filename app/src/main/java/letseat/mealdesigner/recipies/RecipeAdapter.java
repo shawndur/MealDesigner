@@ -5,7 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
@@ -15,11 +17,21 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     private ArrayList<String> _dataset;
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView _textView;
+        public ToggleButton _fav;
+        public Button _delete;
         public ViewHolder(View v) {
             super(v);
             _textView = (TextView) v.findViewById(R.id.recipe_name_text);
+            _fav = (ToggleButton) v.findViewById(R.id.favorite_button);
+            _delete = (Button) v.findViewById(R.id.delete_button);
+            _textView.setOnClickListener(this);
+            _fav.setOnClickListener(this);
+            _delete.setOnClickListener(this);
+        }
+        public void onClick(View view){
+
         }
     }
 
