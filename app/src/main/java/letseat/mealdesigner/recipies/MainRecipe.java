@@ -60,7 +60,7 @@ public class MainRecipe extends AppCompatActivity
         _recyclerView.setHasFixedSize(true);
         _layoutManager = new LinearLayoutManager(this);
         _recyclerView.setLayoutManager(_layoutManager);
-        _adapter = new RecipeAdapter(names);
+        _adapter = new RecipeAdapter(names,this);
         _recyclerView.setAdapter(_adapter);
     }
 
@@ -116,8 +116,7 @@ public class MainRecipe extends AppCompatActivity
         return true;
     }
 
-    public void openRecipeInfo(View view){
-        String name = "" + ((TextView) view);
+    public void openRecipeInfo(String name){
         Intent intent = new Intent(this,RecipeInfo.class);
         intent.putExtra("recipe_name",name);
         startActivity(intent);

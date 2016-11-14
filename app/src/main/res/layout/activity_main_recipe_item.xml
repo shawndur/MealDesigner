@@ -16,7 +16,6 @@
             android:id="@+id/recipe_name_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="18sp"
-            android:onClick="openRecipeInfo"
             android:layout_weight="100"/>
 
         <LinearLayout

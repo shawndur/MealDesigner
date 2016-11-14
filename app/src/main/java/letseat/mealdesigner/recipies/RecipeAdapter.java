@@ -15,12 +15,15 @@ import letseat.mealdesigner.R;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
     private ArrayList<String> _dataset;
+    private MainRecipe _recipeList;
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView _textView;
         public ToggleButton _fav;
         public Button _delete;
+        public int _id;
+
         public ViewHolder(View v) {
             super(v);
             _textView = (TextView) v.findViewById(R.id.recipe_name_text);
@@ -30,12 +33,25 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             _fav.setOnClickListener(this);
             _delete.setOnClickListener(this);
         }
-        public void onClick(View view){
 
+        public void bind(ArrayList<String> dataset, int id){
+            _id = id;
+            _textView.setText(dataset.get(id));
+        }
+
+        public void onClick(View view){
+            if(view == _textView){
+
+            }else if(view == _fav){
+
+            }else if(view == _delete){
+
+            }
         }
     }
 
-    public RecipeAdapter(ArrayList<String> dataset) {
+    public RecipeAdapter(ArrayList<String> dataset, MainRecipe recipelist) {
+        _recipeList = recipelist;
         _dataset = dataset;
     }
 
