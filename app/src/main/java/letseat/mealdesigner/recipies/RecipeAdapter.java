@@ -23,9 +23,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         public ToggleButton _fav;
         public Button _delete;
         public int _id;
+        public MainRecipe _recipeList;
 
-        public ViewHolder(View v) {
+        public ViewHolder(View v, MainRecipe recipeList) {
             super(v);
+            _recipeList = recipeList;
             _textView = (TextView) v.findViewById(R.id.recipe_name_text);
             _fav = (ToggleButton) v.findViewById(R.id.favorite_button);
             _delete = (Button) v.findViewById(R.id.delete_button);
@@ -41,11 +43,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
         public void onClick(View view){
             if(view == _textView){
-
+                _recipeList.openRecipeInfo(_textView.getText().toString());
             }else if(view == _fav){
-
+                _recipeList.favoriteRecipe(_textView.getText().toString());
             }else if(view == _delete){
-
+                _recipeList.deleteRecipe(_textView.getText().toString());
             }
         }
     }
@@ -61,14 +63,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.activity_main_recipe_item, parent, false);
 
-        ViewHolder vh = new ViewHolder(v);
+        ViewHolder vh = new ViewHolder(v,_recipeList);
         return vh;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder._textView.setText(_dataset.get(position));
-
+        holder.bind(_dataset,position);
     }
 
     @Override

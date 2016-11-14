@@ -125,4 +125,12 @@ public class MainRecipe extends AppCompatActivity
         Intent intent = new Intent(this, RecipeWalk1.class);
         startActivity(intent);
     }
+
+    public void deleteRecipe(String name){
+
+    }
+
+    public void favoriteRecipe(String name){
+
+    }
 }
