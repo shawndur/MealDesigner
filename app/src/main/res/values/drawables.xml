@@ -1,7 +1,7 @@
 <resources>
     <item name="ic_menu_share" type="drawable">@android:drawable/ic_menu_share</item>
     <item name="ic_menu_send" type="drawable">@android:drawable/ic_menu_send</item>
-    <item name="fav" type="drawable">@android:drawable/btn_star_big_off</item>
-    <item name="not_fav" type="drawable">@android:drawable/btn_star_big_on</item>
+    <item name="not_fav" type="drawable">@android:drawable/btn_star_big_off</item>
+    <item name="fav" type="drawable">@android:drawable/btn_star_big_on</item>
     <item name="delete" type="drawable">@android:drawable/ic_menu_delete</item>
 </resources>

@@ -27,7 +27,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:id="@+id/favorite_button"
-                android:background="@drawable/fav"
+                android:background="@drawable/favorite_button"
                 android:textOff=""
                 android:textOn=""/>
 
@@ -35,7 +35,8 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:id="@+id/delete_button"
-                android:background="@drawable/delete" />
+                android:background="@drawable/delete"
+                android:backgroundTint="@android:color/holo_red_dark" />
         </LinearLayout>
 
     </LinearLayout>
