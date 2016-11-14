@@ -47,14 +47,12 @@ public class Initializer
 
     }
 
-    public boolean initialize(boolean betaTest)
-    {
-        if(checkIfIndexFileExists())
-        {
-            Log.d("status","index file exists");
+    public boolean initialize(boolean betaTest) {
+        if (checkIfIndexFileExists()) {
+            Log.d("status", "index file exists");
             return true;
         }
-        Log.d("status","index file does not exists, creating it");
+        Log.d("status", "index file does not exists, creating it");
 
 //
 //          // if we want to hardcode a way to keep people from using the price-reduced beta release after a certain date, here is how we can cause the app to crash fairly easily.
@@ -66,7 +64,7 @@ public class Initializer
 
         // program only proceeds to next segment if no index file was located.  In other words, this is the first time the app has been launched on this device.
 
-        ArrayList<String> indexFileKernel  = new ArrayList<String>();
+        ArrayList<String> indexFileKernel = new ArrayList<String>();
 
         //char indexFileDelim = _lti.getIndexFileDelimiter();
 
@@ -84,10 +82,18 @@ public class Initializer
 //        indexFileKernel.add("Sauces: Demi-glace" + indexFileDelim + "aal");
         //indexFileKernel.add("Mirepoix"+indexFileDelim+"aam");
         //Log.d("status",indexFileKernel.toString());
-        if(!_lti.writeToFile("IndexFile",indexFileKernel))
-        {
-            Log.d("Status" , "Failed to create Index File kernel in long-term memory");
+        if (!_lti.writeToFile("IndexFile", indexFileKernel)) {
+            Log.d("Status", "Failed to create Index File kernel in long-term memory");
             return false;
+        }
+
+        if (!_lti.writeToFile("Favorites", new ArrayList<String>())) {
+            Log.d("Status", "Failed to create \"Favorites\" file in long-term memory.  Non-critical error, but do investigate.");
+        }
+
+        if (!_lti.writeToFile("ShopList", new ArrayList<String>()))
+        {
+            Log.d("Status", "Failed to create \"Shopping List\" file in long-term memory.  Non-critical error, but do investigate.");
         }
 
         //_lti.writeRecipeToFile("Chicken Stock",_lti.convertRecipeToWriteable(chickenStock()));
@@ -96,8 +102,97 @@ public class Initializer
         _lti.setRecipe(chickenStock());
         _lti.setRecipe(lotsOfBacon());
         _lti.setRecipe(mirepoix());
+        _lti.setRecipe(saucesBechamel());
+        _lti.setRecipe(saucesVeloute());
+        _lti.setRecipe(saucesHollandaise());
+
 
         return true;
+    }
+
+    private RecipeHead saucesHollandaise()
+    {
+        RecipeHead hol = new RecipeHead("Sauces:  Hollandaise");
+
+        hol.addEquipment("High-walled sauce pot with 1-inch of water in it.",1, "");
+        hol.addEquipment("Glass or Stainless Steel Bowl", 1, "At least big enough such that it seats in the sauce pot without touching the water");
+        hol.addEquipment("Heat-resistant pad or a dry, clean, dish towel", 1, "To be used to hold the bowl steady while it is hot.");
+        hol.addEquipment("Wire whisk", 1, "");
+        hol.addEquipment("1-ounce ladle", 1, "");
+
+        hol.addIngredient("Egg yolks", 3, ListComponent.UnitOfMeasure.EACH, "Some egg white is okay, but too much will only make the job take longer.");
+        hol.addIngredient("Butter", 1, ListComponent.UnitOfMeasure.CUP, "Melted and clarified (all solids skimmed from the top)");
+        hol.addIngredient("Lemon juice", 2, ListComponent.UnitOfMeasure.EACH, "Must be freshly-squeezed.  Store-bought does not have the correct acidity.");
+        hol.addIngredient("Hot sauce", 1, ListComponent.UnitOfMeasure.TEASPOON, "");
+        hol.addIngredient("Worcestershire sauce", 1, ListComponent.UnitOfMeasure.TEASPOON,"");
+
+
+        hol.addProcedureWithoutTimer("Bring water to just barely boiling, then place bowl inside top of the pot.","If the water touches the bottom of the bowl, pour some out until the bowl is well-above the water.");
+        hol.addProcedureWithoutTimer("Add egg yolks to the bowl and whisk vigorously until foamy.","");
+        hol.addProcedureWithoutTimer("Add hot sauce and Worcestershire sauce, continue whisking","");
+        hol.addProcedureWithoutTimer("Add half the lemon juice and continue whisking until the mixture thickens slightly.", "");
+        hol.addProcedureWithoutTimer("Pour one ladle-full of the clarified butter, one-at-a-time, SLOWLY into the bowl while whisking constantly","Pouring down the side will help greatly.");
+        hol.addProcedureWithoutTimer("When the mixture starts to thicken noticeably, add the second half of the lemon juice.","");
+        hol.addProcedureWithoutTimer("Continue adding ladles of the clarified butter, one-at-a-time, to the bowl, whisking constantly.","As the amount of butter you have added increases, it may be necessary to increase the heat under the pot.");
+        hol.addProcedureWithoutTimer("When the sauce takes three seconds to settle after passing a spoon through, the Hollandaise is done.","Serve within thirty minutes.");
+
+        hol.addComment("This sauce has a relatively short shelf life of 30 minutes.  It will separate eventually, so make this recipe towards the end of whatever you're cooking. (the eggs which bind the sauce together are cooked, so they lose some ability to hold the sauce together.");
+        hol.addComment("If the sauce should separate at any time during cooking, remove from heat, add a tablespoon of mayonnaise, and whisk vigorously until the sauce comes back together.");
+
+        return hol;
+    }
+
+    private RecipeHead saucesVeloute()
+    {
+        RecipeHead vel = new RecipeHead("Sauces:  Veloute");
+
+        vel.addEquipment("Sauce pot", 1, "At least 2 quarts");
+        vel.addEquipment("Wire whisk", 1, "If using a non-stick pot, use rubber-coated wire whisk.");
+
+        vel.addIngredient("Fat", 1, ListComponent.UnitOfMeasure.OUNCE, "Can use butter, or fat from whatever meat is used to provide the cooking liquid.");
+        vel.addIngredient("Flour", 1, ListComponent.UnitOfMeasure.OUNCE,"");
+        vel.addIngredient("Stock or Broth", 1, ListComponent.UnitOfMeasure.PINT, "Most poultry will make a good veloute, as well as certain other meats like pork.  For deeper flavor, use the drippings from roasted meats.");
+
+        vel.addProcedureWithoutTimer("Melt fat in pan over low heat.","");
+        vel.addProcedureWithoutTimer("Add flour.","");
+        vel.addProcedureWithoutTimer("Whisk until the Fat-Flour mix looks a bit like wet sand, adding a small amount of either Fat or Flour to achieve this texture.","If using pan drippings or stock made from roasted bones, allow the roux to darken slightly. (about 7 minutes at heat)");
+        vel.addProcedureWithTimer("Remove from heat and let cool for a minute.",60,"");
+        vel.addProcedureWithoutTimer("Turn heat to medium and then pour cold stock, broth, or drippings into the still-hot roux.","");
+        vel.addProcedureWithoutTimer("Whisk vigorously to dissolve the Butter-coated Flour granules.","Take care to not allow the bottom of the pan to scorch:  Always stir to the bottom of the pot!");
+        vel.addProcedureWithoutTimer("Continue whisking until desired thickness is achieved.","Roux-thickened sauces will continue to thicken as they remain over heat.");
+        vel.addProcedureWithoutTimer("Salt and Pepper to taste","");
+
+        vel.addComment("This is a common variant of the French mother sauce, Bechamel.");
+        vel.addComment("This recipe can be used to produce a myriad of gravies and pan-sauces.");
+        vel.addComment("If using this to make gravy, add some thyme and flat-leaf parsely, simmer gently for 20 minutes, then pass through a fine-mesh strainer.");
+
+        return vel;
+    }
+
+    private RecipeHead saucesBechamel()
+    {
+        RecipeHead bech = new RecipeHead("Sauces:  Bechamel");
+
+        bech.addEquipment("Sauce pot", 1, "At least 2 quarts");
+        bech.addEquipment("Wire whisk", 1, "If using a non-stick pot, use rubber-coated wire whisk.");
+
+        bech.addIngredient("Butter", 1, ListComponent.UnitOfMeasure.OUNCE, "");
+        bech.addIngredient("Flour", 1, ListComponent.UnitOfMeasure.OUNCE,"");
+        bech.addIngredient("Whole Milk", 1, ListComponent.UnitOfMeasure.PINT, "2% Milk will do fine, but any lower percentage will affect the creaminess of the finished product.");
+
+        bech.addProcedureWithoutTimer("Melt butter in pan over low heat.","");
+        bech.addProcedureWithoutTimer("Add flour.","");
+        bech.addProcedureWithoutTimer("Whisk until the Butter-Flour mix looks a bit like wet sand, adding a small amount of either Butter or Flour to achieve this texture.","Do not keep over heat for more than 5 minutes, otherwise the roux begins to darken.  If this happens you will need to start over.");
+        bech.addProcedureWithTimer("Remove from heat and let cool for a minute.",60,"");
+        bech.addProcedureWithoutTimer("Turn heat to medium and then pour cold milk into the still-hot roux.","");
+        bech.addProcedureWithoutTimer("Whisk vigorously to dissolve the Butter-coated Flour granules.","Take care to not allow the bottom of the pan to scorch.");
+        bech.addProcedureWithoutTimer("Continue whisking until desired thickness is achieved.","Roux-thickened sauces will continue to thicken as they remain over heat.");
+
+        bech.addComment("This is a French mother sauce, meaning it can be used to create many different variants.");
+        bech.addComment("Probably the most-popular sauce that can be derived from Bechamel is cheese sauce for Macaroni and Cheese.  To do this, add fresh-grated cheddar, swiss, and gruyere cheese once the sauce warms back up after adding the milk, and whisk until the cheese melts to a smooth, creamy texture.");
+
+        return bech;
+
     }
 
     private RecipeHead meatloaf()
