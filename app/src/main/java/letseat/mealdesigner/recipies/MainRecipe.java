@@ -127,10 +127,11 @@ public class MainRecipe extends AppCompatActivity
     }
 
     public void deleteRecipe(String name){
-
+        DeleteDialog deleteDialog = new DeleteDialog();
+        deleteDialog.show(getSupportFragmentManager(),"delete dialog");
     }
 
     public void favoriteRecipe(String name){
-
+        _adapter.notifyDataSetChanged();
     }
 }
