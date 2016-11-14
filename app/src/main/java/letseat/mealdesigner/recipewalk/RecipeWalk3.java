@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,7 +23,9 @@ import letseat.mealdesigner.storage.Recipe;
 public class RecipeWalk3 extends AppCompatActivity {
     private EditText editTextName;
     private EditText editTextAmount;
+    private TextView textView;
     ArrayList<String> ingredient  = new ArrayList<>();
+    StringBuilder b = new StringBuilder();
     String unit = "";
     String finalIngredient;
     Recipe newRecipe;
@@ -37,7 +40,8 @@ public class RecipeWalk3 extends AppCompatActivity {
         measure_spinner = (Spinner) findViewById(R.id.measure_spinner);
         newRecipe = x.getTempRecipe();
         //has no toolbar
-
+        textView = (TextView) findViewById(R.id.textViewIngredients);
+        textView.setText("");
         editTextName = (EditText) findViewById(R.id.editText5);
         editTextAmount = (EditText) findViewById(R.id.editText6);
 
@@ -77,6 +81,8 @@ public class RecipeWalk3 extends AppCompatActivity {
             measure_spinner.setSelection(0);
             editTextAmount.setText("");
             editTextName.setText("");
+            b.append(finalIngredient+"\n");
+            textView.setText(b.toString());
         }
     }
     //next step button

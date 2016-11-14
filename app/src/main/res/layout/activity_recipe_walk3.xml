@@ -64,7 +64,7 @@
         android:text="TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView21" />
+        android:id="@+id/textViewIngredients" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
