@@ -32,6 +32,7 @@ public class MainRecipe extends AppCompatActivity
     private RecyclerView _recyclerView;
     private RecyclerView.Adapter _adapter;
     private RecyclerView.LayoutManager _layoutManager;
+    private ArrayList<String> _dataset;
 
 
     @Override
@@ -52,7 +53,7 @@ public class MainRecipe extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ArrayList<String> names = ((MealDesignerApp)getApplicationContext()).getDatabase().getListOfRecipes();
+        _dataset = ((MealDesignerApp)getApplicationContext()).getDatabase().getListOfRecipes();
         /*ArrayList<String> names = new ArrayList<>();
         names.add("Toast");
         names.add("Toast");
@@ -61,7 +62,7 @@ public class MainRecipe extends AppCompatActivity
         _recyclerView.setHasFixedSize(true);
         _layoutManager = new LinearLayoutManager(this);
         _recyclerView.setLayoutManager(_layoutManager);
-        _adapter = new RecipeAdapter(names,this);
+        _adapter = new RecipeAdapter(_dataset,this);
         _recyclerView.setAdapter(_adapter);
     }
 
@@ -127,10 +128,11 @@ public class MainRecipe extends AppCompatActivity
         startActivity(intent);
     }
 
-    public void deleteRecipe(String name){
+    public void deleteRecipe(String name,int id){
         DeleteDialog deleteDialog = new DeleteDialog();
         Bundle args = new Bundle();
         args.putString("recipe",name);
+        args.putInt("id",id);
         deleteDialog.setArguments(args);
         deleteDialog.show(getSupportFragmentManager(),"delete dialog");
     }
@@ -139,8 +141,9 @@ public class MainRecipe extends AppCompatActivity
         _adapter.notifyDataSetChanged();
     }
 
-    public void onButtonPress(boolean delete,String name){
+    public void onButtonPress(boolean delete,int id){
         if(!delete) return;
-
+        _dataset.remove(id);
+        _adapter.notifyDataSetChanged();
     }
 }

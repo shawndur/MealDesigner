@@ -47,7 +47,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             }else if(view == _fav){
                 _recipeList.favoriteRecipe(_textView.getText().toString());
             }else if(view == _delete){
-                _recipeList.deleteRecipe(_textView.getText().toString());
+                _recipeList.deleteRecipe(_textView.getText().toString(),_id);
             }
         }
     }
