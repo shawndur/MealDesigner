@@ -144,6 +144,7 @@ public class Initializer
         hol.addProcedureWithoutTimer("When the sauce takes three seconds to settle after passing a spoon through, the Hollandaise is done.","Serve within thirty minutes.");
 
         hol.addComment("This sauce has a relatively short shelf life of 30 minutes.  It will separate eventually, so make this recipe towards the end of whatever you're cooking. (the eggs which bind the sauce together are cooked, so they lose some ability to hold the sauce together.");
+        hol.addComment("The sauces that are used in most buffets are made from a powder, which is why they can stay out for extended periods of time without separating.  This recipe is the traditional method, so separation is inevitable if left out too long.")
         hol.addComment("If the sauce should separate at any time during cooking, remove from heat, add a tablespoon of mayonnaise, and whisk vigorously until the sauce comes back together.");
 
         return hol;
@@ -347,7 +348,10 @@ public class Initializer
 
         chx.addIngredient("Chicken bones",5, ListComponent.UnitOfMeasure.POUND,"Necks and backs are preferred.  NO GIBLETS!");
         chx.addIngredient("Mirepoix (the recipe for mirepoix included with this app!)",2,ListComponent.UnitOfMeasure.POUND,"Cut into large chunks");
-        chx.addIngredient("Sache d'epices (the recipe for sache d'epices is included with this app!)",2.0,ListComponent.UnitOfMeasure.EACH,"You can combine the ingredients into one pouch of cheesecloth.");
+        chx.addIngredient("Parsely stems",6.0,ListComponent.UnitOfMeasure.EACH,"");
+        chx.addIngredient("Thyme sprigs", 6.0, ListComponent.UnitOfMeasure.EACH,"");
+        chx.addIngredient("Peppercorns", 6.0, ListComponent.UnitOfMeasure.EACH,"");
+        chx.addIngredient("Cheesecloth", 1.0, ListComponent.UnitOfMeasure.EACH,"One Square foot.  Combine the Parsely, Thyme, and peppercorns into a pouch made from this cheesecloth. (this is called a sache d'epices)");
 //        chx.addIngredient("Sache d'epices (the recipe for a sache d'epices is included with this app!)"+1.0+ListComponent.UnitOfMeasure.EACH,"6 fresh parseley stems, 3 bay leaves, 6 sprigs of fresh thyme (with leaves), and 6 black peppercorns");
         chx.addIngredient("Kosher Salt",1,ListComponent.UnitOfMeasure.FLUID_OUNCE,"Add to taste, but no more than one fluid ounce.");
 
