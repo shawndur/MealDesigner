@@ -91,6 +91,8 @@ public class Initializer
             Log.d("Status", "Failed to create \"Favorites\" file in long-term memory.  Non-critical error, but do investigate.");
         }
 
+
+
         if (!_lti.writeToFile("ShopList", new ArrayList<String>()))
         {
             Log.d("Status", "Failed to create \"Shopping List\" file in long-term memory.  Non-critical error, but do investigate.");
@@ -101,11 +103,16 @@ public class Initializer
         //_lti.writeRecipeToFile("Mirepoix",_lti.convertRecipeToWriteable(mirepoix()));
         _lti.setRecipe(chickenStock());
         _lti.setRecipe(lotsOfBacon());
+        _lti.setRecipe(meatloaf());
         _lti.setRecipe(mirepoix());
         _lti.setRecipe(saucesBechamel());
         _lti.setRecipe(saucesVeloute());
         _lti.setRecipe(saucesHollandaise());
+        _lti.setRecipe(italianMeatballs());
 
+        ArrayList<String> favKernel = new ArrayList<String>();
+
+        favKernel.add("Lots of bacon at once" + "" + _lti.getIndexFileDelimiter() + "" + _lti.getFilename("Lots of bacon at once") );
 
         return true;
     }
@@ -192,6 +199,45 @@ public class Initializer
         bech.addComment("Probably the most-popular sauce that can be derived from Bechamel is cheese sauce for Macaroni and Cheese.  To do this, add fresh-grated cheddar, swiss, and gruyere cheese once the sauce warms back up after adding the milk, and whisk until the cheese melts to a smooth, creamy texture.");
 
         return bech;
+
+    }
+
+    private RecipeHead italianMeatballs()
+    {
+        RecipeHead mb = new RecipeHead("Italian Meatballs");
+
+        mb.addEquipment("Oven", 1, "Heated to 380 degrees fahrenheit");
+        mb.addEquipment("Large stainless steel bowl", 1, "");
+        mb.addEquipment("Cookie sheet", 1, "Lined with aluminum foil");
+        mb.addEquipment("Small bowl", 1, "About the size of a breakfast bowl");
+        mb.addEquipment("Non-stick frying pan", 1, "");
+
+        mb.addIngredient("Ground Beef", 1, ListComponent.UnitOfMeasure.POUND, "");
+        mb.addIngredient("Ground Veal", 1, ListComponent.UnitOfMeasure.POUND, "");
+        mb.addIngredient("Ground Pork", 1, ListComponent.UnitOfMeasure.POUND, "");
+
+        mb.addIngredient("Extra-Virgin Olive Oil", 1, ListComponent.UnitOfMeasure.FLUID_OUNCE, "");
+        mb.addIngredient("Diced Onions", 3, ListComponent.UnitOfMeasure.OUNCE, "Sweat in the Extra-Virgin Olive Oil over low heat until translucent.");
+        mb.addIngredient("Italian-Seasoned Breadcrumbs", 4, ListComponent.UnitOfMeasure.OUNCE, "");
+        mb.addIngredient("Egg", 1, ListComponent.UnitOfMeasure.EACH, "Beaten well.");
+        mb.addIngredient("Whole Milk", 3, ListComponent.UnitOfMeasure.FLUID_OUNCE, "No lower than 2% Milk.");
+        mb.addIngredient("Worcestershire Sauce", 1, ListComponent.UnitOfMeasure.FLUID_OUNCE, "");
+
+        mb.addIngredient("Flat-Leaf Parsely", 1, ListComponent.UnitOfMeasure.CUP, "");
+        mb.addIngredient("Oregano", 4, ListComponent.UnitOfMeasure.FLUID_OUNCE, "");
+        mb.addIngredient("Parmesan Cheese", 3, ListComponent.UnitOfMeasure.FLUID_OUNCE, "");
+
+        mb.addProcedureWithoutTimer("Mix egg, milk, and Worcestershire sauce in the smaller bowl", "");
+        mb.addProcedureWithoutTimer("Combine and loosely mix the beef, pork, veal, onions, breadcrumbs, parsely, oregano, and cheese in the larger bowl.", "");
+        mb.addProcedureWithoutTimer("Pour a portion of the egg-milk-Worcestershire mixture over the meat mixture, mix until evenly-distributed, and repeat until a sticky mixture forms.", "You may not use all of the egg-milk-Worcestershire mixture.  Discard after cooking.");
+        mb.addProcedureWithTimer("Form a small patty (about 1-inch diameter) and cook in frying pan over medium-low heat until cooked", (5*60), "Use this patty to determine if adjustments to seasoning is necessary.");
+        mb.addProcedureWithoutTimer("Add salt and pepper to the mixture and combine, based on how the taste-test went.","You may not need any salt and pepper at all.");
+        mb.addProcedureWithoutTimer("Form into balls (approximately 1-inch to 2-inches in diameter and arrange evenly on cookie sheet","Leave about 1/2-inch between the balls.");
+        mb.addProcedureWithoutTimer("Place meatballs in middle of oven.","");
+        mb.addProcedureWithoutTimer("Pour enough water into the pan to give 1/4-inch layer of water on pan.", "This will prevent sticking.");
+        mb.addProcedureWithTimer("Roast in oven for approximately 40 minutes", (40 * 60), "Meatballs will be done when they are springy, but firm.");
+
+        return mb;
 
     }
 
