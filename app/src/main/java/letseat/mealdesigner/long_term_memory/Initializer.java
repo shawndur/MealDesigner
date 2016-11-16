@@ -144,7 +144,7 @@ public class Initializer
         hol.addProcedureWithoutTimer("When the sauce takes three seconds to settle after passing a spoon through, the Hollandaise is done.","Serve within thirty minutes.");
 
         hol.addComment("This sauce has a relatively short shelf life of 30 minutes.  It will separate eventually, so make this recipe towards the end of whatever you're cooking. (the eggs which bind the sauce together are cooked, so they lose some ability to hold the sauce together.");
-        hol.addComment("The sauces that are used in most buffets are made from a powder, which is why they can stay out for extended periods of time without separating.  This recipe is the traditional method, so separation is inevitable if left out too long.")
+        hol.addComment("The sauces that are used in most buffets are made from a powder, which is why they can stay out for extended periods of time without separating.  This recipe is the traditional method, so separation is inevitable if left out too long.");
         hol.addComment("If the sauce should separate at any time during cooking, remove from heat, add a tablespoon of mayonnaise, and whisk vigorously until the sauce comes back together.");
 
         return hol;
