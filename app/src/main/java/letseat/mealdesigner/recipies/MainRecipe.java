@@ -24,15 +24,18 @@ import letseat.mealdesigner.favorites.Favorites;
 import letseat.mealdesigner.recipeinfo.RecipeInfo;
 import letseat.mealdesigner.recipewalk.RecipeWalk1;
 import letseat.mealdesigner.shoppinglist.ShoppingList;
+import letseat.mealdesigner.storage.Database;
 
 public class MainRecipe extends AppCompatActivity
         implements  NavigationView.OnNavigationItemSelectedListener,
         DeleteDialog.DeleteDialogListener{
 
+    private Database _db;
     private RecyclerView _recyclerView;
     private RecyclerView.Adapter _adapter;
     private RecyclerView.LayoutManager _layoutManager;
     private ArrayList<String> _dataset;
+    private ArrayList<String> _favs;
 
 
     @Override
@@ -53,7 +56,9 @@ public class MainRecipe extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        _dataset = ((MealDesignerApp)getApplicationContext()).getDatabase().getListOfRecipes();
+        _db = ((MealDesignerApp)getApplicationContext()).getDatabase();
+        _dataset = _db.getListOfRecipes();
+        _favs = _db.getListOfFavorites();
         /*ArrayList<String> names = new ArrayList<>();
         names.add("Toast");
         names.add("Toast");
@@ -62,7 +67,7 @@ public class MainRecipe extends AppCompatActivity
         _recyclerView.setHasFixedSize(true);
         _layoutManager = new LinearLayoutManager(this);
         _recyclerView.setLayoutManager(_layoutManager);
-        _adapter = new RecipeAdapter(_dataset,this);
+        _adapter = new RecipeAdapter(_dataset,_favs,this);
         _recyclerView.setAdapter(_adapter);
     }
 
@@ -139,10 +144,19 @@ public class MainRecipe extends AppCompatActivity
 
     public void favoriteRecipe(String name){
         _adapter.notifyDataSetChanged();
+        if(_favs.contains(name)){
+            _db.setFavorite(name,false);
+            _favs.remove(name);
+        }else{
+            _db.setFavorite(name,true);
+            _favs.add(name);
+        }
+        _adapter.notifyDataSetChanged();
     }
 
     public void onButtonPress(boolean delete,int id){
         if(!delete) return;
+        ((MealDesignerApp)getApplication()).getDatabase().delete(_dataset.get(id));
         _dataset.remove(id);
         _adapter.notifyDataSetChanged();
     }
