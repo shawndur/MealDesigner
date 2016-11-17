@@ -93,7 +93,7 @@ public class Initializer
 
 
 
-        if (!_lti.writeToFile("ShopList", new ArrayList<String>()))
+        if (!_lti.writeToFile("ShoppingList", new ArrayList<String>()))
         {
             Log.d("Status", "Failed to create \"Shopping List\" file in long-term memory.  Non-critical error, but do investigate.");
         }
