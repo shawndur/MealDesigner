@@ -1210,7 +1210,7 @@ public class ShoppingNode
             String line = indexFileLines.get(i);
             if(line.substring(0,line.indexOf(INDEX_FILE_DELIM)).trim().equals(name.trim())){
                 indexFileLines.remove(i);
-                writeToFile("Favorites",indexFileLines);
+                writeToFile("IndexFile",indexFileLines);
                 return true;
             }
         }

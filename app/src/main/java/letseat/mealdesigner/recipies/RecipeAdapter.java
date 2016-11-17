@@ -2,6 +2,7 @@ package letseat.mealdesigner.recipies;
 
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             if(view == _textView){
                 _recipeList.openRecipeInfo(_textView.getText().toString());
             }else if(view == _fav){
+                Log.d("status","favorite button pressed for "+_id+_textView.getText().toString());
                 _recipeList.favoriteRecipe(_textView.getText().toString());
             }else if(view == _delete){
                 _recipeList.deleteRecipe(_textView.getText().toString(),_id);

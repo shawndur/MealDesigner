@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -59,6 +60,7 @@ public class MainRecipe extends AppCompatActivity
         _db = ((MealDesignerApp)getApplicationContext()).getDatabase();
         _dataset = _db.getListOfRecipes();
         _favs = _db.getListOfFavorites();
+        Log.d("status",""+_favs);
         /*ArrayList<String> names = new ArrayList<>();
         names.add("Toast");
         names.add("Toast");
@@ -143,20 +145,24 @@ public class MainRecipe extends AppCompatActivity
     }
 
     public void favoriteRecipe(String name){
-        _adapter.notifyDataSetChanged();
         if(_favs.contains(name)){
-            _db.setFavorite(name,false);
+            Log.d("status",name+" is favorited");
+            boolean result = _db.setFavorite(name,false);
+            Log.d("status","unfavorited? "+result);
             _favs.remove(name);
         }else{
-            _db.setFavorite(name,true);
+            Log.d("status",name+" is not favorited");
+            boolean result = _db.setFavorite(name,true);
+            Log.d("status","favorited? "+result);
             _favs.add(name);
         }
-        _adapter.notifyDataSetChanged();
     }
 
     public void onButtonPress(boolean delete,int id){
         if(!delete) return;
-        ((MealDesignerApp)getApplication()).getDatabase().delete(_dataset.get(id));
+        Log.d("status","going to delete "+_dataset.get(id));
+        boolean result = ((MealDesignerApp)getApplication()).getDatabase().delete(_dataset.get(id));
+        Log.d("status","Deleted? "+result);
         _dataset.remove(id);
         _adapter.notifyDataSetChanged();
     }
