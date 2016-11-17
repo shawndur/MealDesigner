@@ -909,6 +909,54 @@ public class ShoppingNode
 */
     }
 
+    public boolean writeToFavorites(ArrayList<String> user_generated_recipe_names_only)
+    {
+        ArrayList<String> data = new ArrayList<String> ();
+
+        for(int i = 0; i < user_generated_recipe_names_only.size(); i++)
+        {
+            String current = user_generated_recipe_names_only.get(i);
+
+            data.add(current + "" + INDEX_FILE_DELIM + "" + getFilename(current));
+        }
+
+        return writeToFile("Favorites", data);
+    }
+
+    public ArrayList<String> getFilenamesFromFavorites()
+    {
+        ArrayList<String> favLines = getLinesFromFile("Favorites"), output = new ArrayList<String>();
+
+        for(int i = 0; i < favLines.size(); i++)
+        {
+            String current = favLines.get(i);
+
+            output.add(current.substring(current.indexOf(INDEX_FILE_DELIM) + 1));
+
+        }
+
+        return output;
+    }
+
+//    public ArrayList<RecipeHead> getFavorites()
+//    {
+//        ArrayList<String> favLines = getLinesFromFile("Favorites");
+//
+//        ArrayList<RecipeHead> output = new ArrayList<RecipeHead>();
+//
+//        for(int i = 0; i < favLines.size(); i++)
+//        {
+//            String current = favLines.get(i);
+//
+//            getLinesFromFile( current.substring( current.indexOf( INDEX_FILE_DELIM ) + 1 ) );
+//
+//            output.add(parseLineToRecipe())
+//
+//        }
+//
+//
+//    }
+
     public boolean writeToShoppingList(ArrayList<String> data)
     {
         return writeToFile("ShoppingList", data);
