@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
 import java.util.ArrayList;
@@ -21,14 +20,13 @@ public class RecipeWalk1 extends AppCompatActivity {
     private EditText editText3;
     private EditText editText4;
     ArrayList<String> recipe  = new ArrayList<>();
-    ArrayAdapter<String> m_adapter;
     Recipe newRecipe;
-    Database x = ((MealDesignerApp) getApplication()).getDatabase();
+    Database x ;//= ((MealDesignerApp) getApplication()).getDatabase();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_walk1);
-
+        x = ((MealDesignerApp) getApplication()).getDatabase();
         editText1 = (EditText) findViewById(R.id.editText);
         editText2 = (EditText) findViewById(R.id.editText2);
         editText3 = (EditText) findViewById(R.id.editText3);
@@ -38,6 +36,7 @@ public class RecipeWalk1 extends AppCompatActivity {
         //has no toolbar
 
     }
+
 
     //next step button
     public void step2(View view){

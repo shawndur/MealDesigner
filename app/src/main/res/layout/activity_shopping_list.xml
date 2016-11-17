@@ -5,9 +5,6 @@
     android:layout_height="match_parent"
     tools:context="letseat.mealdesigner.shoppinglist.ShoppingList">
 
-
-
-
     <include layout="@layout/app_bar_main"
         android:id="@+id/include" />
 
@@ -29,43 +26,43 @@
             android:layout_gravity="center_horizontal|bottom" />
 
         <TableLayout
+            android:id="@+id/shoplist_table"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal|top">
+
+            <!--
             <TableRow>
                 <TextView
                     android:text="Ingredients"
                     android:gravity="center"
-                    android:layout_width="fill_parent"
-                    android:layout_weight="20"
-                    android:padding="3dip" />
+                    android:layout_width=
+                    />
                 <TextView
                     android:text="Quantity"
                     android:gravity="center"
                     android:layout_width="fill_parent"
-                    android:layout_weight="15"
-                    android:padding="3dip" />
+                    android:layout_weight="15"/>
                 <TextView
                     android:text="Price"
                     android:gravity="center"
                     android:layout_width="fill_parent"
-                    android:layout_weight="15"
-                    android:padding="3dip" />
+                    android:layout_weight="15"/>
                 <TextView
                     android:text="Market"
                     android:gravity="center"
-                    android:layout_width="fill_parent"
                     android:layout_weight="20"
-                    android:padding="3dip" />
+                    android:layout_width="fill_parent" />
                 <TextView
                     android:text="Recipe"
                     android:gravity="center"
                     android:layout_width="fill_parent"
-                    android:layout_weight="30"
-                    android:padding="3dip" />
+                    android:layout_weight="30"/>
             </TableRow>
+            -->
 
-            <TableRow>
+            <TableRow android:id="@+id/shoplist_table_row">
+                <!--
                 <TextView
                     android:text="Carrots"
                     android:gravity="center"
@@ -99,18 +96,9 @@
                     android:padding="0dip"
                     android:background="@android:drawable/btn_dropdown"
                     android:spinnerMode="dropdown" />
-                <!--
-                <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Recipe"
-                    android:onClick="openRecipeInfo"
-                    android:layout_weight="30"
-                    android:id="@+id/button1"
-                    android:textSize="10dp" />
                 -->
             </TableRow>
-
+            <!--
             <TableRow>
                 <TextView
                     android:text="Tomato"
@@ -146,7 +134,7 @@
                     android:padding="0dip"
                     android:background="@android:drawable/btn_dropdown"
                     android:spinnerMode="dropdown" />
-                <!--
+
                 <Button
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -155,8 +143,9 @@
                     android:layout_weight="30"
                     android:id="@+id/button2"
                     android:textSize="10dp" />
-                -->
+
             </TableRow>
+            -->
 
         </TableLayout>
     </FrameLayout>

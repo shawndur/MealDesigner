@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -17,34 +18,37 @@ import letseat.mealdesigner.MealDesignerApp;
 import letseat.mealdesigner.R;
 import letseat.mealdesigner.recipies.MainRecipe;
 import letseat.mealdesigner.storage.Database;
-import letseat.mealdesigner.storage.Ingredient;
 import letseat.mealdesigner.storage.Recipe;
 
 public class RecipeWalk3 extends AppCompatActivity {
     private EditText editTextName;
     private EditText editTextAmount;
+    private TextView textView;
     ArrayList<String> ingredient  = new ArrayList<>();
+    StringBuilder b = new StringBuilder();
     String unit = "";
     String finalIngredient;
     Recipe newRecipe;
-    Database x = ((MealDesignerApp) getApplication()).getDatabase();
+    //declare spinner
+    Spinner measure_spinner; // = (Spinner) findViewById(R.id.measure_spinner);
+    Database x ;//= ((MealDesignerApp) getApplication()).getDatabase();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_walk3);
-
+        x = ((MealDesignerApp) getApplication()).getDatabase();
+        measure_spinner = (Spinner) findViewById(R.id.measure_spinner);
         newRecipe = x.getTempRecipe();
         //has no toolbar
-
+        textView = (TextView) findViewById(R.id.textViewIngredients);
+        textView.setText("");
         editTextName = (EditText) findViewById(R.id.editText5);
         editTextAmount = (EditText) findViewById(R.id.editText6);
 
 
-        //declare spinner
-        Spinner measure_spinner = (Spinner) findViewById(R.id.measure_spinner);
         //populate spinner
         String[] items = new String[] { "Select a unit", "Cup", "Ounce", "Gram", "Tablespoon", "Teaspoon", "Fld Ounce", "Liter" };
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
         // Specify the layout to be more spaced out
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //apply the adapter
@@ -69,12 +73,16 @@ public class RecipeWalk3 extends AppCompatActivity {
         String amounts = editTextAmount.getText().toString();
         if (name.matches("")) {
             Toast.makeText(this, "You did not fill in an ingredient", Toast.LENGTH_SHORT).show();
-            return;
         }
         else{
-            finalIngredient= name + " " + amounts+ " " +unit;
+            finalIngredient= amounts + " " + unit+ " " +name;
             ingredient.add(finalIngredient);
-            //TODO clear all for next ingredient
+            //clear all fill ins/selection
+            measure_spinner.setSelection(0);
+            editTextAmount.setText("");
+            editTextName.setText("");
+            b.append(finalIngredient+"\n");
+            textView.setText(b.toString());
         }
     }
     //next step button

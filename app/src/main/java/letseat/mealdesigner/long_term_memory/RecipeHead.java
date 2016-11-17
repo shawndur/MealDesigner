@@ -159,7 +159,7 @@ public class RecipeHead implements Recipe
 ////        _tails.put(nodeType, node).setNext(node);	// this is the problem right here!
     }
 
-    public void addEquipment(String equipment_name, int quantity_needed/*, ArrayList<String> comments*/,String additionalText)
+    public void addEquipment(String equipment_name, double quantity_needed/*, ArrayList<String> comments*/,String additionalText)
     {
 
         addComponent(new ListComponent(equipment_name, quantity_needed, additionalText));
@@ -335,7 +335,7 @@ public class RecipeHead implements Recipe
             current = current.next();
         }
 
-        output += _end_EQUIPMENT + _INGREDIENT;
+        output += _end_EQUIPMENT+ "" + _INGREDIENT;
 
         current = _heads.get(ComponentType.INGREDIENT);
 
@@ -345,7 +345,7 @@ public class RecipeHead implements Recipe
             current = current.next();
         }
 
-        output += _end_INGREDIENT + _PROCEDURE;
+        output += _end_INGREDIENT+ "" + _PROCEDURE;
 
         current = _heads.get(PROCEDURE);
 
@@ -355,7 +355,7 @@ public class RecipeHead implements Recipe
             current = current.next();
         }
 
-        output += _end_PROCEDURE + _COMMENTS;
+        output += _end_PROCEDURE+ "" + _COMMENTS;
 
         current = _heads.get(ComponentType.COMMENT);
 
@@ -365,7 +365,7 @@ public class RecipeHead implements Recipe
             current = current.next();
         }
 
-        return output + _END_OF_RECIPE + getAllergensForMemory();
+        return output + _END_OF_RECIPE +""+ getAllergensForMemory();
 //        return output + _END_OF_RECIPE;   // changed to ^
 
 
@@ -632,9 +632,11 @@ public class RecipeHead implements Recipe
     public ArrayList<String> getSteps(){
         ArrayList<String> strsteps = new ArrayList<>();
         ListComponent steps =  getList( PROCEDURE );
+        if(steps == null) return strsteps;
         for(;steps.hasNext();steps = steps.next()){
             strsteps.add(steps.name());
         }
+        strsteps.add(steps.name());
         return strsteps;
     }
 
@@ -658,9 +660,11 @@ public class RecipeHead implements Recipe
     public ArrayList<String> getTools(){
         ArrayList<String> strtools = new ArrayList<>();
         ListComponent tools =  getList( EQUIPMENT );
+        if(tools == null) return strtools;
         for(;tools.hasNext();tools = tools.next()){
             strtools.add(tools.name());
         }
+        strtools.add(tools.name());
         return strtools;
     }
     
@@ -684,14 +688,21 @@ public class RecipeHead implements Recipe
     public ArrayList<String> getIngredients(){
         ArrayList<String> stringr = new ArrayList<>();
         ListComponent ingr =  getList( INGREDIENT );
+        if(ingr == null) return stringr;
         for(;ingr.hasNext();ingr = ingr.next()){
             String toAdd = "";
-            if(ingr.hasQuantity()) toAdd += ingr.getQuantity();
+            if(ingr.hasQuantity()) toAdd += ingr.getQuantity()+" ";
             if(ingr.unitOfMeasure() != NO_UOM &&  ingr.unitOfMeasure() != UOM_ERR)
-                toAdd += ingr.unitOfMeasure();
+                toAdd += ingr.unitOfMeasure()+" ";
             toAdd += ingr.name();
             stringr.add(toAdd);
         }
+        String toAdd = "";
+        if(ingr.hasQuantity()) toAdd += ingr.getQuantity()+" ";
+        if(ingr.unitOfMeasure() != NO_UOM &&  ingr.unitOfMeasure() != UOM_ERR)
+            toAdd += ingr.unitOfMeasure()+" ";
+        toAdd += ingr.name();
+        stringr.add(toAdd);
         return stringr;
     }
     
