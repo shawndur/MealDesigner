@@ -24,6 +24,7 @@ public class RecipeInfo extends AppCompatActivity {
 
     private Database _db;
     private LinkedHashMap<String,List<String>> _dataset;
+    private String _name;
 
     
     @Override
@@ -41,15 +42,15 @@ public class RecipeInfo extends AppCompatActivity {
         }
 
         Intent intent = getIntent();
-        String name = intent.getStringExtra("recipe_name");
-        if(name == null){
+        _name = intent.getStringExtra("recipe_name");
+        if(_name == null){
             Toast.makeText(getApplicationContext(),"No Recipe Found",Toast.LENGTH_LONG).show();
             onBackPressed();
             //name = "Toast";
         }
 
         _db = ((MealDesignerApp) getApplication()).getDatabase();
-        Recipe recipe = _db.getRecipe(name);
+        Recipe recipe = _db.getRecipe(_name);
         _dataset = new LinkedHashMap<>();
 
         if(recipe == null){
@@ -91,7 +92,7 @@ public class RecipeInfo extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new RecipeInfoAdapter(name,_dataset));
+        recyclerView.setAdapter(new RecipeInfoAdapter(_name,_dataset));
     }
 
     @Override
@@ -136,8 +137,8 @@ public class RecipeInfo extends AppCompatActivity {
         Toast.makeText(getApplicationContext(),"Recipe Added To Shopping List",Toast.LENGTH_LONG).show();
     }
 
-    // TODO: 10/1/16 add to storage
     private void addToFavs(){
+        _db.setFavorite(_name,true);
         Toast.makeText(getApplicationContext(),"Recipe Added To Favorites",Toast.LENGTH_LONG).show();
     }
 
