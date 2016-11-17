@@ -15,6 +15,7 @@ import letseat.mealdesigner.R;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
     private ArrayList<String> _dataset;
+    private ArrayList<String> _favs;
     private MainRecipe _recipeList;
 
 
@@ -36,9 +37,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             _delete.setOnClickListener(this);
         }
 
-        public void bind(ArrayList<String> dataset, int id){
+        public void bind(ArrayList<String> dataset,ArrayList<String> favs,int id){
             _id = id;
             _textView.setText(dataset.get(id));
+            _fav.setChecked(favs.contains(dataset.get(id)));
         }
 
         public void onClick(View view){
@@ -52,9 +54,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         }
     }
 
-    public RecipeAdapter(ArrayList<String> dataset, MainRecipe recipelist) {
+    public RecipeAdapter(ArrayList<String> dataset,ArrayList<String> favs, MainRecipe recipelist) {
         _recipeList = recipelist;
         _dataset = dataset;
+        _favs = favs;
     }
 
 
@@ -69,7 +72,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.bind(_dataset,position);
+        holder.bind(_dataset,_favs,position);
     }
 
     @Override
