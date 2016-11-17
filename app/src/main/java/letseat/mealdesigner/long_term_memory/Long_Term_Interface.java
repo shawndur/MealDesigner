@@ -1203,4 +1203,49 @@ public class ShoppingNode
         _temp = null;
     }
 
+    public boolean delete(String name){
+        ArrayList<String> indexFileLines = getIndexFileLines();
+        String filename;
+        for(int i=0;i<indexFileLines.size();++i ){
+            String line = indexFileLines.get(i);
+            if(line.substring(0,line.indexOf(INDEX_FILE_DELIM)).trim().equals(name.trim())){
+                indexFileLines.remove(i);
+                writeToFile("Favorites",indexFileLines);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean setFavorite(String name, boolean fav){
+        ArrayList<String> indexFileLines = getLinesFromFile("Favorites");
+        int index = -1;
+        for(int i=0;i<indexFileLines.size();++i ){
+            String line = indexFileLines.get(i);
+            if(line.substring(0,line.indexOf(INDEX_FILE_DELIM)).trim().equals(name.trim())){
+                index = i;
+                break;
+            }
+        }
+
+        if(fav && index == -1){
+            if(!testUserSuppliedFileExists(name)) return false;
+            String filename = getFilename(name).get(0);
+            indexFileLines.add(name+INDEX_FILE_DELIM+filename);
+        }
+
+        if(!fav && index != -1){
+            indexFileLines.remove(index);
+            writeToFile("Favorites",indexFileLines);
+            return true;
+        }
+        return false;
+    }
+
+    public ArrayList<String> getListOfFavorites(){
+        ArrayList<String> indexFileLines = getLinesFromFile("Favorites");
+        if(indexFileLines.isEmpty()) return new ArrayList<>();
+        return trimToUserGeneratedRecipeNamesOnly(indexFileLines);
+    }
+
 }
