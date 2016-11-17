@@ -46,7 +46,6 @@ public class RecipeInfo extends AppCompatActivity {
         if(_name == null){
             Toast.makeText(getApplicationContext(),"No Recipe Found",Toast.LENGTH_LONG).show();
             onBackPressed();
-            //name = "Toast";
         }
 
         _db = ((MealDesignerApp) getApplication()).getDatabase();
@@ -56,30 +55,6 @@ public class RecipeInfo extends AppCompatActivity {
         if(recipe == null){
             Toast.makeText(getApplicationContext(),"Error No/Empty File",Toast.LENGTH_LONG).show();
             onBackPressed();
-            /*
-            _dataset = new LinkedHashMap<>();
-
-            String key = "Ingredients";
-            ArrayList<String> data = new ArrayList<>();
-            data.add("1 Tbsp of Jam");
-            data.add("1 Slices of Bread");
-            _dataset.put(key,data);
-
-            key = "Tools";
-            data = new ArrayList<>();
-            data.add("1 toaster");
-            data.add("1 butter knife");
-            data.add("1 plate");
-            _dataset.put(key,data);
-
-            key = "Steps";
-            data = new ArrayList<>();
-            data.add("1) Put bread in toaster");
-            data.add("2) Toast bread at desired setting");
-            data.add("3) When done retrieve bread from toaster");
-            data.add("4) Using a butter knife spread jam on toast");
-            _dataset.put(key,data);
-            //*/
         }else{
             ArrayList<String> data = recipe.getIngredients();
             if(data.size()>0)_dataset.put("Ingredients",data);
