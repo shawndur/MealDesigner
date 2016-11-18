@@ -162,7 +162,7 @@ public class RecipeHead implements Recipe
     public void addEquipment(String equipment_name, double quantity_needed/*, ArrayList<String> comments*/,String additionalText)
     {
 
-        addComponent(new ListComponent(equipment_name, quantity_needed, additionalText));
+        addComponent(new ListComponent(equipment_name, (int) quantity_needed, additionalText));
 //        addComponent(new ListComponent(equipment_name, quantity_needed, comments));
 
     }
@@ -637,23 +637,15 @@ public class RecipeHead implements Recipe
             strsteps.add(steps.name());
         }
         strsteps.add(steps.name());
+        Log.d("status","steps "+strsteps);
         return strsteps;
     }
 
     public boolean setSteps(ArrayList<String> steps){
-        ListComponent head = null;
-        ListComponent curr = null;
-        for(String step : steps){
-            if(head == null){
-                head = new ListComponent(step,"");
-                curr=head;
-            }else{
-                curr.setNext(new ListComponent(step,""));
-                curr = curr.next();
-            }
-        }
         if(_heads.containsKey(PROCEDURE)) _heads.remove(PROCEDURE);
-        _heads.put(PROCEDURE,head);
+        for(String step : steps){
+            addProcedureWithoutTimer(step,"");
+        }
         return true;
     }
     
@@ -669,19 +661,10 @@ public class RecipeHead implements Recipe
     }
     
     public boolean setTools(ArrayList<String> tools){
-        ListComponent head = null;
-        ListComponent curr = null;
-        for(String tool : tools){
-            if(head == null){
-                head = new ListComponent(tool,0,"");
-                curr=head;
-            }else{
-                curr.setNext(new ListComponent(tool,0,""));
-                curr = curr.next();
-            }
-        }
         if(_heads.containsKey(EQUIPMENT)) _heads.remove(EQUIPMENT);
-        _heads.put(EQUIPMENT,head);
+        for(String tool : tools){
+            addEquipment(tool,0,"");
+        }
         return true;
     }
     
@@ -707,19 +690,10 @@ public class RecipeHead implements Recipe
     }
     
     public boolean setIngredients(ArrayList<String> ingredients){
-        ListComponent head = null;
-        ListComponent curr = null;
-        for(String ingredient : ingredients){
-            if(head == null){
-                head = new ListComponent(ingredient,0,"", NO_UOM);
-                curr=head;
-            }else{
-                curr.setNext(new ListComponent(ingredient,0,"", NO_UOM));
-                curr = curr.next();
-            }
-        }
         if(_heads.containsKey(INGREDIENT)) _heads.remove(INGREDIENT);
-        _heads.put(INGREDIENT,head);
+        for(String ingredient : ingredients){
+            this.addIngredient(ingredient,0,NO_UOM,"");
+        }
         return true;
     }
 

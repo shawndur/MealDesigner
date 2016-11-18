@@ -58,6 +58,12 @@ public class MainRecipe extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         _db = ((MealDesignerApp)getApplicationContext()).getDatabase();
+
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
         _dataset = _db.getListOfRecipes();
         _favs = _db.getListOfFavorites();
         Log.d("status",""+_favs);
