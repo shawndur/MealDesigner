@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ public class RecipeInfo extends AppCompatActivity {
 
     private Database _db;
     private LinkedHashMap<String,List<String>> _dataset;
+    private String _name;
 
     
     @Override
@@ -41,57 +43,35 @@ public class RecipeInfo extends AppCompatActivity {
         }
 
         Intent intent = getIntent();
-        String name = intent.getStringExtra("recipe_name");
-        if(name == null){
+        _name = intent.getStringExtra("recipe_name");
+        if(_name == null){
             Toast.makeText(getApplicationContext(),"No Recipe Found",Toast.LENGTH_LONG).show();
             onBackPressed();
-            //name = "Toast";
         }
 
         _db = ((MealDesignerApp) getApplication()).getDatabase();
-        Recipe recipe = _db.getRecipe(name);
+        Recipe recipe = _db.getRecipe(_name);
         _dataset = new LinkedHashMap<>();
 
         if(recipe == null){
             Toast.makeText(getApplicationContext(),"Error No/Empty File",Toast.LENGTH_LONG).show();
             onBackPressed();
-            /*
-            _dataset = new LinkedHashMap<>();
-
-            String key = "Ingredients";
-            ArrayList<String> data = new ArrayList<>();
-            data.add("1 Tbsp of Jam");
-            data.add("1 Slices of Bread");
-            _dataset.put(key,data);
-
-            key = "Tools";
-            data = new ArrayList<>();
-            data.add("1 toaster");
-            data.add("1 butter knife");
-            data.add("1 plate");
-            _dataset.put(key,data);
-
-            key = "Steps";
-            data = new ArrayList<>();
-            data.add("1) Put bread in toaster");
-            data.add("2) Toast bread at desired setting");
-            data.add("3) When done retrieve bread from toaster");
-            data.add("4) Using a butter knife spread jam on toast");
-            _dataset.put(key,data);
-            //*/
-        }else{
-            ArrayList<String> data = recipe.getIngredients();
-            if(data.size()>0)_dataset.put("Ingredients",data);
-            data = recipe.getTools();
-            if(data.size()>0)_dataset.put("Tools",data);
-            data = recipe.getSteps();
-            if(data.size()>0)_dataset.put("Steps",data);
         }
+
+        ArrayList<String> data = recipe.getIngredients();
+        if(data.size()>0)_dataset.put("Ingredients",data);
+        data = recipe.getTools();
+        if(data.size()>0)_dataset.put("Tools",data);
+        data = recipe.getSteps();
+        if(data.size()>0)_dataset.put("Steps",data);
+
+        Log.d("status", "dataset= "+_dataset);
+
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new RecipeInfoAdapter(name,_dataset));
+        recyclerView.setAdapter(new RecipeInfoAdapter(_name,_dataset));
     }
 
     @Override
@@ -136,8 +116,8 @@ public class RecipeInfo extends AppCompatActivity {
         Toast.makeText(getApplicationContext(),"Recipe Added To Shopping List",Toast.LENGTH_LONG).show();
     }
 
-    // TODO: 10/1/16 add to storage
     private void addToFavs(){
+        _db.setFavorite(_name,true);
         Toast.makeText(getApplicationContext(),"Recipe Added To Favorites",Toast.LENGTH_LONG).show();
     }
 

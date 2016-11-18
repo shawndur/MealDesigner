@@ -1,0 +1,16 @@
+date: November 2, 2016
+meeting_type: group
+attendance: [<cnzytari>, <cpark22>, <shawndur>, <vanhoose>]
+absent: []
+excused_absences: []
+task_progress:[
+  {ubit: <cnzytari>, progress: merged to dev, helped create video, working on clearing out fill-ins once user has added to recipe.},
+  {ubit: <vanhoose>, progress: merged to dev, helped create video, working on bugs in long_term_memory code.},
+  {ubit: <cpark22>, progress:  merged to dev, helped create video.},
+  {ubit: <shawndur>, progress: merged to dev, merged dev to master, helped create video.}
+  ]
+issues: [ # Post any issues here. Issues that cannot be addressed by the group should especially be included
+ ]
+Notes:  | # Anything covered in the meeting that doesn't fit elsewhere.
+  # Need to work on bugs in reading files from memory to showing in recipe
+  # Added ideas of what to work on under projects on github

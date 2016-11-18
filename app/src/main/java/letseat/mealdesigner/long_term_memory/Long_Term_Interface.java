@@ -428,7 +428,7 @@ public class Long_Term_Interface implements Database, ShopList
             {
 //                timer = -1;
                 Log.d("status","Blank or invalid string passed to Double.parseDouble(String) while parsing quantity information for "+ name +" in recipe "+recipeHead.name()+".\n\tPlease investigate, or prompt user for correct information.  By default, the timer will not be utilized, and this component of the Procedures list will have ComponentType.PROCEDURE set instead of ComponentType.PROCEDURE_WITH_TIMER.");
-                recipeHead.addProcedureWithoutTimer(name, rawLine.substring(rawLine.indexOf(COMMA)+1));
+                //recipeHead.addProcedureWithoutTimer(name, rawLine.substring(rawLine.indexOf(COMMA)+1));
 
             }
 
@@ -909,6 +909,54 @@ public class ShoppingNode
 */
     }
 
+    public boolean writeToFavorites(ArrayList<String> user_generated_recipe_names_only)
+    {
+        ArrayList<String> data = new ArrayList<String> ();
+
+        for(int i = 0; i < user_generated_recipe_names_only.size(); i++)
+        {
+            String current = user_generated_recipe_names_only.get(i);
+
+            data.add(current + "" + INDEX_FILE_DELIM + "" + getFilename(current));
+        }
+
+        return writeToFile("Favorites", data);
+    }
+
+    public ArrayList<String> getFilenamesFromFavorites()
+    {
+        ArrayList<String> favLines = getLinesFromFile("Favorites"), output = new ArrayList<String>();
+
+        for(int i = 0; i < favLines.size(); i++)
+        {
+            String current = favLines.get(i);
+
+            output.add(current.substring(current.indexOf(INDEX_FILE_DELIM) + 1));
+
+        }
+
+        return output;
+    }
+
+//    public ArrayList<RecipeHead> getFavorites()
+//    {
+//        ArrayList<String> favLines = getLinesFromFile("Favorites");
+//
+//        ArrayList<RecipeHead> output = new ArrayList<RecipeHead>();
+//
+//        for(int i = 0; i < favLines.size(); i++)
+//        {
+//            String current = favLines.get(i);
+//
+//            getLinesFromFile( current.substring( current.indexOf( INDEX_FILE_DELIM ) + 1 ) );
+//
+//            output.add(parseLineToRecipe())
+//
+//        }
+//
+//
+//    }
+
     public boolean writeToShoppingList(ArrayList<String> data)
     {
         return writeToFile("ShoppingList", data);
@@ -1153,6 +1201,55 @@ public class ShoppingNode
 
     public void clearTemp(){
         _temp = null;
+    }
+
+    public boolean delete(String name){
+        ArrayList<String> indexFileLines = getIndexFileLines();
+        String filename;
+        for(int i=0;i<indexFileLines.size();++i ){
+            String line = indexFileLines.get(i);
+            if(line.substring(0,line.indexOf(INDEX_FILE_DELIM)).trim().equals(name.trim())){
+                indexFileLines.remove(i);
+                writeToFile("IndexFile",indexFileLines);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean setFavorite(String name, boolean fav){
+        ArrayList<String> indexFileLines = getLinesFromFile("Favorites");
+        int index = -1;
+        for(int i=0;i<indexFileLines.size();++i ){
+            String line = indexFileLines.get(i);
+            if(line.substring(0,line.indexOf(INDEX_FILE_DELIM)).trim().equals(name.trim())){
+                index = i;
+                break;
+            }
+        }
+
+        if(fav && index == -1){
+            if(!testUserSuppliedFileExists(name)) return false;
+            Log.d("status","filename exsts");
+            String filename = getFilename(name).get(0);
+            indexFileLines.add(name+INDEX_FILE_DELIM+filename);
+            writeToFile("Favorites",indexFileLines);
+            return true;
+        }
+
+        if(!fav && index != -1){
+            Log.d("status", "deleting from favs");
+            indexFileLines.remove(index);
+            writeToFile("Favorites",indexFileLines);
+            return true;
+        }
+        return false;
+    }
+
+    public ArrayList<String> getListOfFavorites(){
+        ArrayList<String> indexFileLines = getLinesFromFile("Favorites");
+        if(indexFileLines.isEmpty()) return new ArrayList<>();
+        return trimToUserGeneratedRecipeNamesOnly(indexFileLines);
     }
 
 }

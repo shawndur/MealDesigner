@@ -1,0 +1,16 @@
+date: November 4, 2016
+meeting_type: ta
+attendance: [<cnzytari>, <cpark22>, <shawndur>, <vanhoose>]
+absent: []
+excused_absences: []
+task_progress:[
+  {ubit: <cnzytari>, progress: set up issues, working on clearing out fill-ins (half-done), but now running into issue reading recipe once created.},
+  {ubit: <vanhoose>, progress: set up issues, working on bugs in long_term_memory code and index files.},
+  {ubit: <cpark22>, progress: set up issues, working on error code that appears when trying t o save shop list.},
+  {ubit: <shawndur>, progress: set up issues, worked on bugs and index files.}
+  ]
+issues: [ # Post any issues here. Issues that cannot be addressed by the group should especially be included
+ ]
+Notes:  | # Anything covered in the meeting that doesn't fit elsewhere.
+  # Need to work on bugs 
+  # Work on visual (color/design) in next sprint

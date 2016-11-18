@@ -50,6 +50,12 @@ public interface Database {
     ArrayList<String> getListOfRecipes();
 
     /**
+     * Retrieves a list of favorite recipes in storage
+     * @return An ArrayList of strings, where each string is a recipe name
+     */
+    ArrayList<String> getListOfFavorites();
+
+    /**
      * Retrieves a temp recipe
      * @return The retrieved recipe
      */
@@ -74,4 +80,19 @@ public interface Database {
      * @return recipes matching the name
      */
     ArrayList<String> searchRecipes(String name,double tolerance );
+
+    /**
+     * Deletes a recipe from storage
+     * @param name name of recipe to be deleted
+     * @return true if deleted
+     */
+    boolean delete(String name);
+
+    /**
+     * Sets a recipe as favorite or not favorite
+     * @param name name of recipe to be set
+     * @param fav true if favorite
+     * @return true if successful
+     */
+    boolean setFavorite(String name, boolean fav);
 }

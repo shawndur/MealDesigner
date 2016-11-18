@@ -67,8 +67,9 @@ class RecipeInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
          */
         void setText(List<String> text){
             _text.setText("");
-            for(String s : text){
-                _text.append(s + '\n');
+            Iterator<String> it = text.iterator();
+            for(int i=0;it.hasNext();++i){
+                _text.append((i+1)+".) "+it.next() + '\n');
             }
         }
     }
