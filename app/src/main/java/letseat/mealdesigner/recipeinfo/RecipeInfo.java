@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -55,14 +56,17 @@ public class RecipeInfo extends AppCompatActivity {
         if(recipe == null){
             Toast.makeText(getApplicationContext(),"Error No/Empty File",Toast.LENGTH_LONG).show();
             onBackPressed();
-        }else{
-            ArrayList<String> data = recipe.getIngredients();
-            if(data.size()>0)_dataset.put("Ingredients",data);
-            data = recipe.getTools();
-            if(data.size()>0)_dataset.put("Tools",data);
-            data = recipe.getSteps();
-            if(data.size()>0)_dataset.put("Steps",data);
         }
+
+        ArrayList<String> data = recipe.getIngredients();
+        if(data.size()>0)_dataset.put("Ingredients",data);
+        data = recipe.getTools();
+        if(data.size()>0)_dataset.put("Tools",data);
+        data = recipe.getSteps();
+        if(data.size()>0)_dataset.put("Steps",data);
+
+        Log.d("status", "dataset= "+_dataset);
+
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);

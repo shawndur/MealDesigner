@@ -22,7 +22,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Menu"
         android:text="Medium Text"
-        android:id="@+id/info_item_text" />
+        android:id="@+id/info_item_text"
+        android:lineSpacingExtra="8sp" />
 </LinearLayout>
