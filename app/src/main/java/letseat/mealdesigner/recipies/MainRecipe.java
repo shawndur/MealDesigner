@@ -192,8 +192,9 @@ public class MainRecipe extends AppCompatActivity
                 parsedNames.add(names.get(i));
             }
         }
-        _adapter = new RecipeAdapter(parsedNames);
+        _adapter = new RecipeAdapter(parsedNames,_favs,this);
         _recyclerView.setAdapter(_adapter);
+        _adapter.notifyDataSetChanged();
 
 
         Log.d("CHANG","searchName: "+searchName);
