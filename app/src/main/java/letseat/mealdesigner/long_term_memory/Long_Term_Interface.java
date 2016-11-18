@@ -1210,7 +1210,7 @@ public class ShoppingNode
             String line = indexFileLines.get(i);
             if(line.substring(0,line.indexOf(INDEX_FILE_DELIM)).trim().equals(name.trim())){
                 indexFileLines.remove(i);
-                writeToFile("Favorites",indexFileLines);
+                writeToFile("IndexFile",indexFileLines);
                 return true;
             }
         }
@@ -1230,11 +1230,15 @@ public class ShoppingNode
 
         if(fav && index == -1){
             if(!testUserSuppliedFileExists(name)) return false;
+            Log.d("status","filename exsts");
             String filename = getFilename(name).get(0);
             indexFileLines.add(name+INDEX_FILE_DELIM+filename);
+            writeToFile("Favorites",indexFileLines);
+            return true;
         }
 
         if(!fav && index != -1){
+            Log.d("status", "deleting from favs");
             indexFileLines.remove(index);
             writeToFile("Favorites",indexFileLines);
             return true;
