@@ -1,0 +1,16 @@
+date: November 14, 2016
+meeting_type: group
+attendance: [<cnzytari>, <cpark22>, <shawndur>, <vanhoose>]
+absent: []
+excused_absences: []
+task_progress:[
+  {ubit: <cnzytari>, progress: preview of previously entered items/steps mostly set up, minor bug of showing repeat steps/items.},
+  {ubit: <vanhoose>, progress: Set up the initializer class to create a blank file for "favorites.txt, unctions to send and retrieve data.},
+  {ubit: <cpark22>, progress: working on seach bar functionality.},
+  {ubit: <shawndur>, progress: recipe delete buttons created/work.}
+  ]
+issues: [ # Post any issues here. Issues that cannot be addressed by the group should especially be included
+  ]
+Notes:  | # Anything covered in the meeting that doesn't fit elsewhere.
+  # Figured out color scheme, possible holiday theme
+  # Talked about logo ideas
