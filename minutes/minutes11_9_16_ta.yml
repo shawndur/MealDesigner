@@ -1,0 +1,15 @@
+
+date: November 9, 2016
+meeting_type: group
+attendance: [<cpark22>, <shawndur>, <vanhoose>]
+absent: []
+excused_absences: [ubit: <cnzytari>, reason: sick]
+task_progress:[
+  {ubit: <cnzytari>, progress: Clear input boxes and spinners when things are added to recipes.},
+  {ubit: <vanhoose>, progress: Fixed some things in the initializer, added recipes},
+  {ubit: <cpark22>, progress: Fixed some things in shopping list.},
+  {ubit: <shawndur>, progress: Cleaned up recipe info.}
+  ]
+issues: [ # Post any issues here. Issues that cannot be addressed by the group should especially be included
+  ]
+Notes: | #discussed task 4 tasks and how to go about completing them
