@@ -159,10 +159,10 @@ public class RecipeHead implements Recipe
 ////        _tails.put(nodeType, node).setNext(node);	// this is the problem right here!
     }
 
-    public void addEquipment(String equipment_name, int quantity_needed/*, ArrayList<String> comments*/,String additionalText)
+    public void addEquipment(String equipment_name, double quantity_needed/*, ArrayList<String> comments*/,String additionalText)
     {
 
-        addComponent(new ListComponent(equipment_name, quantity_needed, additionalText));
+        addComponent(new ListComponent(equipment_name, (int) quantity_needed, additionalText));
 //        addComponent(new ListComponent(equipment_name, quantity_needed, comments));
 
     }
@@ -335,7 +335,7 @@ public class RecipeHead implements Recipe
             current = current.next();
         }
 
-        output += _end_EQUIPMENT + _INGREDIENT;
+        output += _end_EQUIPMENT+ "" + _INGREDIENT;
 
         current = _heads.get(ComponentType.INGREDIENT);
 
@@ -345,7 +345,7 @@ public class RecipeHead implements Recipe
             current = current.next();
         }
 
-        output += _end_INGREDIENT + _PROCEDURE;
+        output += _end_INGREDIENT+ "" + _PROCEDURE;
 
         current = _heads.get(PROCEDURE);
 
@@ -355,7 +355,7 @@ public class RecipeHead implements Recipe
             current = current.next();
         }
 
-        output += _end_PROCEDURE + _COMMENTS;
+        output += _end_PROCEDURE+ "" + _COMMENTS;
 
         current = _heads.get(ComponentType.COMMENT);
 
@@ -365,7 +365,7 @@ public class RecipeHead implements Recipe
             current = current.next();
         }
 
-        return output + _END_OF_RECIPE + getAllergensForMemory();
+        return output + _END_OF_RECIPE +""+ getAllergensForMemory();
 //        return output + _END_OF_RECIPE;   // changed to ^
 
 
@@ -632,33 +632,27 @@ public class RecipeHead implements Recipe
     public ArrayList<String> getSteps(){
         ArrayList<String> strsteps = new ArrayList<>();
         ListComponent steps =  getList( PROCEDURE );
+        if(steps == null) return strsteps;
         for(;steps.hasNext();steps = steps.next()){
             strsteps.add(steps.name());
         }
         strsteps.add(steps.name());
+        Log.d("status","steps "+strsteps);
         return strsteps;
     }
 
     public boolean setSteps(ArrayList<String> steps){
-        ListComponent head = null;
-        ListComponent curr = null;
-        for(String step : steps){
-            if(head == null){
-                head = new ListComponent(step,"");
-                curr=head;
-            }else{
-                curr.setNext(new ListComponent(step,""));
-                curr = curr.next();
-            }
-        }
         if(_heads.containsKey(PROCEDURE)) _heads.remove(PROCEDURE);
-        _heads.put(PROCEDURE,head);
+        for(String step : steps){
+            addProcedureWithoutTimer(step,"");
+        }
         return true;
     }
     
     public ArrayList<String> getTools(){
         ArrayList<String> strtools = new ArrayList<>();
         ListComponent tools =  getList( EQUIPMENT );
+        if(tools == null) return strtools;
         for(;tools.hasNext();tools = tools.next()){
             strtools.add(tools.name());
         }
@@ -667,19 +661,10 @@ public class RecipeHead implements Recipe
     }
     
     public boolean setTools(ArrayList<String> tools){
-        ListComponent head = null;
-        ListComponent curr = null;
-        for(String tool : tools){
-            if(head == null){
-                head = new ListComponent(tool,0,"");
-                curr=head;
-            }else{
-                curr.setNext(new ListComponent(tool,0,""));
-                curr = curr.next();
-            }
-        }
         if(_heads.containsKey(EQUIPMENT)) _heads.remove(EQUIPMENT);
-        _heads.put(EQUIPMENT,head);
+        for(String tool : tools){
+            addEquipment(tool,0,"");
+        }
         return true;
     }
     
@@ -705,23 +690,55 @@ public class RecipeHead implements Recipe
     }
     
     public boolean setIngredients(ArrayList<String> ingredients){
-        ListComponent head = null;
-        ListComponent curr = null;
-        for(String ingredient : ingredients){
-            if(head == null){
-                head = new ListComponent(ingredient,0,"", NO_UOM);
-                curr=head;
-            }else{
-                curr.setNext(new ListComponent(ingredient,0,"", NO_UOM));
-                curr = curr.next();
-            }
-        }
         if(_heads.containsKey(INGREDIENT)) _heads.remove(INGREDIENT);
-        _heads.put(INGREDIENT,head);
+        for(String ingredient : ingredients){
+            this.addIngredient(ingredient,0,NO_UOM,"");
+        }
         return true;
     }
 
     public boolean setTempRecipePass(ArrayList<String> temp) {
         return false;
+    }
+
+    //PEANUTS, TREE_NUTS, FISH, SHELLFISH, DAIRY_LACTOSE, EGGS, SOY, GLUTEN, UNKNOWN
+    public boolean setAllergens(boolean dairy, boolean nuts, boolean eggs,boolean soy, boolean fish){
+        Log.d("status","Allergens "+dairy+nuts+eggs+soy+fish);
+        if(dairy){
+            setAllergen(DAIRY_LACTOSE);
+        }
+        if(nuts){
+            setAllergen(PEANUTS);
+        }
+        if(eggs){
+            setAllergen(EGGS);
+        }
+        if(soy){
+            setAllergen(SOY);
+        }
+        if(fish){
+            setAllergen(FISH);
+        }
+        return true;
+    }
+
+    public ArrayList<String> getAllergens(){
+        ArrayList<String> toReturn = new ArrayList<>();
+        if(_allergens.get(DAIRY_LACTOSE)){
+            toReturn.add("Dairy");
+        }
+        if(_allergens.get(PEANUTS)){
+            toReturn.add("Nuts");
+        }
+        if(_allergens.get(EGGS)){
+            toReturn.add("Eggs");
+        }
+        if(_allergens.get(SOY)){
+            toReturn.add("Soy");
+        }
+        if(_allergens.get(FISH)){
+            toReturn.add("Fish");
+        }
+        return toReturn;
     }
 }

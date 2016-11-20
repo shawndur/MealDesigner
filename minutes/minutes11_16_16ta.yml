@@ -1,0 +1,19 @@
+date: November 16, 2016
+meeting_type: ta
+attendance: [<cnzytari>, <shawndur>]
+absent: [<vanhoose>, <cpark22>]
+excused_absences: [
+  {ubit: <vanhoose>, reason: Needed to pick up son, sent message ahead of time.
+   ubit: <cpark22>, reason: Never gave one.}
+  ]
+task_progress:[
+  {ubit: <cnzytari>, progress: finished both tasks, going back to edit/clear up code.},
+  {ubit: <vanhoose>, progress: },
+  {ubit: <cpark22>, progress: },
+  {ubit: <shawndur>, progress: Buttons to add to favorites all created and set up.}
+  ]
+issues: [ # Post any issues here. Issues that cannot be addressed by the group should especially be included
+  ]
+Notes:  | # Anything covered in the meeting that doesn't fit elsewhere.
+  # Planning to film video
+  # Meeting Friday to work out any last minute issues

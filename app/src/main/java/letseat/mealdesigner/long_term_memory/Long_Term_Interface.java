@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Date;
 
+import static letseat.mealdesigner.long_term_memory.ListComponent.UnitOfMeasure.UOM_ERR;
+
 import letseat.mealdesigner.MainActivity;
 import letseat.mealdesigner.MealDesignerApp;
 import letseat.mealdesigner.storage.Database;
@@ -43,7 +45,8 @@ public class Long_Term_Interface implements Database, ShopList
             _shopList_PRICE = (char) 0x89, end_shopList_PRICE = (char) 0x99,
             _shopList_STORE = (char) 0x8a, end_shopList_STORE = (char) 0x9a,
             _shopList_RECIPE_ADDED = (char) 0x8b, end_shopList_RECIPE_ADDED = (char) 0x9b,
-            _shopList_IN_CART = (char) 0x8c, end_shopList_IN_CART = (char) 0x9c;
+            _shopList_IN_CART = (char) 0x8c, end_shopList_IN_CART = (char) 0x9c,
+            _shopList_UOM = (char) 0x8d, end_shopList_UOM = (char) 0x9d;
 
 
 
@@ -131,7 +134,7 @@ public class Long_Term_Interface implements Database, ShopList
      */
     private String specialSubstring(String input, final char beginDemarker, final char endDemarker)
     {
-//		Log.d("status","Generating special substring from:  "+input + ", [" + input.indexOf(beginDemarker) +","+ input.indexOf(endDemarker) +"]");
+		Log.d("status","Generating special substring from:  "+input + ", [" + input.indexOf(beginDemarker) +","+ input.indexOf(endDemarker) +"]");
 
 
         try
@@ -155,7 +158,7 @@ public class Long_Term_Interface implements Database, ShopList
     {
         if(input.length() < 3)
         {
-            return ListComponent.UnitOfMeasure.UOM_ERR; // 3 is the minimum length for any valid Unit of Measure
+            return UOM_ERR; // 3 is the minimum length for any valid Unit of Measure
         }
 
         input = input.toLowerCase();
@@ -272,7 +275,7 @@ public class Long_Term_Interface implements Database, ShopList
             }
             default:
             {
-                return ListComponent.UnitOfMeasure.UOM_ERR;
+                return UOM_ERR;
             }
 
         }
@@ -335,7 +338,7 @@ public class Long_Term_Interface implements Database, ShopList
         bySection.put(COMMENTS, parseComponentsFromSpecialSubstring(input, COMMENTS, end_COMMENTS));
 
         // added 10/24
-        String allergenInfo = input.substring(end_COMMENTS+1);  // under initial operation this is only one char long (as more food allergens are discovered this will become more than one char)
+        String allergenInfo = input.substring(input.indexOf(end_COMMENTS)+1);  // under initial operation this is only one char long (as more food allergens are discovered this will become more than one char)
 
 
 
@@ -357,7 +360,7 @@ public class Long_Term_Interface implements Database, ShopList
             rawLine = rawLine.substring(rawLine.indexOf(COMMA)+1);
 
             // extracting the number of pieces of equipment required
-            int qty = Integer.parseInt(rawLine.substring(0,rawLine.indexOf(COMMA)));
+            Double qty = Double.parseDouble(rawLine.substring(0,rawLine.indexOf(COMMA)));
 
             rawLine = rawLine.substring(rawLine.indexOf(COMMA)+1);
 
@@ -425,7 +428,7 @@ public class Long_Term_Interface implements Database, ShopList
             {
 //                timer = -1;
                 Log.d("status","Blank or invalid string passed to Double.parseDouble(String) while parsing quantity information for "+ name +" in recipe "+recipeHead.name()+".\n\tPlease investigate, or prompt user for correct information.  By default, the timer will not be utilized, and this component of the Procedures list will have ComponentType.PROCEDURE set instead of ComponentType.PROCEDURE_WITH_TIMER.");
-                recipeHead.addProcedureWithoutTimer(name, rawLine.substring(rawLine.indexOf(COMMA)+1));
+                //recipeHead.addProcedureWithoutTimer(name, rawLine.substring(rawLine.indexOf(COMMA)+1));
 
             }
 
@@ -671,13 +674,16 @@ public class Long_Term_Interface implements Database, ShopList
     {
         ArrayList<String> indexFileLines = getIndexFileLines();
 
-        return indexFileLines.contains(input);
+        return testUserSuppliedFileExists(input,indexFileLines);
 
     }
 
     public boolean testUserSuppliedFileExists(String input,ArrayList<String> indexFileLines)
     {
-        return indexFileLines.contains(input);
+        for(String line : indexFileLines){
+            if(input.trim().equals(line.substring(0,line.indexOf(INDEX_FILE_DELIM)).trim())) return true;
+        }
+        return false;
     }
 
 
@@ -771,7 +777,8 @@ public class Long_Term_Interface implements Database, ShopList
     {
         ArrayList<String> IFLines = getIndexFileLines();
 
-        String lastFilenameInIFLines = IFLines.get(IFLines.size()-1);
+        String lastFilenameInIFLines = "a"+INDEX_FILE_DELIM+"aaa";
+        if(IFLines.size() > 0) lastFilenameInIFLines = IFLines.get(IFLines.size()-1);
 
         lastFilenameInIFLines = lastFilenameInIFLines.substring(lastFilenameInIFLines.indexOf(INDEX_FILE_DELIM)+1);
 
@@ -826,7 +833,7 @@ public class Long_Term_Interface implements Database, ShopList
 
     public ArrayList<String> trimToUserGeneratedRecipeNamesOnly(ArrayList<String> rawSimilarLinesFromIndexFile)
     {
-        Log.d("status",rawSimilarLinesFromIndexFile.toString());
+        //Log.d("status",rawSimilarLinesFromIndexFile.toString());
         ArrayList<String> output = new ArrayList<String>();
 
         for(int i = 0; i < rawSimilarLinesFromIndexFile.size(); i++)
@@ -864,6 +871,102 @@ public class Long_Term_Interface implements Database, ShopList
         return INDEX_FILE_DELIM;
     }
 
+    public ArrayList<String> convertShoppingListToWriteable(ArrayList<ShoppingNode> shopList)
+    {
+        ArrayList<String> writeable = new ArrayList<String>();
+
+        for(int i = 0; i < shopList.size(); i++)
+        {
+            ShoppingNode current = shopList.get(i);
+            String itemName = INGREDIENT + current.name + end_INGREDIENT,
+                storeToPurchase = _shopList_STORE + current.store + end_shopList_STORE,
+                srcRecipe = _shopList_RECIPE_ADDED + current.recipeAddedFrom + end_shopList_RECIPE_ADDED,
+                addedToCart = _shopList_IN_CART + ( (current.in_cart)? "TRUE" : "FALSE" ) + end_shopList_IN_CART,
+                qtyToBuy = _shopList_QTY + "" + current.quantity + "" + end_shopList_QTY,
+                uom = _shopList_UOM + current.unit_of_measure.toString() + end_shopList_UOM;
+
+            String toAdd = itemName + storeToPurchase + srcRecipe + addedToCart + qtyToBuy + uom;
+
+
+
+            writeable.add(toAdd);
+
+        }
+
+        return writeable;
+/*
+ * for ease of reference:
+ *
+
+public class ShoppingNode
+{
+    public String name = "", store = "", recipeAddedFrom = "";
+//        RecipeHead recipeAddedFrom = null;    // whichever you decide to use...
+    public double quantity = -1.0, price = -1.0;
+    public boolean in_cart = false;
+}
+
+*/
+    }
+
+    public boolean writeToFavorites(ArrayList<String> user_generated_recipe_names_only)
+    {
+        ArrayList<String> data = new ArrayList<String> ();
+
+        for(int i = 0; i < user_generated_recipe_names_only.size(); i++)
+        {
+            String current = user_generated_recipe_names_only.get(i);
+
+            data.add(current + "" + INDEX_FILE_DELIM + "" + getFilename(current));
+        }
+
+        return writeToFile("Favorites", data);
+    }
+
+    public ArrayList<String> getFilenamesFromFavorites()
+    {
+        ArrayList<String> favLines = getLinesFromFile("Favorites"), output = new ArrayList<String>();
+
+        for(int i = 0; i < favLines.size(); i++)
+        {
+            String current = favLines.get(i);
+
+            output.add(current.substring(current.indexOf(INDEX_FILE_DELIM) + 1));
+
+        }
+
+        return output;
+    }
+
+//    public ArrayList<RecipeHead> getFavorites()
+//    {
+//        ArrayList<String> favLines = getLinesFromFile("Favorites");
+//
+//        ArrayList<RecipeHead> output = new ArrayList<RecipeHead>();
+//
+//        for(int i = 0; i < favLines.size(); i++)
+//        {
+//            String current = favLines.get(i);
+//
+//            getLinesFromFile( current.substring( current.indexOf( INDEX_FILE_DELIM ) + 1 ) );
+//
+//            output.add(parseLineToRecipe())
+//
+//        }
+//
+//
+//    }
+
+    public boolean writeToShoppingList(ArrayList<String> data)
+    {
+        return writeToFile("ShoppingList", data);
+    }
+
+    public boolean convertShoppingNodesAndWrite(ArrayList<ShoppingNode> input)
+    {
+        return writeToShoppingList( convertShoppingListToWriteable( input ) );
+    }
+
     public ArrayList<ShoppingNode> getShoppingList()
     {
         ArrayList<String> shoplistLines = getLinesFromFile("ShoppingList");
@@ -872,11 +975,13 @@ public class Long_Term_Interface implements Database, ShopList
 
         for(int i = 0; i < shoplistLines.size(); i++)
         {
-            String current = shoplistLines.get(i);
+            String current = shoplistLines.get( i );
 
             String item = specialSubstring( current, INGREDIENT, end_INGREDIENT),
                 store = specialSubstring( current, _shopList_STORE, end_shopList_STORE),
                 addedFrom = specialSubstring( current, _shopList_RECIPE_ADDED, end_shopList_RECIPE_ADDED);
+
+            ListComponent.UnitOfMeasure uom = parseUnitOfMeasure( specialSubstring( current, _shopList_UOM, end_shopList_UOM));
 
 //            Double qty = Double.parseDouble( specialSubstring( current,_shopList_QTY, end_shopList_QTY)),
 //                price = Double.parseDouble( specialSubstring( current, _shopList_PRICE, end_shopList_PRICE));
@@ -934,6 +1039,7 @@ public class Long_Term_Interface implements Database, ShopList
             sNode.quantity = qty;
             sNode.store = store;
             sNode.recipeAddedFrom = addedFrom;
+            sNode.unit_of_measure = uom;
 
             output.add(sNode);
 
@@ -951,12 +1057,16 @@ public class Long_Term_Interface implements Database, ShopList
         return input < 0 || Double.isInfinite(input) || Double.isNaN(input) || input == Double.MAX_EXPONENT || input == Double.MAX_VALUE;
     }
 
+    /**
+     * All variables of ShoppingNode are initialized to some obviously-wrong value.  This is to make it adequately obvious when something has gone wrong.
+     */
     public class ShoppingNode implements Ingredient
     {
         public String name = "", store = "", recipeAddedFrom = "";
 //        RecipeHead recipeAddedFrom = null;    // whichever you decide to use...
         public double quantity = -1.0, price = -1.0;
         public boolean in_cart = false;
+        public ListComponent.UnitOfMeasure unit_of_measure = UOM_ERR;
 
         //These functions are getters to get each field
         public String getName(){return name;}
@@ -1007,52 +1117,52 @@ public class Long_Term_Interface implements Database, ShopList
     }
 
     public Recipe getRecipe(String name){
-        Log.d("status",name);
-        /*ArrayList<String> lines = getLinesFromFile(name);
-        if(lines.isEmpty()) return null;*/
-        RecipeHead bac = new RecipeHead("Lots of bacon at once");
-
-        bac.addEquipment("Cookie sheet",1,"Medium-gauge or thicker is preferred.");
-        bac.addEquipment("Parchment paper",1,"Sheet should cover the pan.");
-        bac.addEquipment("Oven",1,"Set to 380 Fahrenheit.");
-
-        bac.addIngredient("Bacon",8, ListComponent.UnitOfMeasure.STRIP,"");
-
-        bac.addProcedureWithoutTimer("Arrange the bacon strips flat on the cookie sheet","They can overlap a little bit");
-        bac.addProcedureWithTimer("Place the sheet in the oven.",(60*10),"");
-        bac.addProcedureWithTimer("Check the bacon",(60*3),"If it is starting to look very well done, then it is done cooking; otherwise, keep it in the oven.  Be careful to not let any grease drip in the oven.");
-        bac.addProcedureWithTimer("Check the bacon again.",60,"By now the baoon should be fully-cooked; if not, then continue to the next step.");
-        bac.addProcedureWithoutTimer("The bacon should be done by now","If not, your oven may need some service.  Either you aren't getting enough BTUs out of it or its thermostat needs to be calibrated -- this is common with older ovens!");
-
-        bac.addComment("This method is particularly useful when you have to make breakfast for everyone.  It saves space on your stovetop, and it gives you much more control and consistency over how you cook your bacon.");
-        bac.addComment("Double-smoked bacon is widely regarded as a high-end bacon.");
-        bac.addComment("Generally, the more meat which runs through the strip, the less that strip will shrink during cooking.");
-
-        return bac;
+        Log.d("status","Getting recipe: "+name+" from storage");
+        ArrayList<String> indexFileLines = getIndexFileLines();
+        if(!testUserSuppliedFileExists(name,indexFileLines))return null;
+        Log.d("status","File for "+name+" exists");
+        String filename = getFilename(name).get(0);
+        ArrayList<String> lines = getLinesFromFile(filename);
+        if(lines.isEmpty()) return null;
+        Log.d("status","Retrieved lines from file");
+        return parseLineToRecipe(lines.get(0));
     }
 
     public boolean setRecipe(Recipe recipe){
-        // TODO: 10/28/16 convert name to filename
-        // TODO: 10/28/16 add to index file if dne
-        convertRecipeToWriteable((RecipeHead) recipe);
-        return writeRecipeToFile(((RecipeHead) recipe).name(),convertRecipeToWriteable((RecipeHead) recipe));
+        ArrayList<String> indexFileLines = getIndexFileLines();
+        String name = ((RecipeHead) recipe).name();
+        Log.d("status","Saving recipe named: "+name);
+        String filename;
+        if(!testUserSuppliedFileExists(name,indexFileLines)){
+            filename = generateFilename(name);
+            indexFileLines.add(name+getIndexFileDelimiter()+filename);
+            writeToFile("IndexFile",indexFileLines);
+            Log.d("status","New file, adding to index with filename "+filename);
+        }else{
+            filename = getFilename(((RecipeHead) recipe).name()).get(0);
+            Log.d("status","existing file, saving file as "+filename);
+        }
+        return writeRecipeToFile(filename,convertRecipeToWriteable((RecipeHead) recipe));
     }
 
+    ArrayList<Ingredient> _ingredients;
 
     public ShopList getShopList(){
-        return this;
-    }
-
-    public ArrayList<Ingredient> getIngredients(){
         ArrayList<Ingredient> toReturn = new ArrayList<>();
         for(ShoppingNode x : getShoppingList()){
             toReturn.add(x);
         }
-        return toReturn;
+        _ingredients = toReturn;
+        return this;
+    }
+
+    public ArrayList<Ingredient> getIngredients(){
+        return _ingredients;
     }
 
     public boolean setIngredients(ArrayList<Ingredient> ingredients){
-        return false;
+        _ingredients = ingredients;
+        return true;
     }
 
     public Ingredient newIngredient(){
@@ -1060,14 +1170,24 @@ public class Long_Term_Interface implements Database, ShopList
     }
 
     public boolean setShopList(ShopList shopList){
-        // TODO: 10/25/16 set shopping list. How?
-        return false;
+        if(_ingredients == null)return false;
+        ArrayList<ShoppingNode> list  = new ArrayList<>();
+        for(Ingredient node : _ingredients){
+            list.add((ShoppingNode) node);
+        }
+        return convertShoppingNodesAndWrite(list);
     }
 
     public ArrayList<String> getListOfRecipes(){
         ArrayList<String> indexFileLines = getIndexFileLines();
         if(indexFileLines.isEmpty()) return new ArrayList<>();
         return trimToUserGeneratedRecipeNamesOnly(indexFileLines);
+    }
+
+    public ArrayList<String> searchRecipes(String name,double tolerance ){
+        ArrayList<String> indexFileLines = getIndexFileLines();
+        if(indexFileLines.isEmpty()) return new ArrayList<>();
+        return getPossibleSimilarFilenames(name, indexFileLines,tolerance);
     }
 
     public Recipe getTempRecipe(){
@@ -1081,6 +1201,55 @@ public class Long_Term_Interface implements Database, ShopList
 
     public void clearTemp(){
         _temp = null;
+    }
+
+    public boolean delete(String name){
+        ArrayList<String> indexFileLines = getIndexFileLines();
+        String filename;
+        for(int i=0;i<indexFileLines.size();++i ){
+            String line = indexFileLines.get(i);
+            if(line.substring(0,line.indexOf(INDEX_FILE_DELIM)).trim().equals(name.trim())){
+                indexFileLines.remove(i);
+                writeToFile("IndexFile",indexFileLines);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean setFavorite(String name, boolean fav){
+        ArrayList<String> indexFileLines = getLinesFromFile("Favorites");
+        int index = -1;
+        for(int i=0;i<indexFileLines.size();++i ){
+            String line = indexFileLines.get(i);
+            if(line.substring(0,line.indexOf(INDEX_FILE_DELIM)).trim().equals(name.trim())){
+                index = i;
+                break;
+            }
+        }
+
+        if(fav && index == -1){
+            if(!testUserSuppliedFileExists(name)) return false;
+            Log.d("status","filename exsts");
+            String filename = getFilename(name).get(0);
+            indexFileLines.add(name+INDEX_FILE_DELIM+filename);
+            writeToFile("Favorites",indexFileLines);
+            return true;
+        }
+
+        if(!fav && index != -1){
+            Log.d("status", "deleting from favs");
+            indexFileLines.remove(index);
+            writeToFile("Favorites",indexFileLines);
+            return true;
+        }
+        return false;
+    }
+
+    public ArrayList<String> getListOfFavorites(){
+        ArrayList<String> indexFileLines = getLinesFromFile("Favorites");
+        if(indexFileLines.isEmpty()) return new ArrayList<>();
+        return trimToUserGeneratedRecipeNamesOnly(indexFileLines);
     }
 
 }
