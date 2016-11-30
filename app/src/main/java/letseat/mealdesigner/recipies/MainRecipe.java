@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import letseat.mealdesigner.MealDesignerApp;
 import letseat.mealdesigner.R;
 import letseat.mealdesigner.favorites.Favorites;
+import letseat.mealdesigner.help.HelpTab;
 import letseat.mealdesigner.recipeinfo.RecipeInfo;
 import letseat.mealdesigner.recipewalk.RecipeWalk1;
 import letseat.mealdesigner.shoppinglist.ShoppingList;
@@ -133,6 +134,10 @@ public class MainRecipe extends AppCompatActivity
                 break;
             case R.id.nav_favorite:
                 intent = new Intent(this,Favorites.class);
+                startActivity(intent);
+                break;
+            case R.id.nav_help:
+                intent = new Intent(this,HelpTab.class);
                 startActivity(intent);
                 break;
         }
