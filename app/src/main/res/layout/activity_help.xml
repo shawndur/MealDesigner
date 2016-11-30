@@ -64,7 +64,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/helpdirect8"
         android:text="@string/direction8"
-        android:textColor="#14a119"/>
+        android:textColor="#e40a20"/>
 
 
 </LinearLayout>
