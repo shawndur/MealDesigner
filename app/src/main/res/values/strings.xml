@@ -51,6 +51,14 @@
     <string name="recipe3">Some Recipe 3</string>
     <string name="recipe4">Some Recipe 4</string>
     <string name="convert">Convert</string>
+    <string name="direction1">To access Recipes, Shopping List, or Favorites click on the icon at the top left (has three bars) then click on the name of whichever one you would like to view.</string>
+    <string name="direction2">To Create A Recipe: click on Recipes. Once in Recipes click on "Add Recipe" which is located in the upper right corner.</string>
+    <string name="direction3">To Delete A Recipe: click on Recipes. Click on the recipe name, once inside the actual recipe click "Delete" which is located in the upper right corner.</string>
+    <string name="direction4">To Add a Recipe To Favorites: click on the star next to the recip name, when the star is yellow the recipe has been added to favorites. </string>
+    <string name="direction5">To Remove a Recipe From Favorites: click on the yellow star next to the recipe name, when the star is not filled with a color the recipe has been removed from favorites. </string>
+    <string name="direction6">To Add to Shopping List: click on Shopping List, at the bottom of the page click on edit. Or while inside a recipe click on "SHopList" in the upper bar to add the recipe's ingredients to the Shopping List.  </string>
+    <string name="direction7">To Cook a Recipe: click on the "Cook" button while in the recipe and it will walk you through the recipe step by step.  </string>
+    <string name="direction8">For further information or questions/comments please send an email to: mealdesignerapp@gmail.com </string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
