@@ -26,21 +26,25 @@ public class HelpTab extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-       // setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-       // getSupportActionBar().setTitle(getString(R.string.navdrawer_help));
 
+        //set toolbar widget as action bar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(getString(R.string.help));
+        }
 
 
 
     }
- //   @Override
- //   public boolean onCreateOptionsMenu(Menu menu) {
- //       // Inflate the menu; this adds items to the action bar if it is present.
- //       getMenuInflater().inflate(R.menu.toolbar_shoppinglist, menu);
- //       return true;
-//  }
+    @Override
+   public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.toolbar_help, menu);
+        return true;
+  }
   //  @Override
   //  public boolean onOptionsItemSelected(MenuItem item) {
   //      //handle toolbar button presses

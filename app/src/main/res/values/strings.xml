@@ -60,6 +60,7 @@
     <string name="direction6">To Edit Shopping List: to add or remove items click on the edit button at the bottom of Shopping List.</string>
     <string name="direction7">To Cook a Recipe: click on the "Cook" button while in the recipe and it will walk you through the recipe step by step.  </string>
     <string name="direction8">For further information or questions/comments please send an email to: mealdesignerapp@gmail.com </string>
+    <string name="help">Help</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
