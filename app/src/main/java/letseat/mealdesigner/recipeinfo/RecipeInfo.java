@@ -58,7 +58,9 @@ public class RecipeInfo extends AppCompatActivity {
             onBackPressed();
         }
 
-        ArrayList<String> data = recipe.getIngredients();
+        ArrayList<String> data = recipe.getAllergens();
+        if(data.size()>0)_dataset.put("Allergens",data);
+        data = recipe.getIngredients();
         if(data.size()>0)_dataset.put("Ingredients",data);
         data = recipe.getTools();
         if(data.size()>0)_dataset.put("Tools",data);

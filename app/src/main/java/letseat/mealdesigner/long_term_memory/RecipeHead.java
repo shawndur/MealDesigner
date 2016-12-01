@@ -700,4 +700,45 @@ public class RecipeHead implements Recipe
     public boolean setTempRecipePass(ArrayList<String> temp) {
         return false;
     }
+
+    //PEANUTS, TREE_NUTS, FISH, SHELLFISH, DAIRY_LACTOSE, EGGS, SOY, GLUTEN, UNKNOWN
+    public boolean setAllergens(boolean dairy, boolean nuts, boolean eggs,boolean soy, boolean fish){
+        Log.d("status","Allergens "+dairy+nuts+eggs+soy+fish);
+        if(dairy){
+            setAllergen(DAIRY_LACTOSE);
+        }
+        if(nuts){
+            setAllergen(PEANUTS);
+        }
+        if(eggs){
+            setAllergen(EGGS);
+        }
+        if(soy){
+            setAllergen(SOY);
+        }
+        if(fish){
+            setAllergen(FISH);
+        }
+        return true;
+    }
+
+    public ArrayList<String> getAllergens(){
+        ArrayList<String> toReturn = new ArrayList<>();
+        if(_allergens.get(DAIRY_LACTOSE)){
+            toReturn.add("Dairy");
+        }
+        if(_allergens.get(PEANUTS)){
+            toReturn.add("Nuts");
+        }
+        if(_allergens.get(EGGS)){
+            toReturn.add("Eggs");
+        }
+        if(_allergens.get(SOY)){
+            toReturn.add("Soy");
+        }
+        if(_allergens.get(FISH)){
+            toReturn.add("Fish");
+        }
+        return toReturn;
+    }
 }

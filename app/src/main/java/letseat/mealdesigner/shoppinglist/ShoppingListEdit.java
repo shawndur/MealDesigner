@@ -144,6 +144,7 @@ public class ShoppingListEdit extends AppCompatActivity {
         }
 
         shopList.setIngredients(ingredientsList);
+        x.setShopList(shopList);
 
 
         Toast.makeText(ShoppingListEdit.this, "Saved !!", Toast.LENGTH_SHORT).show();
