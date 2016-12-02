@@ -449,6 +449,8 @@ public class Long_Term_Interface implements Database, ShopList
             recipeHead.addComment(bySection.get(COMMENTS).get(i));
         }
 
+        recipeHead.decipherAllergenFlags(input.charAt(input.length()-4)+"");
+
         return recipeHead;
     }
 

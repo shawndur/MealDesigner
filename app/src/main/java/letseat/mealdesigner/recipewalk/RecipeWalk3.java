@@ -75,7 +75,9 @@ public class RecipeWalk3 extends AppCompatActivity {
             Toast.makeText(this, "You did not fill in an ingredient", Toast.LENGTH_SHORT).show();
         }
         else{
-            finalIngredient= amounts + " " + unit+ " " +name;
+            finalIngredient= amounts;
+            if(!unit.equals("Select a unit")) finalIngredient += " " + unit;
+            finalIngredient += " " +name;
             ingredient.add(finalIngredient);
             //clear all fill ins/selection
             measure_spinner.setSelection(0);
