@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import java.util.ArrayList;
@@ -19,6 +20,9 @@ public class RecipeWalk1 extends AppCompatActivity {
     private EditText editText2;
     private EditText editText3;
     private EditText editText4;
+    String preptime = "Preptime: ";
+    String cooktime = "Cook TIme: ";
+    String portionsize= "Recipe Yield: ";
     ArrayList<String> recipe  = new ArrayList<>();
     Recipe newRecipe;
     Database x ;//= ((MealDesignerApp) getApplication()).getDatabase();
@@ -26,6 +30,7 @@ public class RecipeWalk1 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_walk1);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         x = ((MealDesignerApp) getApplication()).getDatabase();
         editText1 = (EditText) findViewById(R.id.editText);
         editText2 = (EditText) findViewById(R.id.editText2);
@@ -41,9 +46,9 @@ public class RecipeWalk1 extends AppCompatActivity {
     //next step button
     public void step2(View view){
         String input1 = editText1.getText().toString();
-        String input2 = editText2.getText().toString();
-        String input3 = editText3.getText().toString();
-        String input4 = editText4.getText().toString();
+        String input2 = preptime + editText2.getText().toString();
+        String input3 = cooktime + editText3.getText().toString();
+        String input4 = portionsize + editText4.getText().toString();
         newRecipe = x.newRecipe(input1); //
       //newRecipe = newRecipe(input1); gives off error
         recipe.add(input1);
