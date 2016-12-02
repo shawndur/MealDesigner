@@ -11,10 +11,13 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ import java.util.ArrayList;
 import letseat.mealdesigner.MealDesignerApp;
 import letseat.mealdesigner.R;
 import letseat.mealdesigner.favorites.Favorites;
+import letseat.mealdesigner.help.HelpTab;
 import letseat.mealdesigner.recipeinfo.RecipeInfo;
 import letseat.mealdesigner.recipewalk.RecipeWalk1;
 import letseat.mealdesigner.shoppinglist.ShoppingList;
@@ -37,6 +41,7 @@ public class MainRecipe extends AppCompatActivity
     private RecyclerView.LayoutManager _layoutManager;
     private ArrayList<String> _dataset;
     private ArrayList<String> _favs;
+    private EditText text;
 
 
     @Override
@@ -57,7 +62,17 @@ public class MainRecipe extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //View inflatedView = getLayoutInflater().inflate(R.layout.activity_main_recipe_content, null);
+        text = (EditText) findViewById(R.id.searchEditText);//inflatedView.findViewById(R.id.searchEditText);
+
+        ArrayList<String> names = ((MealDesignerApp)getApplicationContext()).getDatabase().getListOfRecipes();
         _db = ((MealDesignerApp)getApplicationContext()).getDatabase();
+
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
         _dataset = _db.getListOfRecipes();
         _favs = _db.getListOfFavorites();
         Log.d("status",""+_favs);
@@ -121,6 +136,10 @@ public class MainRecipe extends AppCompatActivity
                 intent = new Intent(this,Favorites.class);
                 startActivity(intent);
                 break;
+            case R.id.nav_help:
+                intent = new Intent(this,HelpTab.class);
+                startActivity(intent);
+                break;
         }
         return true;
     }
@@ -165,5 +184,24 @@ public class MainRecipe extends AppCompatActivity
         Log.d("status","Deleted? "+result);
         _dataset.remove(id);
         _adapter.notifyDataSetChanged();
+    }
+
+    public void searchRecipe(View view){
+
+        String searchName = text.getText().toString();
+
+        ArrayList<String> names = ((MealDesignerApp)getApplicationContext()).getDatabase().getListOfRecipes();
+        ArrayList<String> parsedNames = new ArrayList<String>();
+        for(int i=0;i<names.size();i++){
+            if(names.get(i).contains(searchName)) {
+                parsedNames.add(names.get(i));
+            }
+        }
+        _adapter = new RecipeAdapter(parsedNames,_favs,this);
+        _recyclerView.setAdapter(_adapter);
+        _adapter.notifyDataSetChanged();
+
+
+        Log.d("CHANG","searchName: "+searchName);
     }
 }

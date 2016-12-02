@@ -428,7 +428,7 @@ public class Long_Term_Interface implements Database, ShopList
             {
 //                timer = -1;
                 Log.d("status","Blank or invalid string passed to Double.parseDouble(String) while parsing quantity information for "+ name +" in recipe "+recipeHead.name()+".\n\tPlease investigate, or prompt user for correct information.  By default, the timer will not be utilized, and this component of the Procedures list will have ComponentType.PROCEDURE set instead of ComponentType.PROCEDURE_WITH_TIMER.");
-                recipeHead.addProcedureWithoutTimer(name, rawLine.substring(rawLine.indexOf(COMMA)+1));
+                //recipeHead.addProcedureWithoutTimer(name, rawLine.substring(rawLine.indexOf(COMMA)+1));
 
             }
 
