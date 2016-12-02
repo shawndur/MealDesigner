@@ -180,8 +180,17 @@ public class MainRecipe extends AppCompatActivity
     public void onButtonPress(boolean delete,int id){
         if(!delete) return;
         Log.d("status","going to delete "+_dataset.get(id));
-        boolean result = ((MealDesignerApp)getApplication()).getDatabase().delete(_dataset.get(id));
+
+        String name = _dataset.get(id);
+        boolean result = ((MealDesignerApp)getApplication()).getDatabase().delete(name);
+
+        if(_favs.contains(name)){
+            result &= _db.setFavorite(name,false);
+            _favs.remove(name);
+        }
+
         Log.d("status","Deleted? "+result);
+
         _dataset.remove(id);
         _adapter.notifyDataSetChanged();
     }
