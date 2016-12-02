@@ -1,4 +1,4 @@
-package letseat.mealdesigner.recipies;
+package letseat.mealdesigner.favorites;
 
 
 import android.support.v7.widget.RecyclerView;
@@ -13,35 +13,32 @@ import android.widget.ToggleButton;
 import java.util.ArrayList;
 
 import letseat.mealdesigner.R;
+import letseat.mealdesigner.recipies.MainRecipe;
 
-public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
-    private ArrayList<String> _dataset;
+public class FavAdapter extends RecyclerView.Adapter<FavAdapter.ViewHolder> {
     private ArrayList<String> _favs;
-    private MainRecipe _recipeList;
+    private Favorites _recipeList;
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView _textView;
         public ToggleButton _fav;
-        public Button _delete;
         public int _id;
-        public MainRecipe _recipeList;
+        public Favorites _recipeList;
 
-        public ViewHolder(View v, MainRecipe recipeList) {
+        public ViewHolder(View v, Favorites recipeList) {
             super(v);
             _recipeList = recipeList;
             _textView = (TextView) v.findViewById(R.id.recipe_name_text);
             _fav = (ToggleButton) v.findViewById(R.id.favorite_button);
-            _delete = (Button) v.findViewById(R.id.delete_button);
             _textView.setOnClickListener(this);
             _fav.setOnClickListener(this);
-            _delete.setOnClickListener(this);
+            _fav.setChecked(true);
         }
 
-        public void bind(ArrayList<String> dataset,ArrayList<String> favs,int id){
+        public void bind(ArrayList<String> favs,int id){
             _id = id;
-            _textView.setText(dataset.get(id));
-            _fav.setChecked(favs.contains(dataset.get(id)));
+            _textView.setText(favs.get(id));
         }
 
         public void onClick(View view){
@@ -50,23 +47,20 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             }else if(view == _fav){
                 Log.d("status","favorite button pressed for "+_id+_textView.getText().toString());
                 _recipeList.favoriteRecipe(_textView.getText().toString());
-            }else if(view == _delete){
-                _recipeList.deleteRecipe(_textView.getText().toString(),_id);
             }
         }
     }
 
-    public RecipeAdapter(ArrayList<String> dataset,ArrayList<String> favs, MainRecipe recipelist) {
+    public FavAdapter(ArrayList<String> favs, Favorites recipelist) {
         _recipeList = recipelist;
-        _dataset = dataset;
         _favs = favs;
     }
 
 
     @Override
-    public RecipeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FavAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activity_main_recipe_item, parent, false);
+                .inflate(R.layout.activity_favorites_item, parent, false);
 
         ViewHolder vh = new ViewHolder(v,_recipeList);
         return vh;
@@ -74,11 +68,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.bind(_dataset,_favs,position);
+        holder.bind(_favs,position);
     }
 
     @Override
     public int getItemCount() {
-        return _dataset.size();
+        return _favs.size();
     }
 }

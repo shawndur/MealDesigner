@@ -54,6 +54,22 @@ public interface Recipe {
      */
     boolean setTempRecipePass(ArrayList<String> temp);
 
+    /**
+     * Sets the allergens of the recipe
+     * @param dairy True if the recipe contains this allergen
+     * @param nuts True if the recipe contains this allergen
+     * @param eggs True if the recipe contains this allergen
+     * @param soy True if the recipe contains this allergen
+     * @param fish True if the recipe contains this allergen
+     * @return true if successful
+     */
+    boolean setAllergens(boolean dairy, boolean nuts, boolean eggs,boolean soy, boolean fish);
+
+    /**
+     * Fetches the allergens of the recipe
+     * @return an arraylist of strings for allergens
+     */
+    ArrayList<String> getAllergens();
 }
 
 

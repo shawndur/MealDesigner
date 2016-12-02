@@ -44,7 +44,11 @@ import letseat.mealdesigner.storage.ShopList;
 
 public class ShoppingListEdit extends AppCompatActivity {
 
-    ArrayList<ArrayList<String>> ingredientsList = new ArrayList<ArrayList<String>>();
+    ArrayList<Ingredient> ingredientsList;// = new ArrayList<Ingredient>();
+    Database x ;//= ((MealDesignerApp) getApplication()).getDatabase();
+    ShopList shopList;// = x.getShopList();
+    //ArrayList<Ingredient> ingredients ;//= shopList.getIngredients();
+
 
 
     // id : key = checkBox ID, value = table row ID
@@ -64,31 +68,24 @@ public class ShoppingListEdit extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_list_edit);
-
+        x = ((MealDesignerApp) getApplication()).getDatabase();
+        shopList = x.getShopList();
+        ingredientsList = shopList.getIngredients();
         //set toolbar widget as action bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.navdrawer_list_edit));
+
+
         /*
-        Database x = ((MealDesignerApp) getApplication()).getDatabase();
-        ShopList shopList = x.getShopList();
-        ArrayList<Ingredient> ingredients = shopList.getIngredients();
-        for(Ingredient ingredient: ingredients){
-            ArrayList<String> ingredientArray = new ArrayList<String>();
-            ingredientArray.add(ingredient.getName());
-            ingredientArray.add(ingredient.getAmount());
-            ingredientArray.add(ingredient.getPrice());
-            ingredientArray.add(ingredient.getStore());
-            ingredientsList.add(ingredientArray);
-        }
-        */
         ArrayList<String> ingredientArray = new ArrayList<String>();
         ingredientArray.add("Bacon");
         ingredientArray.add("8");
         ingredientArray.add("1.5");
         ingredientArray.add("Wegmens");
         ingredientsList.add(ingredientArray);
+        */
 
         TableLayout ll = (TableLayout) findViewById(R.id.shoplist_edit_table);
         showEditIngredients(ll);
@@ -135,13 +132,20 @@ public class ShoppingListEdit extends AppCompatActivity {
             String qty = ((EditText) row.getChildAt(2)).getText().toString();
             String price = ((EditText) row.getChildAt(3)).getText().toString();
             String place = ((EditText) row.getChildAt(4)).getText().toString();
-            ArrayList<String> tempIngredient = new ArrayList<String>();
-            tempIngredient.add(name);
-            tempIngredient.add(qty);
-            tempIngredient.add(price);
-            tempIngredient.add(place);
+
+
+            Ingredient tempIngredient = shopList.newIngredient();
+            tempIngredient.setName(name);
+            tempIngredient.setAmount(qty);
+            tempIngredient.setPrice(price);
+            tempIngredient.setStore(place);
             ingredientsList.add(tempIngredient);
+
         }
+
+        shopList.setIngredients(ingredientsList);
+        x.setShopList(shopList);
+
 
         Toast.makeText(ShoppingListEdit.this, "Saved !!", Toast.LENGTH_SHORT).show();
 
@@ -240,24 +244,7 @@ public class ShoppingListEdit extends AppCompatActivity {
     }
 
     public void showEditIngredients(TableLayout ll) {
-        /*
-        ArrayList<String> name = new ArrayList<>();
-        name.add("Carrot");
-        name.add("Tomato");
 
-        ArrayList<String> quantity = new ArrayList<>();
-        quantity.add("5lb");
-        quantity.add("3lb");
-
-        ArrayList<Integer> price = new ArrayList<>();
-        price.add(50);
-        price.add(30);
-
-        ArrayList<String> place = new ArrayList<>();
-        place.add("Walmart");
-        place.add("Wegmens");
-        */
-        // Title part
         TableRow titleRow = new TableRow(this);
 
         TextView titleCheckView = new TextView(this);
@@ -294,7 +281,10 @@ public class ShoppingListEdit extends AppCompatActivity {
 
         ll.addView(titleRow, 0);
 
+        //Log.d("status",in);
+
         for (int i = 0; i < ingredientsList.size(); i++) {
+            Ingredient currentIngredient = ingredientsList.get(i);
             TableRow row = new TableRow(this);
             int rowID = findUnusedId();
             row.setId(rowID);
@@ -315,25 +305,27 @@ public class ShoppingListEdit extends AppCompatActivity {
                 }
             });
 
-
-
+            // Name
             EditText nameView = new EditText(this);
-            nameView.setText(ingredientsList.get(i).get(0));
+            nameView.setText(currentIngredient.getName());
             nameView.setGravity(Gravity.CENTER);
             nameView.setWidth(400);
 
+            // Amount
             EditText quantityView = new EditText(this);
-            quantityView.setText(ingredientsList.get(i).get(1));
+            quantityView.setText(currentIngredient.getAmount());
             quantityView.setGravity(Gravity.CENTER);
             quantityView.setWidth(200);
 
+            // Price
             EditText priceView = new EditText(this);
-            priceView.setText(ingredientsList.get(i).get(2));
+            priceView.setText(currentIngredient.getPrice());
             priceView.setGravity(Gravity.CENTER);
             priceView.setWidth(200);
 
+            // Store
             EditText placeView = new EditText(this);
-            placeView.setText(ingredientsList.get(i).get(3));
+            placeView.setText(currentIngredient.getStore());
             placeView.setGravity(Gravity.CENTER);
             placeView.setWidth(500);
 
