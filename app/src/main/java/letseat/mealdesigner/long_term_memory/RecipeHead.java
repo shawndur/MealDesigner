@@ -674,7 +674,7 @@ public class RecipeHead implements Recipe
         if(ingr == null) return stringr;
         for(;ingr.hasNext();ingr = ingr.next()){
             String toAdd = "";
-            if(ingr.hasQuantity()) toAdd += ingr.getQuantity()+" ";
+            if(ingr.hasQuantity() && ingr.getQuantity() != 0) toAdd += ingr.getQuantity()+" ";
             if(ingr.unitOfMeasure() != NO_UOM &&  ingr.unitOfMeasure() != UOM_ERR)
                 toAdd += ingr.unitOfMeasure()+" ";
             toAdd += ingr.name();
