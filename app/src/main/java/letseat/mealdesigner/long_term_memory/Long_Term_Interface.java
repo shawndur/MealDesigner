@@ -449,6 +449,8 @@ public class Long_Term_Interface implements Database, ShopList
             recipeHead.addComment(bySection.get(COMMENTS).get(i));
         }
 
+        recipeHead.decipherAllergenFlags(input.charAt(input.length()-4)+"");
+
         return recipeHead;
     }
 
@@ -883,9 +885,10 @@ public class Long_Term_Interface implements Database, ShopList
                 srcRecipe = _shopList_RECIPE_ADDED + current.recipeAddedFrom + end_shopList_RECIPE_ADDED,
                 addedToCart = _shopList_IN_CART + ( (current.in_cart)? "TRUE" : "FALSE" ) + end_shopList_IN_CART,
                 qtyToBuy = _shopList_QTY + "" + current.quantity + "" + end_shopList_QTY,
-                uom = _shopList_UOM + current.unit_of_measure.toString() + end_shopList_UOM;
+                uom = _shopList_UOM + current.unit_of_measure.toString() + end_shopList_UOM,
+                price = _shopList_PRICE + (""+current.price) + end_shopList_PRICE;
 
-            String toAdd = itemName + storeToPurchase + srcRecipe + addedToCart + qtyToBuy + uom;
+            String toAdd = itemName + storeToPurchase + srcRecipe + addedToCart + qtyToBuy + uom + price;
 
 
 
@@ -1091,6 +1094,7 @@ public class ShoppingNode
         }
         public boolean setPrice(String newPrice){
             price = Double.parseDouble(newPrice);
+            Log.d("status","price: "+price);
             return true;
         }
         public boolean setStore(String newStore){

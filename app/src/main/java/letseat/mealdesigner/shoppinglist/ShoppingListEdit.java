@@ -44,10 +44,10 @@ import letseat.mealdesigner.storage.ShopList;
 
 public class ShoppingListEdit extends AppCompatActivity {
 
-    ArrayList<Ingredient> ingredientsList = new ArrayList<Ingredient>();
+    ArrayList<Ingredient> ingredientsList;// = new ArrayList<Ingredient>();
     Database x ;//= ((MealDesignerApp) getApplication()).getDatabase();
     ShopList shopList;// = x.getShopList();
-    ArrayList<Ingredient> ingredients ;//= shopList.getIngredients();
+    //ArrayList<Ingredient> ingredients ;//= shopList.getIngredients();
 
 
 
@@ -70,7 +70,7 @@ public class ShoppingListEdit extends AppCompatActivity {
         setContentView(R.layout.activity_shopping_list_edit);
         x = ((MealDesignerApp) getApplication()).getDatabase();
         shopList = x.getShopList();
-        ingredients = shopList.getIngredients();
+        ingredientsList = shopList.getIngredients();
         //set toolbar widget as action bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -144,6 +144,7 @@ public class ShoppingListEdit extends AppCompatActivity {
         }
 
         shopList.setIngredients(ingredientsList);
+        x.setShopList(shopList);
 
 
         Toast.makeText(ShoppingListEdit.this, "Saved !!", Toast.LENGTH_SHORT).show();
@@ -279,6 +280,8 @@ public class ShoppingListEdit extends AppCompatActivity {
 
 
         ll.addView(titleRow, 0);
+
+        //Log.d("status",in);
 
         for (int i = 0; i < ingredientsList.size(); i++) {
             Ingredient currentIngredient = ingredientsList.get(i);

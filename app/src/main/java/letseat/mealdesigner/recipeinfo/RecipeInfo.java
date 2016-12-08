@@ -95,9 +95,9 @@ public class RecipeInfo extends AppCompatActivity {
             case R.id.toolbar_fav:
                 addToFavs();
                 break;
-            case R.id.toolbar_list:
+            /*case R.id.toolbar_list:
                 addToList();
-                break;
+                break;*/
             case R.id.toolbar_cook:
                 goToCook();
                 break;

@@ -41,6 +41,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".recipies.MainRecipe" />
         </activity>
+        <activity
+            android:name=".help.HelpTab"
+            android:parentActivityName=".recipies.MainRecipe">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".recipies.MainRecipe" />
+        </activity>
         <activity android:name=".shoppinglist.ShoppingListEdit"></activity>
         <activity android:name=".recipewalk.RecipeWalk1"></activity>
         <activity android:name=".recipewalk.RecipeWalk2"></activity>

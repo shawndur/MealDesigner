@@ -12,19 +12,9 @@
         <item
             android:id="@+id/nav_cook"
             android:title="@string/navdrawer_cook" />
+        <item
+            android:id="@+id/nav_help"
+            android:title="@string/navdrawer_help" />
     </group>
-
-    <item android:title="@string/navdrawer_communicate_divider">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="@string/navdrawer_share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/navdrawer_send" />
-        </menu>
-    </item>
 
 </menu>
