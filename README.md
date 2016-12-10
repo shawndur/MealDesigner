@@ -1,11 +1,16 @@
 # MealDesigner
-This is the repository for MealDesigner. MealDesigner is an app aimed at simplifying the process of creating a meal. From planning recipes, to cooking them our app aims to help you along the way.
+This is the website for MealDesigner. MealDesigner is an app aimed at simplifying the process of creating a meal. From planning recipes, to cooking them our app aims to help you along the way.
 
+## Authors 
+[Shawn Durandetto](https://github.com/shawndur),
+[Christina Zytariuk](https://github.com/cnzytari),
+[George Vanhoose](https://github.com/gvanhoose),
+[Chang Park](https://github.com/pcm4150),
 
 ## Current Features
 * Creating and deleting recipes
 * Viewing recipes
-* Favoriting recipies
+* Favoriting recipes
 * A Shopping list that you can add or remove ingredients from
 * Step by step cooking walkthrough
 * Searching recipes
@@ -18,8 +23,8 @@ Currently our app only supports Android devices running Android 4.0.3 or greater
 
 ### -How To Install
 1) First Enable Installing from Third Party Sources by going to Settings->Security and Enabling Unknown Sources.   
-2) Using Your Device Navigate To Our Repository (you may need to switch to desktop view).   
-3) To Download, Tap On Releases and Then Tap On MealDesigner.apk Under The Latest Release.   
+2) Using Your Device Navigate To Our Website.   
+3) To Download, Tap the Download .apk Button At The Top (The One With The Android Robot)  
 4) Open the File On Your Device. This Varies By Device But You Should Be Able To Find It In The Downloads App.   
 5) Follow The On Screen Instructions To Install The App   
 
