@@ -1,0 +1,6 @@
+{
+  "name": "Mealdesigner",
+  "tagline": "",
+  "body": "# MealDesigner\r\nThis is the website for MealDesigner. MealDesigner is an app aimed at simplifying the process of creating a meal. From planning recipes, to cooking them our app aims to help you along the way.\r\n\r\n## Current Features\r\n* Creating and deleting recipes\r\n* Viewing recipes\r\n* Favoriting recipies\r\n* A Shopping list that you can add or remove ingredients from\r\n* Step by step cooking walkthrough\r\n* Searching recipes\r\n\r\n## Device Requirements\r\nCurrently our app only supports Android devices running Android 4.0.3 or greater.\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
